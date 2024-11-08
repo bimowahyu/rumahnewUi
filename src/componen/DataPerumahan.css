@@ -1,0 +1,18 @@
+/* DataPerumahan.css */
+
+/* Menyusun halaman agar footer tetap di bawah */
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+  }
+  
+  /* Konten utama akan mengambil sisa ruang yang ada */
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  /* Tidak perlu ada CSS untuk footer di sini, karena footer sudah ada di App.css */
+  

@@ -1,0 +1,145 @@
+/* Container utama untuk dashboard */
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    padding: 2.5rem; /* 40px menggunakan ukuran font dasar 16px */
+    color: #ffffff;
+  }
+  
+  .dashboard main {
+    width: 100%;
+    max-width: 62.5rem; /* 1000px menggunakan ukuran font dasar 16px */
+    background: #ecf0f1;
+    padding: 1.875rem; /* 30px menggunakan ukuran font dasar 16px */
+    border-radius: 0.75rem; /* 12px menggunakan ukuran font dasar 16px */
+    box-shadow: 0 0.9375rem 1.5625rem rgba(0, 0, 0, 0.3); /* 15px 25px menggunakan ukuran font dasar 16px */
+  }
+  
+  .dashboard h2 {
+    font-size: 2rem; /* 32px */
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 1.25rem; /* 20px menggunakan ukuran font dasar 16px */
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .dashboard-widgets {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem; /* 20px menggunakan ukuran font dasar 16px */
+    margin-top: 1.25rem; /* 20px menggunakan ukuran font dasar 16px */
+  }
+  
+  /* Styling untuk widget */
+  .dashboard-widget {
+    background: #ffffff;
+    border-radius: 0.75rem; /* 12px menggunakan ukuran font dasar 16px */
+    padding: 1.25rem; /* 20px menggunakan ukuran font dasar 16px */
+    box-shadow: 0 0.625rem 1.25rem rgba(0, 0, 0, 0.2); /* 10px 20px menggunakan ukuran font dasar 16px */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .dashboard-widget:hover {
+    transform: translateY(-0.3125rem); /* 5px menggunakan ukuran font dasar 16px */
+    box-shadow: 0 0.9375rem 1.5625rem rgba(0, 0, 0, 0.3); /* 15px 25px menggunakan ukuran font dasar 16px */
+  }
+  
+  .dashboard-widgets h3 {
+    font-size: 1.5rem; /* 24px */
+    color: #3498db;
+    margin-bottom: 0.9375rem; /* 15px menggunakan ukuran font dasar 16px */
+    font-family: "Poppins", sans-serif;
+  }
+  
+  /* Quick actions styling */
+  .quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9375rem; /* 15px menggunakan ukuran font dasar 16px */
+  }
+  
+  .quick-actions button {
+    padding: 0.9375rem; /* 15px menggunakan ukuran font dasar 16px */
+    background: #3498db;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.5rem; /* 8px menggunakan ukuran font dasar 16px */
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+  
+  .quick-actions button:hover {
+    background: #2980b9;
+    transform: translateY(-0.1875rem); /* 3px menggunakan ukuran font dasar 16px */
+  }
+  
+  @media (max-width: 768px) {
+    .dashboard h2 {
+      font-size: 1.5rem; /* 24px */
+    }
+  
+    .dashboard-widgets h3 {
+      font-size: 1.25rem; /* 20px */
+    }
+  
+    .dashboard-widgets {
+      grid-template-columns: 1fr; /* Single column layout on small screens */
+    }
+  
+    .quick-actions button {
+      font-size: 0.875rem; /* 14px */
+      padding: 0.75rem; /* 12px menggunakan ukuran font dasar 16px */
+    }
+  
+    .dashboard-widgets {
+      padding: 0.9375rem; /* 15px menggunakan ukuran font dasar 16px */
+    }
+  
+    .dashboard main {
+      padding: 1.25rem; /* 20px menggunakan ukuran font dasar 16px */
+    }
+  
+    header h2 {
+      font-size: 1.25rem; /* 20px */
+    }
+  }
+  @media (min-width: 768px) {
+    .dashboard-widgets {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .dashboard-widgets {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .dashboard h2 {
+      font-size: 1.25rem; /* 20px */
+    }
+  
+    .dashboard-widgets h3 {
+      font-size: 1rem; /* 16px */
+    }
+  
+    .quick-actions button {
+      font-size: 0.75rem; /* 12px */
+      padding: 0.625rem; /* 10px menggunakan ukuran font dasar 16px */
+    }
+  
+    .dashboard main {
+      padding: 0.9375rem; /* 15px menggunakan ukuran font dasar 16px */
+    }
+  }

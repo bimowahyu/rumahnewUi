@@ -1,0 +1,159 @@
+/* Container utama untuk halaman registrasi */
+.register-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1abc9c, #3498db);
+    padding: 20px;
+  }
+  
+  /* Kontainer untuk logo dan judul aplikasi */
+  .logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+    cursor: pointer;
+  }
+  
+  .register-logo {
+    width: 80px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  .app-register-title {
+    font-size: 2rem;
+    color: #ffffff;
+    text-align: center;
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  /* Styling untuk form registrasi */
+  form {
+    width: 100%;
+    max-width: 400px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease-in-out;
+  }
+  
+  /* Hover effect pada form untuk menambahkan sedikit kesan interaktif */
+  form:hover {
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4);
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #333333;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-top: 5px;
+    border: 2px solid #dddddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #333333;
+    background: #f7f7f7;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+    border-color: #1abc9c;
+    box-shadow: 0 0 8px rgba(26, 188, 156, 0.5);
+    outline: none;
+  }
+  
+  .password-container {
+    position: relative;
+  }
+  
+  .password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #666666;
+  }
+  
+  .password-toggle:focus {
+    outline: none;
+  }
+  
+  button[type="submit"] {
+    width: 100%;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #1abc9c, #3498db);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
+  }
+  
+  /* Hover effect pada tombol untuk memberikan sedikit interaksi */
+  button[type="submit"]:hover {
+    background: linear-gradient(135deg, #3498db, #1abc9c);
+  }
+  
+  .alert {
+    margin-bottom: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    .app-register-title {
+      font-size: 1.8rem;
+    }
+  
+    form {
+      padding: 25px;
+    }
+  
+    .register-logo {
+      width: 70px;
+    }
+  
+    button[type="submit"] {
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .app-register-title {
+      font-size: 1.6rem;
+    }
+  
+    .register-logo {
+      width: 60px;
+    }
+  
+    button[type="submit"] {
+      font-size: 0.9rem;
+      padding: 12px 15px;
+    }
+  }
+  

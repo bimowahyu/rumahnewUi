@@ -1,0 +1,73 @@
+/* Header.css */
+
+/* Global style for header */
+.App-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-color);
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .App-logo {
+    height: 100px;
+    margin-right: 20px;
+  }
+  
+  .header-text {
+    text-align: center;
+    color: white;
+  }
+  
+  .header-title {
+    font-size: 1.8rem;
+    margin: 0;
+  }
+  
+  .header-subtitle {
+    font-size: 1rem;
+    margin: 5px 0;
+  }
+  
+  @media (max-width: 768px) {
+    /* Adjust header for tablet devices */
+    .App-header {
+      flex-direction: column;
+      padding: 15px;
+    }
+  
+    .App-logo {
+      height: 80px;
+      margin-bottom: 15px;
+    }
+  
+    .header-title {
+      font-size: 1.6rem;
+    }
+  
+    .header-subtitle {
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    /* Adjust header for mobile devices */
+    .App-header {
+      padding: 10px;
+    }
+  
+    .App-logo {
+      height: 60px;
+      margin-bottom: 10px;
+    }
+  
+    .header-title {
+      font-size: 1.4rem;
+    }
+  
+    .header-subtitle {
+      font-size: 0.8rem;
+    }
+  }
+  
