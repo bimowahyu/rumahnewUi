@@ -28,7 +28,7 @@ export const LoginAdmin = createAsyncThunk("admin/login", async (user, thunkAPI)
         const response = await api.post('/login', {
             username: user.username,
             password: user.password
-        });
+        },{withCredentials: true});
         return response.data;
     } catch (error) {
         console.error('Login error:', error.response?.data || error.message);
@@ -36,16 +36,14 @@ export const LoginAdmin = createAsyncThunk("admin/login", async (user, thunkAPI)
     }
 });
 
-// Fungsi getMe untuk admin (memvalidasi sesi)
-export const getMeAdmin = createAsyncThunk("admin/me", async (_, thunkAPI) => {
+
+// getMeAdmin function to validate session
+export const getMeAdmin = createAsyncThunk("admin/getMe", async (_, thunkAPI) => {
     try {
-        console.log("Fetching admin user data");
         const response = await api.get('/me');
-        console.log("Admin user data response:", response.data);
         return response.data;
     } catch (error) {
-        console.error("GetMeAdmin error:", error.response?.data || error.message);
-        return thunkAPI.rejectWithValue(error.response?.data?.msg || "An error occurred");
+        return thunkAPI.rejectWithValue('Failed to retrieve admin data');
     }
 });
 

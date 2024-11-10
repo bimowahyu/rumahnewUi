@@ -118,10 +118,14 @@
   }
   
   @media (max-width: 767px) {
-    .dashboard-widgets {
+    /* .dashboard-widgets {
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
+    } */
+    .dashboard-widget canvas {
+      width: 100% !important;
+      max-width: 300px; /* Adjust this value as needed */
     }
   }
   
@@ -141,5 +145,9 @@
   
     .dashboard main {
       padding: 0.9375rem; /* 15px menggunakan ukuran font dasar 16px */
+    }
+    .dashboard-widget canvas {
+      width: 100% !important;
+      height: 200px !important; /* Set a height to make it more readable */
     }
   }

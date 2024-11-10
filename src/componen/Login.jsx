@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import axios from "axios";
 import { FaEye, FaEyeSlash, FaLock } from "react-icons/fa";
-import ReCAPTCHA from "react-google-recaptcha";
 import { LoginAdmin, reset } from "../fitur/AuthSlice";
 import useSWR from 'swr';
 
@@ -23,7 +22,6 @@ function Login() {
   const [rememberMe, setRememberMe] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const recaptchaRef = useRef(null);
   const { user, isError, isSuccess, isLoading, message } = useSelector(
     (state) => state.authAdmin
   );
@@ -99,9 +97,6 @@ function Login() {
               onChange={(e) => setRememberMe(e.target.checked)} 
             /> Remember me
           </label>
-        </div>
-        <div className="recaptcha-container">
-          <ReCAPTCHA ref={recaptchaRef} sitekey="6LdFxh8qAAAAAO_NZ3p7scn70POdyee9KqSUpomD" onChange={() => {}} />
         </div>
         <div className="extra-links">
           <a href="/reset-password">Lupa Password?</a>

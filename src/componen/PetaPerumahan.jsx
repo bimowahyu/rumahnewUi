@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Container, Row, Col, Alert, Spinner } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { NavbarDasboard } from "../map/NavbarDasboard";
 
 // Set custom icon for markers
 delete L.Icon.Default.prototype._getIconUrl;
@@ -36,7 +37,10 @@ function PetaPerumahan() {
   }, []);
 
   return (
+    <div>
+      <NavbarDasboard />
     <Container fluid className="p-4">
+      
       <Row className="justify-content-center mb-4">
         <Col md="auto">
           <h2 className="text-center">Peta Perumahan</h2>
@@ -99,6 +103,7 @@ function PetaPerumahan() {
         </Col>
       </Row>
     </Container>
+    </div>
   );
 }
 

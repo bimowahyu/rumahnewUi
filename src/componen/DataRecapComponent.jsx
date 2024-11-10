@@ -48,6 +48,8 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
     kecamatan: "",
     desaKelurahan: "",
     kategori: "",
+    user: "", 
+    statusrumah: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -58,24 +60,34 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
+  const [userOptions, setUserOptions] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_URL}/getquestionnaires`, {
-          withCredentials: true 
+          withCredentials: true,
         });
-  
+    
         if (response.status === 200) {
-          setData(response.data);
-          console.log("Data yang diterima:", response.data);
-  
-          const calculatedStatistics = calculateStatistics(response.data);
+          const modifiedData = response.data.map(item => {
+            // Jika status rumah 'kosong', hilangkan kategori
+            if (item.statusrumah === 'Tidak Berpenghuni') {
+              item.kategori = null; // Atau set kategori ke nilai default yang Anda inginkan
+            }
+            return item;
+          });
+    
+          setData(modifiedData);
+          console.log("Data yang diterima:", modifiedData);
+    
+          // If there's an onStatisticsUpdate callback, calculate and pass the statistics
+          const calculatedStatistics = calculateStatistics(modifiedData);
           if (onStatisticsUpdate) {
             onStatisticsUpdate(calculatedStatistics);
           }
         } else {
-          console.error("Error fetching data: ", response.statusText);
+          console.error("Error fetching data:", response.statusText);
           setError("Terjadi kesalahan saat memuat data.");
         }
       } catch (error) {
@@ -83,9 +95,35 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
         setError("Terjadi kesalahan saat memuat data.");
       }
     };
-  
-    fetchData();
+      fetchData();
   }, [onStatisticsUpdate]);
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(`${process.env.REACT_APP_URL}/getquestionnaires`, {
+  //         withCredentials: true 
+  //       });
+  
+  //       if (response.status === 200) {
+  //         setData(response.data);
+  //         console.log("Data yang diterima:", response.data);
+  
+  //         const calculatedStatistics = calculateStatistics(response.data);
+  //         if (onStatisticsUpdate) {
+  //           onStatisticsUpdate(calculatedStatistics);
+  //         }
+  //       } else {
+  //         console.error("Error fetching data: ", response.statusText);
+  //         setError("Terjadi kesalahan saat memuat data.");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching data", error);
+  //       setError("Terjadi kesalahan saat memuat data.");
+  //     }
+  //   };
+  
+  //   fetchData();
+  // }, [onStatisticsUpdate]);
+  
   const fetchData = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_URL}/getquestionnaires`, {
@@ -160,7 +198,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
           // Gunakan setSelectedItem untuk memperbarui nilai namaSurveyor
           setSelectedItem((prevData) => ({
             ...prevData,
-            namaSurveyor: data.surveyor?.username || "Data tidak tersedia",
+            namaSurveyor: data.Admin?.username || "Data tidak tersedia",
           }));
         } else {
           console.error("Gagal mengambil nama surveyor:", response.statusText);
@@ -172,6 +210,24 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
       }
     };
     fetchSurveyorName();
+  }, []);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_URL}/user`, {
+          withCredentials: true,
+        });
+        if (response.status === 200) {
+          setUserOptions(response.data); // Assuming response.data is an array of users
+        } else {
+          console.error("Failed to fetch users:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+    fetchUsers();
   }, []);
   
   
@@ -218,31 +274,36 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
     Sekongkang: ["Talonang", "Tatar", "Ai Kangkung", "Sekongkang Atas", "Tongo", "Kemuning", "Sekongkang Bawah"],
   };
 
+  // const handleFilterChange = (e) => {
+  //   const { name, value } = e.target;
+
+  //   if (name === "kecamatan") {
+  //     setFilters({
+  //       ...filters,
+  //       kecamatan: value,
+  //       desaKelurahan: "",
+  //     });
+  //   } else {
+  //     setFilters({
+  //       ...filters,
+  //       [name]: value,
+  //     });
+  //   }
+  // };
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-
-    if (name === "kecamatan") {
-      setFilters({
-        ...filters,
-        kecamatan: value,
-        desaKelurahan: "",
-      });
-    } else {
-      setFilters({
-        ...filters,
-        [name]: value,
-      });
-    }
+    setFilters({
+      ...filters,
+      [name]: value,
+      ...(name === "kecamatan" && { desaKelurahan: "" }), // Reset desaKelurahan if kecamatan changes
+    });
   };
-  
 
   const handleToggleExpand = async (index, id) => {
     if (expandedRows.includes(index)) {
-      // Jika sudah terbuka, tutup baris
       setExpandedRows(expandedRows.filter(row => row !== index));
-      setSelectedItem(null); // Reset selected item saat ditutup
+      setSelectedItem(null); 
     } else {
-      // Ambil detail berdasarkan ID
       try {
         const response = await fetch(`${process.env.REACT_APP_URL}/maps/${id}`);
         const result = await response.json();
@@ -254,12 +315,25 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
     }
   };
 
-  const filteredData = data.filter(
-    (item) =>
-      (filters.kecamatan === "" || filters.kecamatan === "Semua Kecamatan" || item.kecamatan.includes(filters.kecamatan)) &&
-      (filters.desaKelurahan ? item.desaKelurahan.includes(filters.desaKelurahan) : true) &&
-      (filters.kategori === "" || item.kategori === filters.kategori)
-  );
+  // const filteredData = data.filter(
+  //   (item) =>
+  //     (filters.kecamatan === "" || filters.kecamatan === "Semua Kecamatan" || item.kecamatan.includes(filters.kecamatan)) &&
+  //     (filters.desaKelurahan ? item.desaKelurahan.includes(filters.desaKelurahan) : true) &&
+  //     (filters.kategori === "" || item.kategori === filters.kategori) &&
+  //     // (filters.jenis === "" || item.jenis === filters.jenis) &&
+  //     (filters.status === "" || item.status === filters.status) 
+
+  const filteredData = data.filter(item => {
+    const isKecamatanMatch = filters.kecamatan ? item.kecamatan === filters.kecamatan || filters.kecamatan === "Semua Kecamatan" : true;
+    const isKategoriMatch = filters.kategori ? item.kategori === filters.kategori : true;
+    // const isUserMatch = filters.user ? item.user === filters.user : true;
+    const isUserMatch = filters.user ? item.Admin?.username === filters.user : true; // Change this line
+    const isStatusMatch = filters.statusrumah ? item.statusrumah === filters.statusrumah : true;
+    return isKecamatanMatch && isKategoriMatch && isUserMatch && isStatusMatch;
+  });
+  
+  // setCurrentRows(filteredData);
+  
 
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
@@ -275,7 +349,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
   const handleEditClick = (item) => {
     setSelectedItem({
       ...item,
-      kecamatan: item.kecamatan || "", // Set nilai default
+      kecamatan: item.kecamatan || "", 
       desaKelurahan: item.desaKelurahan || "",
       kategori: item.kategori || ""
     });
@@ -301,7 +375,6 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
     setSelectedItem((prevData) => ({
       ...prevData,
       [name]: value,
-      // Kosongkan titikKoordinatRumah jika manualTitikKoordinatRumah diisi, dan sebaliknya
       ...(name === "manualTitikKoordinatRumah" ? { titikKoordinatRumah: "" } : {}),
       ...(name === "titikKoordinatRumah" ? { manualTitikKoordinatRumah: "" } : {}),
     }));
@@ -314,9 +387,15 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
       });
       setIsModalOpen(false);
       alert("Data berhasil diperbarui.");
-      window.location.reload(); // Refresh to get updated data
+      window.location.reload(); 
     } catch (error) {
       console.error("Error updating data:", error);
+    if (error.response) {
+        console.log("Server response:", error.response.data);
+        alert(error.response.data.message || "Terjadi kesalahan saat memperbarui data.");
+    } else {
+        alert("Terjadi kesalahan jaringan atau server.");
+    }
     }
   };
   // const handleGetCoordinates = () => {
@@ -348,36 +427,72 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
           setSelectedItem((prevData) => ({
             ...prevData,
             titikKoordinatRumah: `${latitude}, ${longitude}`,
-            manualTitikKoordinatRumah: "", // Kosongkan input manual jika koordinat otomatis diisi
+            manualTitikKoordinatRumah: "",
           }));
         },
         (error) => {
           setErrorMessage("Error getting coordinates: " + error.message);
-          setModalOpen(true); // Tampilkan modal error
+          setModalOpen(true); 
         }
       );
     } else {
       setErrorMessage("Geolocation is not supported by this browser.");
-      setModalOpen(true); // Tampilkan modal error
+      setModalOpen(true); 
     }
   };
   //upload
-  const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
-  };
+  // const handleFileChange = (e) => {
+  //   setSelectedFile(e.target.files[0]);
+  // };
 
-  // Fungsi untuk membuka dialog pemilihan file
-  const handleChooseFile = () => {
+  // // Fungsi untuk membuka dialog pemilihan file
+  // const handleChooseFile = () => {
+  //   document.getElementById("fileInput").click();
+  // };
+  // const handleUploadExcel = async () => {
+  //   if (!selectedFile) {
+  //     alert("Silakan pilih file untuk diunggah.");
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append("file", selectedFile);
+
+  //   try {
+  //     await axios.post(`${process.env.REACT_APP_URL}/uploadexcel`, formData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //       withCredentials: true,
+  //     });
+
+  //     alert("File berhasil diunggah!");
+  //     setSelectedFile(null);
+  //   } catch (error) {
+  //     console.error("Error uploading file:", error);
+    
+  //   }
+  // };
+  const handleButtonClick = () => {
     document.getElementById("fileInput").click();
   };
-  const handleUploadExcel = async () => {
-    if (!selectedFile) {
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+    if (file) {
+      handleUploadExcel(file);  // Automatically upload once a file is selected
+    }
+  };
+
+  const handleUploadExcel = async (file) => {
+    if (!file) {
       alert("Silakan pilih file untuk diunggah.");
       return;
     }
 
     const formData = new FormData();
-    formData.append("file", selectedFile);
+    formData.append("file", file);
 
     try {
       await axios.post(`${process.env.REACT_APP_URL}/uploadexcel`, formData, {
@@ -391,9 +506,10 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
       setSelectedFile(null);
     } catch (error) {
       console.error("Error uploading file:", error);
-    
+      alert("Terjadi kesalahan saat mengunggah file.");
     }
   };
+
   
   const handleExportExcel = async () => {
     try {
@@ -419,8 +535,8 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_URL}/maps/${id}`);
       if (response.status === 200) {
-        setSelectedItem(response.data); // Setel data detail termasuk koordinat
-        setModalOpen(true); // Tampilkan modal dengan detail data
+        setSelectedItem(response.data); 
+        setModalOpen(true); 
       } else {
         console.error("Failed to fetch detail data:", response.statusText);
         setErrorMessage("Gagal mengambil data detail.");
@@ -518,13 +634,34 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
               </label>
             )}
             <label>
-              Kategori:
-              <select name="kategori" value={filters.kategori} onChange={handleFilterChange}>
-                <option value="">Pilih Kategori</option>
-                <option value="Rumah Layak Huni">Rumah Layak Huni</option>
-                <option value="Rumah Tidak Layak Huni">Rumah Tidak Layak Huni</option>
-              </select>
-            </label>
+            Kategori:
+            <select name="kategori" value={filters.kategori} onChange={handleFilterChange}>
+              <option value="">Pilih Kategori</option>
+              <option value="Rumah Layak Huni">Rumah Layak Huni</option>
+              <option value="Rumah Tidak Layak Huni">Rumah Tidak Layak Huni</option>
+            </select>
+          </label>
+
+          <label>
+            User:
+            <select name="user" value={filters.user} onChange={handleFilterChange}>
+              <option value="">Pilih User</option>
+              {userOptions.map((user) => (
+                <option key={user.id} value={user.username}>
+                  {user.username}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label>
+            Status Rumah:
+            <select name="statusrumah" value={filters.statusrumah} onChange={handleFilterChange}>
+              <option value="">Pilih Status Rumah</option>
+              <option value="Berpenghuni">Berpenghuni</option>
+              <option value="Tidak Berpenghuni">Tidak Berpenghuni</option>
+            </select>
+          </label>
           </div>
           <div className="table-wrapper">
           <Input
@@ -535,16 +672,24 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
       />
 
       {/* Tombol untuk membuka dialog pemilihan file */}
-      <Button color="primary" onClick={handleChooseFile} className="me-2">
+      {/* <Button color="primary" onClick={handleChooseFile} className="me-2">
         Pilih File
       </Button>
 
-      {/* Tampilkan nama file yang dipilih */}
       {selectedFile && <p>File yang dipilih: {selectedFile.name}</p>}
-
-      {/* Tombol untuk mengunggah file */}
       <Button color="primary" onClick={handleUploadExcel} className="me-2">
         Upload Excel
+      </Button> */}
+      <input
+        type="file"
+        id="fileInput"
+        style={{ display: "none" }}
+        onChange={handleFileChange}
+      />
+
+      {/* Single button to choose and upload file */}
+      <Button color="primary" onClick={handleButtonClick}  className="me-2">
+        {selectedFile ? `Upload File: ${selectedFile.name}` : "Pilih dan Upload File"}
       </Button>
             <Button color="primary" onClick={handleExportExcel} className="me-2">Export to Excel</Button>
             <Button color="primary" className="btn-custom">
@@ -581,10 +726,14 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
                       <td>{item.kecamatan}</td>
                       <td>{item.kategori}</td>
                       <td>
-          <FaEye
-            onClick={() => handleToggleExpand(index)}
-            style={{ cursor: "pointer", color: "#007bff" }}
-          />
+                      <FaEye
+                      onClick={item.statusrumah !== 'Tidak Berpenghuni' ? () => handleToggleExpand(index) : null} // Hanya aktifkan onClick jika statusrumah bukan "Tidak Berpenghuni"
+                      style={{
+                        cursor: item.statusrumah !== 'Tidak Berpenghuni' ? "pointer" : "not-allowed", // Ubah cursor jika disabled
+                        color: item.statusrumah !== 'Tidak Berpenghuni' ? "#007bff" : "#d6d6d6", // Ubah warna jika disabled
+                        opacity: item.statusrumah === 'Tidak Berpenghuni' ? 0.5 : 1 // Ubah opacity jika disabled
+                      }}
+                    />
         </td>
         <td>
                 <FaEye style={{ cursor: "pointer" }} onClick={() => handleFotoClick(item.id)} />
@@ -680,7 +829,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
                             <p>Titik Koordinat Rumah: {item.titikKoordinatRumah}</p>
                             <p>Manual Titik Koordinat Rumah: {item.manualTitikKoordinatRumah}</p>
                             <p>Tanggal Pendataan: {item.tanggalPendataan}</p>
-                            <p>Nama Surveyor: {item.surveyor?.username || "Data tidak tersedia"}</p>
+                            <p>Nama Surveyor: {item.Admin?.username || "Data tidak tersedia"}</p>
                             <p>Skor: {item.score}</p>
                             <p>Kategori: {item.kategori}</p>
                           </div>
@@ -770,7 +919,8 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
               <Label for="statusrumah">Status Rumah</Label>
               <Input type="select" name="sumberAirMinum" id="sumberAirMinum" value={selectedItem.sumberAirMinum} onChange={handleInputChange}>
                 <option value="">Pilih</option>
-                <option value="kosong">Kosong</option>
+                {/* <option value="kosong">Kosong</option> */}
+                <option value="Tidak Berpenghuni">Tidak Berpenghuni</option>
                 <option value="Berpenghuni">Berpenghuni</option>
               </Input>
               {errors.sumberAirMinum && <div className="error-message">{errors.sumberAirMinum}</div>}

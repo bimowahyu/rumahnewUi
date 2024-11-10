@@ -3,10 +3,14 @@ import { Link } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // Carousel CSS
 import "./Home.css"; // Custom styling
+import { NavbarDasboard } from "../map/NavbarDasboard";
 
 function Home() {
   return (
+    <div>
+       <NavbarDasboard />
     <div className="home-container">
+     
       {/* Carousel */}
       <div className="home-carousel">
         <Carousel showThumbs={false} infiniteLoop autoPlay>
@@ -53,6 +57,7 @@ function Home() {
           <i className="home-icon">🔑</i> Login
         </Link>
       </div>
+    </div>
     </div>
   );
 }

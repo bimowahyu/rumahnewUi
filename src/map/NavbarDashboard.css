@@ -1,0 +1,33 @@
+/* NavBar.css */
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #003366; /* Warna latar belakang */
+  }
+  
+  .navbar-logo {
+    margin-right: auto;
+  }
+  
+  .navbar-logo-image {
+    height: 50px; /* Sesuaikan ukuran logo */
+    cursor: pointer;
+  }
+  
+  .navbar-links {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .navbar-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  .navbar-link:hover {
+    color: #ffcc00; /* Warna saat dihover */
+  }
+  

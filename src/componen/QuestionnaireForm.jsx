@@ -234,8 +234,17 @@ const QuestionnaireForm = () => {
     }
 
     // Validasi untuk Tanggal Pendataan
-    if (formData.tanggalPendataan && new Date(formData.tanggalPendataan) > new Date()) {
-      newErrors.tanggalPendataan = "Tanggal Pendataan tidak boleh lebih dari tanggal hari ini";
+    if (formData.tanggalPendataan) {
+      const tanggalPendataan = new Date(formData.tanggalPendataan);
+      const hariIni = new Date();
+  
+      // Hapus waktu dari hari ini untuk perbandingan tanggal saja
+      hariIni.setHours(0, 0, 0, 0);
+      tanggalPendataan.setHours(0, 0, 0, 0);
+  
+      if (tanggalPendataan > hariIni) {
+        newErrors.tanggalPendataan = "Tanggal Pendataan tidak boleh lebih dari tanggal hari ini";
+      }
     }
 
     setErrors(newErrors);
@@ -288,7 +297,7 @@ const QuestionnaireForm = () => {
     }
   
     // Jika status rumah adalah "kosong", isi field tertentu dengan "-"
-    if (name === "statusrumah" && value === "kosong") {
+    if (name === "statusrumah" && value === "Tidak Berpenghuni") {
       setFormData((prevData) => ({
         ...prevData,
         usia: "0",
@@ -347,7 +356,7 @@ const QuestionnaireForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted");
+    console.log(errorMessage);
 
     // Validasi form
     if (!validateForm()) {
@@ -517,7 +526,8 @@ const QuestionnaireForm = () => {
               <Label for="statusrumah">Status Rumah</Label>
               <Input type="select" name="statusrumah" id="statusrumah" value={formData.statusrumah} onChange={handleChange}>
                 <option value="">Pilih</option>
-                <option value="kosong">Kosong</option>
+                {/* <option value="kosong">Kosong</option> */}
+                <option value="Tidak Berpenghuni">Tidak Berpenghuni</option>
                 <option value="Berpenghuni">Berpenghuni</option>
                 
               </Input>
@@ -526,7 +536,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="nomorUrut">1. Nomor Data</Label>
-              <Input type="number" name="nomorUrut" id="nomorUrut" value={formData.nomorUrut || ""} onChange={handleChange} className="input-center" />
+              <Input type="number" name="nomorUrut" id="nomorUrut" value={formData.nomorUrut || ""} onChange={handleChange} 
+              className="input-center" />
               {errors.nomorUrut && <div className="error-message">{errors.nomorUrut}</div>}
             </FormGroup>
 
@@ -544,13 +555,17 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="usia">4. Usia (Tahun)</Label>
-              <Input type="number" name="usia" id="usia" value={formData.usia} onChange={handleChange} className="input-center" />
+              <Input type="number" name="usia" id="usia" value={formData.usia} onChange={handleChange} 
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}
+              className="input-center" />
               {errors.usia && <div className="error-message">{errors.usia}</div>}
             </FormGroup>
 
             <FormGroup>
               <Label for="jenisKelamin">5. Jenis Kelamin</Label>
-              <Input type="select" name="jenisKelamin" id="jenisKelamin" value={formData.jenisKelamin} onChange={handleChange}>
+              <Input type="select" name="jenisKelamin" id="jenisKelamin" value={formData.jenisKelamin}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}
+              onChange={handleChange}>
                 <option value="">Pilih</option>
                 <option value="Laki-laki">Laki-laki</option>
                 <option value="Perempuan">Perempuan</option>
@@ -560,19 +575,24 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="nomorKK">6. Nomor KK</Label>
-              <Input type="text" name="nomorKK" id="nomorKK" value={formData.nomorKK || ""} onChange={handleChange} className={`input-center ${errors.nomorKK ? "is-invalid" : ""}`} />
+              <Input type="text" name="nomorKK" id="nomorKK" value={formData.nomorKK || ""} onChange={handleChange} 
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}
+              className={`input-center ${errors.nomorKK ? "is-invalid" : ""}`} />
               {errors.nomorKK && <div className="invalid-feedback">{errors.nomorKK}</div>}
             </FormGroup>
 
             <FormGroup>
               <Label for="nomorKTP">7. Nomor KTP</Label>
-              <Input type="text" name="nomorKTP" id="nomorKTP" value={formData.nomorKTP || ""} onChange={handleChange} className={`input-center ${errors.nomorKTP ? "is-invalid" : ""}`} />
+              <Input type="text" name="nomorKTP" id="nomorKTP" value={formData.nomorKTP || ""} onChange={handleChange} 
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}
+              className={`input-center ${errors.nomorKTP ? "is-invalid" : ""}`} />
               {errors.nomorKTP && <div className="invalid-feedback">{errors.nomorKTP}</div>}
             </FormGroup>
 
             <FormGroup>
               <Label for="asalKTP">8. Asal KTP</Label>
-              <Input type="select" name="asalKTP" id="asalKTP" value={formData.asalKTP} onChange={handleChange}>
+              <Input type="select" name="asalKTP" id="asalKTP" value={formData.asalKTP} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="KSB">KSB</option>
                 <option value="Luar KSB">Luar KSB</option>
@@ -582,13 +602,17 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="jumlahKK">9. Jumlah KK Dalam Rumah</Label>
-              <Input type="number" name="jumlahKK" id="jumlahKK" value={formData.jumlahKK || ""} onChange={handleChange} className="input-center" />
+              <Input type="number" name="jumlahKK" id="jumlahKK" value={formData.jumlahKK || ""} onChange={handleChange} 
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}
+              className="input-center" />
               {errors.jumlahKK && <div className="error-message">{errors.jumlahKK}</div>}
             </FormGroup>
 
             <FormGroup>
               <Label for="jumlahPenghuni">10. Jumlah Penghuni</Label>
-              <Input type="number" name="jumlahPenghuni" id="jumlahPenghuni" value={formData.jumlahPenghuni || ""} onChange={handleChange} className="input-center" />
+              <Input type="number" name="jumlahPenghuni" id="jumlahPenghuni" value={formData.jumlahPenghuni || ""} onChange={handleChange} 
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}
+              className="input-center" />
               {errors.jumlahPenghuni && <div className="error-message">{errors.jumlahPenghuni}</div>}
             </FormGroup>
 
@@ -629,7 +653,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="pendidikanTerakhir">14. Pendidikan Terakhir</Label>
-              <Input type="select" name="pendidikanTerakhir" id="pendidikanTerakhir" value={formData.pendidikanTerakhir} onChange={handleChange}>
+              <Input type="select" name="pendidikanTerakhir" id="pendidikanTerakhir" value={formData.pendidikanTerakhir} 
+              onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Tidak Punya Ijazah">Tidak Punya Ijazah</option>
                 <option value="SD/Sederajat">SD/Sederajat</option>
@@ -647,7 +672,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="pekerjaan">15. Pekerjaan</Label>
-              <Input type="select" name="pekerjaan" id="pekerjaan" value={formData.pekerjaan} onChange={handleChange}>
+              <Input type="select" name="pekerjaan" id="pekerjaan" value={formData.pekerjaan} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Tidak Bekerja">Tidak Bekerja</option>
                 <option value="Pensiunan">Pensiunan</option>
@@ -672,7 +698,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="fungsiBangunan">16. Fungsi Bangunan</Label>
-              <Input type="select" name="fungsiBangunan" id="fungsiBangunan" value={formData.fungsiBangunan} onChange={handleChange}>
+              <Input type="select" name="fungsiBangunan" id="fungsiBangunan" value={formData.fungsiBangunan} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Rumah Tinggal/Hunian">Rumah Tinggal/Hunian</option>
                 <option value="Rumah Toko (RUKO)">Rumah Toko (RUKO)</option>
@@ -682,7 +709,9 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="penghasilan">17. Penghasilan/Bulan</Label>
-              <Input type="select" name="penghasilan" id="penghasilan" value={formData.penghasilan} onChange={handleChange}>
+              <Input type="select" name="penghasilan" id="penghasilan" value={formData.penghasilan} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}
+              >
                 <option value="">Pilih</option>
                 <option value="4300000">Rp. 4.300.000</option>
                 <option value="4000000">Rp. 4.000.000</option>
@@ -704,7 +733,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="statusKepemilikanRumah">18. Status Kepemilikan Rumah</Label>
-              <Input type="select" name="statusKepemilikanRumah" id="statusKepemilikanRumah" value={formData.statusKepemilikanRumah} onChange={handleChange}>
+              <Input type="select" name="statusKepemilikanRumah" id="statusKepemilikanRumah" value={formData.statusKepemilikanRumah} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Milik Sendiri">Milik Sendiri</option>
                 <option value="Bukan Milik Sendiri">Bukan Milik Sendiri</option>
@@ -715,7 +745,9 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="asetRumahDiTempatLain">19. Aset Rumah di Tempat lain</Label>
-              <Input type="select" name="asetRumahDiTempatLain" id="asetRumahDiTempatLain" value={formData.asetRumahDiTempatLain} onChange={handleChange}>
+              <Input type="select" name="asetRumahDiTempatLain" id="asetRumahDiTempatLain" value={formData.asetRumahDiTempatLain} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}
+              >
                 <option value="">Pilih</option>
                 <option value="Ada">Ada</option>
                 <option value="Tidak Ada">Tidak Ada</option>
@@ -725,7 +757,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="statusKepemilikanTanah">20. Status Kepemilikan Tanah</Label>
-              <Input type="select" name="statusKepemilikanTanah" id="statusKepemilikanTanah" value={formData.statusKepemilikanTanah} onChange={handleChange}>
+              <Input type="select" name="statusKepemilikanTanah" id="statusKepemilikanTanah" value={formData.statusKepemilikanTanah} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Milik Sendiri">Milik Sendiri</option>
                 <option value="Bukan Milik Sendiri">Bukan Milik Sendiri</option>
@@ -736,7 +769,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="asetTanahDiTempatLain">21. Aset Tanah di Tempat Lain</Label>
-              <Input type="select" name="asetTanahDiTempatLain" id="asetTanahDiTempatLain" value={formData.asetTanahDiTempatLain} onChange={handleChange}>
+              <Input type="select" name="asetTanahDiTempatLain" id="asetTanahDiTempatLain" value={formData.asetTanahDiTempatLain} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Ada">Ada</option>
                 <option value="Tidak Ada">Tidak Ada</option>
@@ -746,7 +780,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="sumberPenerangan">22. Sumber Penerangan</Label>
-              <Input type="select" name="sumberPenerangan" id="sumberPenerangan" value={formData.sumberPenerangan} onChange={handleChange}>
+              <Input type="select" name="sumberPenerangan" id="sumberPenerangan" value={formData.sumberPenerangan} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="PLN dengan Meteran">PLN dengan Meteran</option>
                 <option value="PLN tanpa Meteran">PLN tanpa Meteran</option>
@@ -758,7 +793,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="dayaListrik">23. Daya Listrik</Label>
-              <Input type="select" name="dayaListrik" id="dayaListrik" value={formData.dayaListrik} onChange={handleChange}>
+              <Input type="select" name="dayaListrik" id="dayaListrik" value={formData.dayaListrik} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="450">450 VA</option>
                 <option value="900">900 VA</option>
@@ -771,7 +807,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="bantuanPerumahan">24. Bantuan Perumahan</Label>
-              <Input type="select" name="bantuanPerumahan" id="bantuanPerumahan" value={formData.bantuanPerumahan} onChange={handleChange}>
+              <Input type="select" name="bantuanPerumahan" id="bantuanPerumahan" value={formData.bantuanPerumahan} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Pernah, >10 Tahun">Ya. &gt;10 Tahun</option>
                 <option value="Pernah, <10 Tahun">Ya. &lt;10 Tahun</option>
@@ -782,7 +819,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="modelRumah">25. Model Rumah</Label>
-              <Input type="select" name="modelRumah" id="modelRumah" value={formData.modelRumah} onChange={handleChange}>
+              <Input type="select" name="modelRumah" id="modelRumah" value={formData.modelRumah} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Permanen">Permanen</option>
                 <option value="Semi Permanen">Semi Permanen</option>
@@ -793,7 +831,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="pondasi">26. Pondasi</Label>
-              <Input type="select" name="pondasi" id="pondasi" value={formData.pondasi} onChange={handleChange}>
+              <Input type="select" name="pondasi" id="pondasi" value={formData.pondasi} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Layak">Layak</option>
                 <option value="Tidak Layak">Tidak Layak</option>
@@ -803,7 +842,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="kolom">27. Kolom</Label>
-              <Input type="select" name="kolom" id="kolom" value={formData.kolom} onChange={handleChange}>
+              <Input type="select" name="kolom" id="kolom" value={formData.kolom} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Layak">Layak</option>
                 <option value="Tidak Layak">Tidak Layak</option>
@@ -813,7 +853,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="rangkaAtap">28. Rangka Atap</Label>
-              <Input type="select" name="rangkaAtap" id="rangkaAtap" value={formData.rangkaAtap} onChange={handleChange}>
+              <Input type="select" name="rangkaAtap" id="rangkaAtap" value={formData.rangkaAtap} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Layak">Layak</option>
                 <option value="Tidak Layak">Tidak Layak</option>
@@ -823,7 +864,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="plafon">29. Plafon</Label>
-              <Input type="select" name="plafon" id="plafon" value={formData.plafon} onChange={handleChange}>
+              <Input type="select" name="plafon" id="plafon" value={formData.plafon} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Layak">Layak</option>
                 <option value="Tidak Layak">Tidak Layak</option>
@@ -833,7 +875,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="balok">30. Balok</Label>
-              <Input type="select" name="balok" id="balok" value={formData.balok} onChange={handleChange}>
+              <Input type="select" name="balok" id="balok" value={formData.balok} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Layak">Layak</option>
                 <option value="Tidak Layak">Tidak Layak</option>
@@ -843,7 +886,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="sloof">31. Sloof</Label>
-              <Input type="select" name="sloof" id="sloof" value={formData.sloof} onChange={handleChange}>
+              <Input type="select" name="sloof" id="sloof" value={formData.sloof} onChange={handleChange}
+               disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Layak">Layak</option>
                 <option value="Tidak Layak">Tidak Layak</option>
@@ -853,7 +897,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="pintuJendelaKonsen">32. Pintu, Jendela, Konsen</Label>
-              <Input type="select" name="pintuJendelaKonsen" id="pintuJendelaKonsen" value={formData.pintuJendelaKonsen} onChange={handleChange}>
+              <Input type="select" name="pintuJendelaKonsen" id="pintuJendelaKonsen" value={formData.pintuJendelaKonsen}
+               onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Layak">Layak</option>
                 <option value="Tidak Layak">Tidak Layak</option>
@@ -863,7 +908,7 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="ventilasi">33. Ventilasi</Label>
-              <Input type="select" name="ventilasi" id="ventilasi" value={formData.ventilasi} onChange={handleChange}>
+              <Input type="select" name="ventilasi" id="ventilasi" value={formData.ventilasi} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Layak">Layak</option>
                 <option value="Tidak Layak">Tidak Layak</option>
@@ -873,7 +918,7 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="materialLantaiTerluas">34. Material Lantai Terluas</Label>
-              <Input type="select" name="materialLantaiTerluas" id="materialLantaiTerluas" value={formData.materialLantaiTerluas} onChange={handleChange}>
+              <Input type="select" name="materialLantaiTerluas" id="materialLantaiTerluas" value={formData.materialLantaiTerluas} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Marmer/Granit">Marmer/Granit</option>
                 <option value="Keramik">Keramik</option>
@@ -888,7 +933,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="kondisiLantai">35. Kondisi Lantai</Label>
-              <Input type="select" name="kondisiLantai" id="kondisiLantai" value={formData.kondisiLantai} onChange={handleChange}>
+              <Input type="select" name="kondisiLantai" id="kondisiLantai" value={formData.kondisiLantai}
+               onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Layak">Layak</option>
                 <option value="Tidak Layak">Tidak Layak</option>
@@ -898,7 +944,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="materialDindingTerluas">36. Material Dinding Terluas</Label>
-              <Input type="select" name="materialDindingTerluas" id="materialDindingTerluas" value={formData.materialDindingTerluas} onChange={handleChange}>
+              <Input type="select" name="materialDindingTerluas" id="materialDindingTerluas" value={formData.materialDindingTerluas} 
+              onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Tembok Plesteran">Tembok Plesteran</option>
                 <option value="Tembok Belum Plesteran">Tembok Belum Plesteran</option>
@@ -913,7 +960,7 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="kondisiDinding">37. Kondisi Dinding</Label>
-              <Input type="select" name="kondisiDinding" id="kondisiDinding" value={formData.kondisiDinding} onChange={handleChange}>
+              <Input type="select" name="kondisiDinding" id="kondisiDinding" value={formData.kondisiDinding} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Layak">Layak</option>
                 <option value="Tidak Layak">Tidak Layak</option>
@@ -923,7 +970,7 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="materialPenutupAtapTerluas">38. Material Penutup Atap Terluas</Label>
-              <Input type="select" name="materialPenutupAtapTerluas" id="materialPenutupAtapTerluas" value={formData.materialPenutupAtapTerluas} onChange={handleChange}>
+              <Input type="select" name="materialPenutupAtapTerluas" id="materialPenutupAtapTerluas" value={formData.materialPenutupAtapTerluas} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Genteng Kramik">Genteng Kramik</option>
                 <option value="Genteng Biasa">Genteng Biasa</option>
@@ -939,7 +986,7 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="kondisiPenutupAtap">39. Kondisi Penutup Atap</Label>
-              <Input type="select" name="kondisiPenutupAtap" id="kondisiPenutupAtap" value={formData.kondisiPenutupAtap} onChange={handleChange}>
+              <Input type="select" name="kondisiPenutupAtap" id="kondisiPenutupAtap" value={formData.kondisiPenutupAtap} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Layak">Layak</option>
                 <option value="Tidak Layak">Tidak Layak</option>
@@ -949,19 +996,19 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="luasRumah">40. Luas Rumah (m²)</Label>
-              <Input type="number" name="luasRumah" id="luasRumah" value={formData.luasRumah} onChange={handleChange} className="input-center" />
+              <Input type="number" name="luasRumah" id="luasRumah" value={formData.luasRumah} onChange={handleChange} className="input-center" disabled={formData.statusrumah === "Tidak Berpenghuni"} />
               {errors.luasRumah && <div className="error-message">{errors.luasRumah}</div>}
             </FormGroup>
 
             <FormGroup>
               <Label for="luasTanah">41. Luas Tanah (m²)</Label>
-              <Input type="number" name="luasTanah" id="luasTanah" value={formData.luasTanah} onChange={handleChange} className="input-center" />
+              <Input type="number" name="luasTanah" id="luasTanah" value={formData.luasTanah} onChange={handleChange} className="input-center" disabled={formData.statusrumah === "Tidak Berpenghuni"} />
               {errors.luasTanah && <div className="error-message">{errors.luasTanah}</div>}
             </FormGroup>
 
             <FormGroup>
               <Label for="buanganAirLimbahRumahTangga">42. Buangan Air Limbah Rumah Tangga</Label>
-              <Input type="select" name="buanganAirLimbahRumahTangga" id="buanganAirLimbahRumahTangga" value={formData.buanganAirLimbahRumahTangga} onChange={handleChange}>
+              <Input type="select" name="buanganAirLimbahRumahTangga" id="buanganAirLimbahRumahTangga" value={formData.buanganAirLimbahRumahTangga} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Jaringan Perpipaan">Jaringan Perpipaan</option>
                 <option value="Diresapkan">Diresapkan</option>
@@ -972,7 +1019,7 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="saranaPengelolaanLimbahCair">43. Sarana Pengelolaan Limbah Cair Rumah Tangga</Label>
-              <Input type="select" name="saranaPengelolaanLimbahCair" id="saranaPengelolaanLimbahCair" value={formData.saranaPengelolaanLimbahCair} onChange={handleChange}>
+              <Input type="select" name="saranaPengelolaanLimbahCair" id="saranaPengelolaanLimbahCair" value={formData.saranaPengelolaanLimbahCair} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Berfungsi Baik">Berfungsi Baik</option>
                 <option value="Tidak Berfungsi">Tidak Berfungsi</option>
@@ -983,7 +1030,7 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="pemiliharaanSaranaPengelolaanLimbah">44. Pemeliharaan Sarana Pengelolaan Limbah Cair Rumah Tangga</Label>
-              <Input type="select" name="pemiliharaanSaranaPengelolaanLimbah" id="pemiliharaanSaranaPengelolaanLimbah" value={formData.pemiliharaanSaranaPengelolaanLimbah} onChange={handleChange}>
+              <Input type="select" name="pemiliharaanSaranaPengelolaanLimbah" id="pemiliharaanSaranaPengelolaanLimbah" value={formData.pemiliharaanSaranaPengelolaanLimbah} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Terpelihara">Terpelihara</option>
                 <option value="Tidak Terpelihara">Tidak Terpelihara</option>
@@ -993,7 +1040,7 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="jenisTempatPembuanganAirTinja">45. Jenis Tempat Pembuangan Air Tinja</Label>
-              <Input type="select" name="jenisTempatPembuanganAirTinja" id="jenisTempatPembuanganAirTinja" value={formData.jenisTempatPembuanganAirTinja} onChange={handleChange}>
+              <Input type="select" name="jenisTempatPembuanganAirTinja" id="jenisTempatPembuanganAirTinja" value={formData.jenisTempatPembuanganAirTinja} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Tangki Septik">Tangki Septik</option>
                 <option value="Kolam/Sawah/Sungai">Kolam/Sawah/Sungai</option>
@@ -1006,7 +1053,7 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="kepemilikanKamarMandiDanJamban">46. Kepemilikan Kamar Mandi Dan Jamban</Label>
-              <Input type="select" name="kepemilikanKamarMandiDanJamban" id="kepemilikanKamarMandiDanJamban" value={formData.kepemilikanKamarMandiDanJamban} onChange={handleChange}>
+              <Input type="select" name="kepemilikanKamarMandiDanJamban" id="kepemilikanKamarMandiDanJamban" value={formData.kepemilikanKamarMandiDanJamban} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Sendiri">Sendiri</option>
                 <option value="Bersama/MCK Komunal">Bersama/MCK Komunal</option>
@@ -1017,13 +1064,13 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="jumlahJamban">47. Jumlah Jamban</Label>
-              <Input type="number" name="jumlahJamban" id="jumlahJamban" value={formData.jumlahJamban} onChange={handleChange} className="input-center" />
+              <Input type="number" name="jumlahJamban" id="jumlahJamban" value={formData.jumlahJamban} onChange={handleChange} className="input-center"  disabled={formData.statusrumah === "Tidak Berpenghuni"}/>
               {errors.jumlahJamban && <div className="error-message">{errors.jumlahJamban}</div>}
             </FormGroup>
 
             <FormGroup>
               <Label for="jenisKloset">48. Jenis Kloset</Label>
-              <Input type="select" name="jenisKloset" id="jenisKloset" value={formData.jenisKloset} onChange={handleChange}>
+              <Input type="select" name="jenisKloset" id="jenisKloset" value={formData.jenisKloset} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Leher Angsa">Leher Angsa</option>
                 <option value="Cubluk/Cemplung">Cubluk/Cemplung</option>
@@ -1034,7 +1081,7 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="jenisTangkiSeptik">49. Jenis Tangki Septik</Label>
-              <Input type="select" name="jenisTangkiSeptik" id="jenisTangkiSeptik" value={formData.jenisTangkiSeptik} onChange={handleChange}>
+              <Input type="select" name="jenisTangkiSeptik" id="jenisTangkiSeptik" value={formData.jenisTangkiSeptik} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Pabrikasi">Pabrikasi</option>
                 <option value="Konvensional">Konvensional</option>
@@ -1044,7 +1091,7 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="materialTangkiSeptik">50. Material Tangki Septik</Label>
-              <Input type="select" name="materialTangkiSeptik" id="materialTangkiSeptik" value={formData.materialTangkiSeptik} onChange={handleChange}>
+              <Input type="select" name="materialTangkiSeptik" id="materialTangkiSeptik" value={formData.materialTangkiSeptik} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Fiber">Fiber</option>
                 <option value="Dinding Beton">Dinding Beton</option>
@@ -1056,7 +1103,7 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="alasTangkiSeptik">51. Alas Tangki Septik</Label>
-              <Input type="select" name="alasTangkiSeptik" id="alasTangkiSeptik" value={formData.alasTangkiSeptik} onChange={handleChange}>
+              <Input type="select" name="alasTangkiSeptik" id="alasTangkiSeptik" value={formData.alasTangkiSeptik} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Kedap">Kedap</option>
                 <option value="Tidak Kedap">Tidak Kedap</option>
@@ -1066,7 +1113,7 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="lubangPenyedotan">52. Lubang Penyedotan</Label>
-              <Input type="select" name="lubangPenyedotan" id="lubangPenyedotan" value={formData.lubangPenyedotan} onChange={handleChange}>
+              <Input type="select" name="lubangPenyedotan" id="lubangPenyedotan" value={formData.lubangPenyedotan} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Ada">Ada</option>
                 <option value="Tidak Ada">Tidak Ada</option>
@@ -1076,7 +1123,7 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="posisiTangkiSeptik">53. Posisi Tangki Septik</Label>
-              <Input type="select" name="posisiTangkiSeptik" id="posisiTangkiSeptik" value={formData.posisiTangkiSeptik} onChange={handleChange}>
+              <Input type="select" name="posisiTangkiSeptik" id="posisiTangkiSeptik" value={formData.posisiTangkiSeptik} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="Dalam Rumah">Dalam Rumah</option>
                 <option value="Luar Rumah">Luar Rumah</option>
@@ -1086,7 +1133,7 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="jarakTangkiSeptikDenganSumberAir">54. Jarak Tangki Septik Dengan Sumber Air</Label>
-              <Input type="select" name="jarakTangkiSeptikDenganSumberAir" id="jarakTangkiSeptikDenganSumberAir" value={formData.jarakTangkiSeptikDenganSumberAir} onChange={handleChange}>
+              <Input type="select" name="jarakTangkiSeptikDenganSumberAir" id="jarakTangkiSeptikDenganSumberAir" value={formData.jarakTangkiSeptikDenganSumberAir} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="9">&lt; 10 meter</option>
                 <option value="11">&gt; 10 meter</option>
@@ -1096,7 +1143,7 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="sumberAirMinum">55. Sumber Air Minum</Label>
-              <Input type="select" name="sumberAirMinum" id="sumberAirMinum" value={formData.sumberAirMinum} onChange={handleChange}>
+              <Input type="select" name="sumberAirMinum" id="sumberAirMinum" value={formData.sumberAirMinum} onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
                 <option value="PDAM">PDAM</option>
                 <option value="SPAMDES">SPAMDES</option>
