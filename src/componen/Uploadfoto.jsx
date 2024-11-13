@@ -16,7 +16,9 @@ export const UploadFoto = () => {
   useEffect(() => {
     const fetchQuestionnaires = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_URL}/getquestionnaires`);
+        const response = await axios.get(`${process.env.REACT_APP_URL}/getquestionnaires`,{
+          withCredentials:true
+        });
         setQuestionnaires(response.data);
       } catch (error) {
         console.error('Error fetching questionnaire data', error);

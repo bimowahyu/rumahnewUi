@@ -4,7 +4,7 @@ import './DashboardWidget.css';
 function DashboardWidget({ title, content }) {
   return (
     <div className="dashboard-widget">
-      <h3>{title}</h3>
+      <p>{title}</p>
       <div className="widget-content">
         {content}
       </div>

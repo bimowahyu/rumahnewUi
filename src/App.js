@@ -13,6 +13,9 @@ import { QuestionnaireFormPages } from "./pages/QuestionnaireFormPages";
 import { AdminDashboardPages } from "./pages/AdminDashboardPages";
 import { SurveyorDashboardPages } from "./pages/SurveyorDashboardPages";
 import { UploadFotoPages } from "./pages/UploadFotoPages";
+import { UploadPdfPages } from "./pages/UploadPdfPages";
+import ResetPassword from "./componen/ResetPassword";
+import UserList from "./componen/UserList";
 
 
 function App () {
@@ -34,6 +37,9 @@ return (
         <Route path="/recap" element={<DataRecapPages />} />
         <Route path="/questionnaire/:id" element={<QuestionnaireFormPages />} />
         <Route path="/upload" element={<UploadFotoPages />} />
+        <Route path="/uploadpdf" element={<UploadPdfPages />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/userlist" element={<UserList />}/>
   </Routes>
   <Footer />
   </BrowserRouter>

@@ -1,21 +1,47 @@
 /* src/components/DashboardWidget.css */
 
 .dashboard-widget {
-    background-color: white;
-    padding: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 1px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 500px; /* Membatasi lebar widget */
+  margin: 0 auto; /* Memusatkan di tengah layar */
+}
+
+.dashboard-widget-title {
+  font-size: 1rem;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem; /* Adjust the margin-bottom value as needed */
+}
+.dashboard-widget-content {
+  font-size: 0.2rem;
+  color: #666;
+}
+.quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 5px; /* Mengurangi jarak di atas tombol */
   }
-  
+  @media (max-width: 768px) {
+    .dashboard-widget {
+      max-width: 100%; /* Membuat widget memenuhi lebar layar di mobile */
+    }
+  }
   .dashboard-widget-title {
-    font-size: 1.2rem;
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
-  }
-  
-  .dashboard-widget-content {
     font-size: 1rem;
-    color: #666;
+    color: var(--primary-color);
+    margin-bottom: 0; /* Menghilangkan jarak bawah dari judul */
   }
   
+  .logo-container {
+    margin-top: 1rem; /* Adjust the margin-top value as needed */
+  }
+  
+  .login-logo {
+    width: 150px;
+    height: auto;
+  }

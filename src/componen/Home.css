@@ -3,18 +3,19 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: linear-gradient(to right, #3a1c71, #d76d77, #ffaf7b);
+    background: linear-gradient(135deg, #1abc9c, #3498db);
+    /* background-color:darkslategrey; */
     min-height: 100vh;
     color: #ffffff;
     font-family: "Poppins", sans-serif;
-    padding: 20px;
+    /* padding: 20px; */
   }
   
   /* Carousel styling for a sleeker look */
   .home-carousel {
     position: relative;
     width: 100%;
-    max-height: 350px;
+    max-height: 450px;
     overflow: hidden;
     border-radius: 10px;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
@@ -158,3 +159,51 @@
     }
   }
   
+  /* Ensure chart is responsive and visible */
+.dashboard-widget-wrapper {
+  flex: 1 1 45%;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  font-family: 'Arial', sans-serif;
+  height: auto; /* Ensure there's no height restriction */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column; /* Stack widgets vertically on smaller screens */
+    align-items: center;
+    width: auto;
+  }
+
+  .dashboard-widget-wrapper {
+    max-width: 90%; /* Allow widgets to take up more space */
+    margin-bottom: 20px;
+  }
+
+  /* Ensure chart inside the widget scales appropriately */
+  .dashboard-widget-wrapper .chart-container {
+    width: 100%; /* Make chart take full width of the container */
+    height: auto; /* Adjust chart height for mobile view */
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-widget-wrapper {
+    max-width: 100%; /* Full width on very small screens */
+  }
+
+  /* Adjust the chart height and responsiveness */
+  .dashboard-widget-wrapper .chart-container {
+    height: 250px; /* Make chart smaller if needed on very small screens */
+  }
+}
+
+/* Optional: Additional chart style for better rendering */
+.chart-container canvas {
+  width: 100% !important; /* Ensure the chart canvas scales to the container */
+  height: 100% !important; /* Ensure the height of the chart scales accordingly */
+}

@@ -9,14 +9,14 @@ import "./QuestionnaireForm.css";
 const QuestionnaireForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
+  const [isBacklog, setIsBacklog] = useState(false);
   // State untuk data formulir
   const [formData, setFormData] = useState({
     statusrumah: "",
     nomorUrut: "",
     nomorRumahPadaPeta: "",
     namaLengkapKK: "",
-    usia: "",
+    tanggallahir: "",
     jenisKelamin: "",
     nomorKK: "",
     nomorKTP: "",
@@ -150,13 +150,11 @@ const QuestionnaireForm = () => {
   // Validasi form
   const validateForm = () => {
     const newErrors = {};
-
     const requiredFields = [
       "statusrumah",
       "nomorUrut",
       "nomorRumahPadaPeta",
       "namaLengkapKK",
-      "usia",
       "jenisKelamin",
       "nomorKK",
       "nomorKTP",
@@ -237,8 +235,6 @@ const QuestionnaireForm = () => {
     if (formData.tanggalPendataan) {
       const tanggalPendataan = new Date(formData.tanggalPendataan);
       const hariIni = new Date();
-  
-      // Hapus waktu dari hari ini untuk perbandingan tanggal saja
       hariIni.setHours(0, 0, 0, 0);
       tanggalPendataan.setHours(0, 0, 0, 0);
   
@@ -248,8 +244,16 @@ const QuestionnaireForm = () => {
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+
+    // Jika ada error, tampilkan semua dalam satu alert
+    if (Object.keys(newErrors).length > 0) {
+      const errorMessages = Object.values(newErrors).join("\n");
+      window.alert(`Harap perbaiki kesalahan berikut:\n\n${errorMessages}`);
+      return false;
+    }
+
+    return true;
+};
 
   // Fungsi untuk menangani perubahan input
   // const handleChange = (e) => {
@@ -269,6 +273,11 @@ const QuestionnaireForm = () => {
       ...(name === "manualTitikKoordinatRumah" ? { titikKoordinatRumah: "" } : {}),
       ...(name === "titikKoordinatRumah" ? { manualTitikKoordinatRumah: "" } : {}),
     }));
+    if (name === "jumlahKK" && parseInt(value) > 1) {
+      setIsBacklog(true);
+    } else if (name === "jumlahKK" && parseInt(value) <= 1) {
+      setIsBacklog(false);
+    }
   
   
     // Validasi untuk nomorKK dan nomorKTP agar 16 digit
@@ -300,7 +309,7 @@ const QuestionnaireForm = () => {
     if (name === "statusrumah" && value === "Tidak Berpenghuni") {
       setFormData((prevData) => ({
         ...prevData,
-        usia: "0",
+        tanggallahir: null,
         jenisKelamin: "0",
         nomorKK: "0000000000000000",
         nomorKTP: "0000000000000000",
@@ -376,12 +385,12 @@ const QuestionnaireForm = () => {
     try {
       // Tentukan metode berdasarkan apakah `id` ada atau tidak
       const method = id ? "PATCH" : "POST";
-      const BASE_URL = process.env.REACT_APP_URL
+      const BASE_URL = process.env.REACT_APP_URL;
       const url = id ? `${BASE_URL}/updatequestionnaires/${id}` : `${BASE_URL}/createquestionnaires`;
-      
+
       // Kirim data tanpa `kategori` dan `score`
       const { kategori, score, ...dataToSend } = formData;
-    
+
       const response = await axios({
         method,
         url,
@@ -391,19 +400,19 @@ const QuestionnaireForm = () => {
         },
         withCredentials: true, // Pastikan session cookie terkirim
       });
-    
+
       if (response.status === 200 || response.status === 201) {
         console.log("Data berhasil dikirim:", response.data);
         setSuccessMessage("Data Berhasil Tersimpan"); // Set pesan sukses
         setModalOpen(true); // Tampilkan modal sukses
-        
-        // Reset form data setelah berhasil menyimpan, kecuali namaSurveyor
+      
+        // Reset form data setelah berhasil menyimpan
         setFormData({
-          statusrumah:"",
+          statusrumah: "",
           nomorUrut: "",
           nomorRumahPadaPeta: "",
           namaLengkapKK: "",
-          usia: "",
+          tanggallahir: "",
           jenisKelamin: "",
           nomorKK: "",
           nomorKTP: "",
@@ -462,8 +471,9 @@ const QuestionnaireForm = () => {
           kategori: "", // Reset kategori
           score: 0, // Reset score
         });
-    
+
         setErrorMessage(""); // Kosongkan pesan error
+        
       } else {
         console.error("Gagal mengirim data:", response.statusText);
         setErrorMessage("Gagal mengirim data. Silakan coba lagi.");
@@ -476,22 +486,28 @@ const QuestionnaireForm = () => {
         const detailedErrors = error.response.data.errors
           .map((err) => `Field: ${err.field}, Message: ${err.message}`)
           .join("\n");
-    
+
         setErrorMessage(`Error dari server:\n${detailedErrors}`);
       } else {
         console.error("Error mengirim data:", error.message);
         setErrorMessage("Gagal mengirim data. Silakan coba lagi.");
       }
-    
+
       // Kosongkan pesan sukses dan tampilkan modal error
       setSuccessMessage("");
       setModalOpen(true);
     }
-  }    
+  };
 
-  // Toggle modal
-  const toggleModal = () => setModalOpen(!modalOpen);
 
+  // // Toggle modal
+  // const toggleModal = () => setModalOpen(!modalOpen);
+  const toggleModal = () => {
+    setModalOpen(!modalOpen);
+    if (successMessage) {
+      navigate('/recap'); 
+    }
+  };
   // Get coordinates using Geolocation API
   const handleGetCoordinates = () => {
     if (navigator.geolocation) {
@@ -514,14 +530,24 @@ const QuestionnaireForm = () => {
       setModalOpen(true); // Tampilkan modal error
     }
   };
+  const validateDate = (date) => {
+    const datePattern = /^(0[1-9]|[12][0-9]|3[01])[-/](0[1-9]|1[0-2])[-/]\d{4}$/;
+    return datePattern.test(date);
+};
 
   return (
     <Container>
       <Row className="justify-content-center">
-        <Col xs="12" md="10">
-        <MyNavbar />
+        <Col xs="12" md="10" className="mb-3">
+          <MyNavbar className ="navbar"/>
+        </Col>
+        <Col xs="12" md="10" ClassName="mb-3">
+        {/* <MyNavbar /> */}
           <Form onSubmit={handleSubmit}>
             <h3>Formulir Pendataan:</h3>
+            <div className="home-logo-container">
+              <img src="/images/logobaru.png" alt="Logo Aplikasi" className="home-logo"/>
+            </div>
             <FormGroup>
               <Label for="statusrumah">Status Rumah</Label>
               <Input type="select" name="statusrumah" id="statusrumah" value={formData.statusrumah} onChange={handleChange}>
@@ -554,12 +580,21 @@ const QuestionnaireForm = () => {
             </FormGroup>
 
             <FormGroup>
-              <Label for="usia">4. Usia (Tahun)</Label>
-              <Input type="number" name="usia" id="usia" value={formData.usia} onChange={handleChange} 
-               disabled={formData.statusrumah === "Tidak Berpenghuni"}
-              className="input-center" />
-              {errors.usia && <div className="error-message">{errors.usia}</div>}
-            </FormGroup>
+            <Label for="tanggallahir">4. Tanggal lahir</Label>
+            <Input
+                type="text"
+                name="tanggallahir"
+                id="tanggallahir"
+                value={formData.tanggallahir}
+                onChange={handleChange}
+                disabled={formData.statusrumah === "Tidak Berpenghuni"}
+                className="input-center"
+                placeholder="DD/MM/YYYY"
+            />
+            {errors.tanggallahir && (
+                <div className="error-message">{errors.tanggallahir}</div>
+            )}
+        </FormGroup>
 
             <FormGroup>
               <Label for="jenisKelamin">5. Jenis Kelamin</Label>
@@ -600,12 +635,32 @@ const QuestionnaireForm = () => {
               {errors.asalKTP && <div className="error-message">{errors.asalKTP}</div>}
             </FormGroup>
 
-            <FormGroup>
+            {/* <FormGroup>
               <Label for="jumlahKK">9. Jumlah KK Dalam Rumah</Label>
               <Input type="number" name="jumlahKK" id="jumlahKK" value={formData.jumlahKK || ""} onChange={handleChange} 
                disabled={formData.statusrumah === "Tidak Berpenghuni"}
               className="input-center" />
               {errors.jumlahKK && <div className="error-message">{errors.jumlahKK}</div>}
+            </FormGroup> */}
+             <FormGroup>
+              <Label for="jumlahKK">9. Jumlah KK Dalam Rumah</Label>
+              <Input
+                type="number"
+                name="jumlahKK"
+                id="jumlahKK"
+                value={formData.jumlahKK || ""}
+                onChange={handleChange}
+                disabled={formData.statusrumah === "Tidak Berpenghuni"}
+                className="input-center"
+              />
+              {errors.jumlahKK && <div className="error-message">{errors.jumlahKK}</div>}
+
+              {/* Conditionally render "Backlog" message if jumlahKK is more than 1 */}
+              {isBacklog && (
+                <div className="info-message">
+                  Rumah ini dianggap "Backlog" karena terdapat lebih dari 1 KK.
+                </div>
+              )}
             </FormGroup>
 
             <FormGroup>
@@ -810,15 +865,15 @@ const QuestionnaireForm = () => {
               <Input type="select" name="bantuanPerumahan" id="bantuanPerumahan" value={formData.bantuanPerumahan} onChange={handleChange}
                disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
-                <option value="Pernah, >10 Tahun">Ya. &gt;10 Tahun</option>
-                <option value="Pernah, <10 Tahun">Ya. &lt;10 Tahun</option>
+                <option value="Pernah, >5 Tahun">Ya. &gt;5 Tahun</option>
+                <option value="Pernah, <5 Tahun">Ya. &lt;5 Tahun</option>
                 <option value="Tidak Pernah">Tidak Pernah</option>
               </Input>
               {errors.bantuanPerumahan && <div className="error-message">{errors.bantuanPerumahan}</div>}
             </FormGroup>
 
             <FormGroup>
-              <Label for="modelRumah">25. Model Rumah</Label>
+              <Label for="modelRumah">25. Jenis Rumah</Label>
               <Input type="select" name="modelRumah" id="modelRumah" value={formData.modelRumah} onChange={handleChange}
                disabled={formData.statusrumah === "Tidak Berpenghuni"}>
                 <option value="">Pilih</option>
@@ -1194,10 +1249,10 @@ const QuestionnaireForm = () => {
               <Input type="text" name="kategori" id="kategori" value={formData.kategori} readOnly className="input-center" />
             </FormGroup> */}
 
-            <FormGroup>
+            {/* <FormGroup>
               <Label for="score">Skor</Label>
               <Input type="number" name="score" id="score" value={formData.score} readOnly className="input-center" />
-            </FormGroup>
+            </FormGroup> */}
 
             <Button className="btn-primary" type="submit">
               Simpan

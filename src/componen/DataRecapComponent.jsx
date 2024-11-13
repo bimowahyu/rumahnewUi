@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaEdit, FaEye, FaTrash,FaHome } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
+import moment from "moment/moment";
+import { useSelector } from "react-redux";
 import {
   Container,
   Row,
@@ -25,6 +27,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import MyNavbar from "../map/Navbar";
+import "./Datarecap.css"
 
 
 delete L.Icon.Default.prototype._getIconUrl;
@@ -44,6 +47,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
   const [username, setUsername] = useState("");
   const [showPhotoModal, setShowPhotoModal] = useState(false);
   const [photoUrl, setPhotoUrl] = useState('');
+  const [isBacklog, setIsBacklog] = useState(false);
   const [filters, setFilters] = useState({
     kecamatan: "",
     desaKelurahan: "",
@@ -61,6 +65,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const [userOptions, setUserOptions] = useState([]);
+  const { user } = useSelector((state) => state.authAdmin || {});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,9 +77,9 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
         if (response.status === 200) {
           const modifiedData = response.data.map(item => {
             // Jika status rumah 'kosong', hilangkan kategori
-            if (item.statusrumah === 'Tidak Berpenghuni') {
-              item.kategori = null; // Atau set kategori ke nilai default yang Anda inginkan
-            }
+            // if (item.statusrumah === 'Tidak Berpenghuni') {
+            //   item.kategori = null;
+            // }
             return item;
           });
     
@@ -123,19 +128,19 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
   
   //   fetchData();
   // }, [onStatisticsUpdate]);
-  
+  //filter rumah kosong
   const fetchData = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_URL}/getquestionnaires`, {
         withCredentials: true,
       });
-
+  
       if (response.status === 200) {
-        setData(response.data);
-        console.log("Data yang diterima:", response.data);
-
-        // If there's an onStatisticsUpdate callback, calculate and pass the statistics
-        const calculatedStatistics = calculateStatistics(response.data);
+        // const filteredData = response.data.filter(item => item.statusrumah !== 'Tidak Berpenghuni');
+        const filteredData = response.data
+        setData(filteredData);
+        console.log("Data yang diterima:", filteredData);
+        const calculatedStatistics = calculateStatistics(filteredData);
         if (onStatisticsUpdate) {
           onStatisticsUpdate(calculatedStatistics);
         }
@@ -148,6 +153,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
       setError("Terjadi kesalahan saat memuat data.");
     }
   };
+  
 
   // Call fetchData when component mounts
   useEffect(() => {
@@ -156,17 +162,18 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
 
   // Delete data function
   const deleteData = async (id) => {
+    const userConfirmed = window.confirm('Apakah Anda yakin ingin menghapus data ini?');
+    if (userConfirmed) {
     try {
       await axios.delete(`${process.env.REACT_APP_URL}/delete/${id}`, { withCredentials: true });
       alert("Data berhasil dihapus.");
-
-      // Refresh data after deletion
       fetchData();
     } catch (error) {
       console.error("Error deleting data:", error);
       alert("Gagal menghapus data. Silakan coba lagi.");
     }
-  };
+  }
+};
 
   
   useEffect(() => {
@@ -323,13 +330,32 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
   //     // (filters.jenis === "" || item.jenis === filters.jenis) &&
   //     (filters.status === "" || item.status === filters.status) 
 
+  // const filteredData = data.filter(item => {
+  //   const isKecamatanMatch = filters.kecamatan ? item.kecamatan === filters.kecamatan || filters.kecamatan === "Semua Kecamatan" : true;
+  //   const isKategoriMatch = filters.kategori ? item.kategori === filters.kategori : true;
+  //   // const isUserMatch = filters.user ? item.user === filters.user : true;
+  //   const isUserMatch = filters.user ? item.Admin?.username === filters.user : true; // Change this line
+  //   const isStatusMatch = filters.statusrumah ? item.statusrumah === filters.statusrumah : true;
+  //   return isKecamatanMatch && isKategoriMatch && isUserMatch && isStatusMatch;
+  // });
   const filteredData = data.filter(item => {
-    const isKecamatanMatch = filters.kecamatan ? item.kecamatan === filters.kecamatan || filters.kecamatan === "Semua Kecamatan" : true;
-    const isKategoriMatch = filters.kategori ? item.kategori === filters.kategori : true;
-    // const isUserMatch = filters.user ? item.user === filters.user : true;
-    const isUserMatch = filters.user ? item.Admin?.username === filters.user : true; // Change this line
-    const isStatusMatch = filters.statusrumah ? item.statusrumah === filters.statusrumah : true;
-    return isKecamatanMatch && isKategoriMatch && isUserMatch && isStatusMatch;
+    // Ambil nilai filter gabungan
+    const [kategori, statusrumah] = filters.kategoriStatusRumah
+      ? filters.kategoriStatusRumah.split(" - ")
+      : [null, null];
+  
+    const isKecamatanMatch = filters.kecamatan 
+      ? item.kecamatan === filters.kecamatan || filters.kecamatan === "Semua Kecamatan"
+      : true;
+  
+    const isKategoriMatch = kategori ? item.kategori === kategori : true;
+    const isStatusMatch = statusrumah ? item.statusrumah === statusrumah : true;
+  
+    const isUserMatch = filters.user 
+      ? item.Admin?.username === filters.user 
+      : true;
+  
+    return isKecamatanMatch && isKategoriMatch && isStatusMatch && isUserMatch;
   });
   
   // setCurrentRows(filteredData);
@@ -372,32 +398,103 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
   // };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setSelectedItem((prevData) => ({
-      ...prevData,
-      [name]: value,
-      ...(name === "manualTitikKoordinatRumah" ? { titikKoordinatRumah: "" } : {}),
-      ...(name === "titikKoordinatRumah" ? { manualTitikKoordinatRumah: "" } : {}),
-    }));
+    
+    setSelectedItem((prevData) => {
+      let updatedData = {
+        ...prevData,
+        [name]: value,
+        ...(name === "manualTitikKoordinatRumah" ? { titikKoordinatRumah: "" } : {}),
+        ...(name === "titikKoordinatRumah" ? { manualTitikKoordinatRumah: "" } : {})
+      };
+      if (name === "jumlahKK" && parseInt(value) > 1) {
+        setIsBacklog(true);
+      } else if (name === "jumlahKK" && parseInt(value) <= 1) {
+        setIsBacklog(false);
+      }
+      
+      // Jika status rumah "Tidak Berpenghuni", update beberapa field default
+      if (name === "statusrumah" && value === "Tidak Berpenghuni") {
+        updatedData = {
+          ...updatedData,
+          tanggallahir: null,
+          jenisKelamin: "0",
+          nomorKK: "0000000000000000",
+          nomorKTP: "0000000000000000",
+          asalKTP: "0",
+          jumlahKK: "0",
+          jumlahPenghuni: "0",
+          pendidikanTerakhir: "0",
+          pekerjaan: "0",
+          fungsiBangunan: "0",
+          penghasilan: "0",
+          statusKepemilikanRumah: "0",
+          asetRumahDiTempatLain: "0",
+          statusKepemilikanTanah: "0",
+          asetTanahDiTempatLain: "0",
+          sumberPenerangan: "0",
+          dayaListrik: "0",
+          bantuanPerumahan: "0",
+          modelRumah: "0",
+          pondasi: "0",
+          kolom: "0",
+          rangkaAtap: "0",
+          plafon: "0",
+          balok: "0",
+          sloof: "0",
+          pintuJendelaKonsen: "0",
+          ventilasi: "0",
+          materialLantaiTerluas: "0",
+          kondisiLantai: "0",
+          materialDindingTerluas: "0",
+          kondisiDinding: "0",
+          materialPenutupAtapTerluas: "0",
+          kondisiPenutupAtap: "0",
+          luasRumah: "0",
+          luasTanah: "0",
+          buanganAirLimbahRumahTangga: "0",
+          saranaPengelolaanLimbahCair: "0",
+          pemiliharaanSaranaPengelolaanLimbah: "0",
+          jenisTempatPembuanganAirTinja: "0",
+          kepemilikanKamarMandiDanJamban: "0",
+          jumlahJamban: "0",
+          jenisKloset: "0",
+          jenisTangkiSeptik: "0",
+          materialTangkiSeptik: "0",
+          alasTangkiSeptik: "0",
+          lubangPenyedotan: "0",
+          posisiTangkiSeptik: "0",
+          jarakTangkiSeptikDenganSumberAir: "0",
+          sumberAirMinum: "0"
+        };
+      }
+  
+      return updatedData;
+    });
   };
+  
   const handleFormSubmit = async () => {
     try {
-        await axios.put(`${process.env.REACT_APP_URL}/updatequestionnaires/${selectedItem.id}`, selectedItem, {
-        withCredentials: true,
-        
-      });
+      await axios.put(
+        `${process.env.REACT_APP_URL}/updatequestionnaires/${selectedItem.id}`,
+        selectedItem,
+        { withCredentials: true }
+      );
+      
       setIsModalOpen(false);
       alert("Data berhasil diperbarui.");
       window.location.reload(); 
     } catch (error) {
       console.error("Error updating data:", error);
-    if (error.response) {
+      
+      if (error.response) {
         console.log("Server response:", error.response.data);
         alert(error.response.data.message || "Terjadi kesalahan saat memperbarui data.");
-    } else {
+      } else {
         alert("Terjadi kesalahan jaringan atau server.");
-    }
+      }
     }
   };
+  
   // const handleGetCoordinates = () => {
   //   if (navigator.geolocation) {
   //     navigator.geolocation.getCurrentPosition(
@@ -533,7 +630,9 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
   };
   const handleDetailClick = async (id) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_URL}/maps/${id}`);
+      const response = await axios.get(`${process.env.REACT_APP_URL}/maps/${id}`,{
+        withCredentials:true
+      });
       if (response.status === 200) {
         setSelectedItem(response.data); 
         setModalOpen(true); 
@@ -552,10 +651,14 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
   //foto 
   const handleFotoClick = async (id) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_URL}/getquestionnaires/${id}`);
+      const response = await axios.get(`${process.env.REACT_APP_URL}/getquestionnaires/${id}`,{
+        withCredentials:true
+      });
       if (response.data && response.data.fotos && response.data.fotos.length > 0) {
         // Use the path directly as returned from the backend
-        setPhotoUrl(`${process.env.REACT_APP_URL}/${response.data.fotos[0].foto_rumah}`);
+        setPhotoUrl(`${process.env.REACT_APP_URL}/${response.data.fotos[0].foto_rumah}`,{
+          withCredentials:true
+        });
         setShowPhotoModal(true);
       } else {
         alert('No photo available for this entry.');
@@ -591,7 +694,10 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
   
     fetchUser();
   }, [navigate]);
-
+  const validateDate = (date) => {
+    const datePattern = /^(0[1-9]|[12][0-9]|3[01])[-/](0[1-9]|1[0-2])[-/]\d{4}$/;
+    return datePattern.test(date);
+};
   return (
    
     <Container fluid className="data-recap-page p-4">
@@ -633,13 +739,23 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
                 </select>
               </label>
             )}
-            <label>
+            {/* <label>
             Kategori:
             <select name="kategori" value={filters.kategori} onChange={handleFilterChange}>
               <option value="">Pilih Kategori</option>
               <option value="Rumah Layak Huni">Rumah Layak Huni</option>
               <option value="Rumah Tidak Layak Huni">Rumah Tidak Layak Huni</option>
             </select>
+          </label> */}
+          <label>
+            Kategori:
+          <select name="kategoriStatusRumah" value={filters.kategoriStatusRumah} onChange={handleFilterChange}>
+            <option value="">Pilih Kategori & Status Rumah</option>
+            <option value="Rumah Layak Huni - Berpenghuni">Rumah Layak Huni - Berpenghuni</option>
+            <option value="Rumah Layak Huni - Tidak Berpenghuni">Rumah Layak Huni - Tidak Berpenghuni</option>
+            <option value="Rumah Tidak Layak Huni - Berpenghuni">Rumah Tidak Layak Huni - Berpenghuni</option>
+            <option value="Rumah Tidak Layak Huni - Tidak Berpenghuni">Rumah Tidak Layak Huni - Tidak Berpenghuni</option>
+          </select>
           </label>
 
           <label>
@@ -654,14 +770,14 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
             </select>
           </label>
 
-          <label>
+          {/* <label>
             Status Rumah:
             <select name="statusrumah" value={filters.statusrumah} onChange={handleFilterChange}>
               <option value="">Pilih Status Rumah</option>
               <option value="Berpenghuni">Berpenghuni</option>
               <option value="Tidak Berpenghuni">Tidak Berpenghuni</option>
             </select>
-          </label>
+          </label> */}
           </div>
           <div className="table-wrapper">
           <Input
@@ -692,12 +808,18 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
         {selectedFile ? `Upload File: ${selectedFile.name}` : "Pilih dan Upload File"}
       </Button>
             <Button color="primary" onClick={handleExportExcel} className="me-2">Export to Excel</Button>
-            <Button color="primary" className="btn-custom">
+            {/* <Button color="primary" className="btn-custom">
               <NavLink to="/questionnaire" className="d-flex align-items-center text-white">
                 <FaHome className="icon me-2" />
                 Tambah Data
               </NavLink>
-            </Button>
+            </Button> */}
+           <Button color="primary" className="btn-custom text-center">
+            <NavLink to="/questionnaire" className="d-flex align-items-center justify-content-center text-white">
+              <FaHome className="icon me-2" />
+              Tambah Data
+            </NavLink>
+          </Button>
             <Table responsive className="mt-3">
               <thead>
                 <tr>
@@ -710,7 +832,9 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
                   <th>Kategori</th>
                   <th>Detail</th>
                   <th>Foto</th>
+                  {user && user.role === "admin" &&(
                   <th>Aksi</th>
+                )}
                   <th>Maps</th>
                 </tr>
               </thead>
@@ -738,26 +862,29 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
         <td>
                 <FaEye style={{ cursor: "pointer" }} onClick={() => handleFotoClick(item.id)} />
               </td>
-        <td>
-          <div className="d-flex justify-content-between">
-            <Button
-              variant="outline-primary"
-              onClick={() => handleEditClick(item)}
-              size="sm"
-              style={{ display: "inline-flex", alignItems: "center" }}
-            >
-              <FaEdit style={{ marginRight: "5px" }} /> Edit
-            </Button>
-            <Button
-              variant="outline-danger"
-              onClick={() => deleteData(item.id)}
-              size="sm"
-              style={{ display: "inline-flex", alignItems: "center" }}
-            >
-              <FaTrash style={{ marginRight: "5px" }} /> Delete
-            </Button>
-          </div>
-        </td>
+              <td>
+                <div className="d-flex justify-content-between">
+                  <Button
+                    variant="outline-primary"
+                    onClick={() => handleEditClick(item)}
+                    size="sm"
+                    style={{ display: "inline-flex", alignItems: "center" }}
+                  >
+                    <FaEdit style={{ marginRight: "5px" }} /> Edit
+                  </Button>
+
+                  {user && user.role === "admin" && (
+                    <Button
+                      variant="outline-danger"
+                      onClick={() => deleteData(item.id)}
+                      size="sm"
+                      style={{ display: "inline-flex", alignItems: "center" }}
+                    >
+                      <FaTrash style={{ marginRight: "5px" }} /> Delete
+                    </Button>
+                  )}
+                </div>
+              </td>
         <td>
           <FaEye
             onClick={() => handleDetailClick(item.id)}
@@ -773,7 +900,9 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
                             <p>Nomor Urut: {item.nomorUrut}</p>
                             <p>Nomor Rumah Pada Peta: {item.nomorRumahPadaPeta}</p>
                             <p>Nama Lengkap KK: {item.namaLengkapKK}</p>
-                            <p>Usia: {item.usia}</p>
+                            <p>Usia: {item.usia} Tahun</p>
+                            {/* <p>Tanggal Lahir:{item.tanggallahir}</p> */}
+                            <p>Tanggal Lahir: {item.tanggallahir ? moment(item.tanggallahir).format('DD/MM/YYYY') : 'Tidak tersedia'}</p>
                             <p>Jenis Kelamin: {item.jenisKelamin}</p>
                             <p>Nomor KK: {item.nomorKK}</p>
                             <p>Nomor KTP: {item.nomorKTP}</p>
@@ -794,7 +923,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
                             <p>Sumber Penerangan: {item.sumberPenerangan}</p>
                             <p>Daya Listrik: {item.dayaListrik}</p>
                             <p>Bantuan Perumahan: {item.bantuanPerumahan}</p>
-                            <p>Model Rumah: {item.modelRumah}</p>
+                            <p>Jenis Rumah: {item.modelRumah}</p>
                             <p>Pondasi: {item.pondasi}</p>
                             <p>Kolom: {item.kolom}</p>
                             <p>Rangka Atap: {item.rangkaAtap}</p>
@@ -916,38 +1045,54 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
           <ModalHeader toggle={handleModalToggle}>Edit Data</ModalHeader>
           <ModalBody>
           <FormGroup>
-              <Label for="statusrumah">Status Rumah</Label>
-              <Input type="select" name="sumberAirMinum" id="sumberAirMinum" value={selectedItem.sumberAirMinum} onChange={handleInputChange}>
-                <option value="">Pilih</option>
-                {/* <option value="kosong">Kosong</option> */}
-                <option value="Tidak Berpenghuni">Tidak Berpenghuni</option>
-                <option value="Berpenghuni">Berpenghuni</option>
-              </Input>
-              {errors.sumberAirMinum && <div className="error-message">{errors.sumberAirMinum}</div>}
-            </FormGroup>
-        <Form>
+                <Label for="statusrumah">Status Rumah</Label>
+                <Input 
+                  type="select" 
+                  name="statusrumah" 
+                  id="statusrumah" 
+                  value={selectedItem.statusrumah || ""} 
+                  onChange={handleInputChange}
+                >
+                  <option value="">Pilih</option>
+                  <option value="Tidak Berpenghuni">Tidak Berpenghuni</option>
+                  <option value="Berpenghuni">Berpenghuni</option>
+                </Input>
+                {errors.statusrumah && <div className="error-message">{errors.statusrumah}</div>}
+              </FormGroup>
+        
           <FormGroup>
             <Label for="namaLengkapKK">Nama Lengkap KK</Label>
             <Input type="text" name="namaLengkapKK" value={selectedItem.namaLengkapKK || ""} onChange={handleInputChange} />
           </FormGroup>
           
-          <FormGroup>
+          {/* <FormGroup>
             <Label for="alamatRumah">Alamat Rumah</Label>
             <Input type="text" name="alamatRumah" value={selectedItem.alamatRumah || ""} onChange={handleInputChange} />
-          </FormGroup>
+          </FormGroup> */}
 
-          <FormGroup>
+          {/* <FormGroup>
             <Label for="desaKelurahan">Desa/Kelurahan</Label>
             <Input type="text" name="desaKelurahan" value={selectedItem.desaKelurahan || ""} onChange={handleInputChange} />
-          </FormGroup>
+          </FormGroup> */} <FormGroup>
+              <Label for="desaKelurahan">13. Desa/Kelurahan</Label>
+              <Input type="select" name="desaKelurahan" id="desaKelurahan" value={selectedItem.desaKelurahan} onChange={handleInputChange}>
+                <option value="">Pilih</option>
+                {desaOptions.map((desa, index) => (
+                  <option key={index} value={desa}>
+                    {desa}
+                  </option>
+                ))}
+              </Input>
+              {errors.desaKelurahan && <div className="error-message">{errors.desaKelurahan}</div>}
+            </FormGroup>
 
-          <FormGroup>
+          {/* <FormGroup>
             <Label for="kategori">Kategori</Label>
             <Input type="select" name="kategori" value={selectedItem.kategori || ""} onChange={handleInputChange}>
               <option value="Rumah Layak Huni">Rumah Layak Huni</option>
               <option value="Rumah Tidak Layak Huni">Rumah Tidak Layak Huni</option>
             </Input>
-          </FormGroup>
+          </FormGroup> */}
 
           {/* Additional Form Fields */}
           <FormGroup>
@@ -959,11 +1104,34 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
             <Label for="nomorRumahPadaPeta">2. Nomor Peta</Label>
             <Input type="number" name="nomorRumahPadaPeta" id="nomorRumahPadaPeta" value={selectedItem.nomorRumahPadaPeta || ""} onChange={handleInputChange} />
           </FormGroup>
-
-          <FormGroup>
-            <Label for="usia">4. Usia (Tahun)</Label>
-            <Input type="number" name="usia" id="usia" value={selectedItem.usia || ""} onChange={handleInputChange} />
-          </FormGroup>
+          {/* <FormGroup>
+              <Label for="tanggallahir">4. Tanggal lahir</Label>
+              <Input type="date" name="tanggallahir" id="tanggallahir" value={selectedItem.tanggallahir} onChange={handleInputChange} 
+              //  disabled={formData.statusrumah === "Tidak Berpenghuni"}
+              className="input-center" />
+              {errors.tanggallahir && <div className="error-message">{errors.tanggallahir}</div>}
+            </FormGroup> */}
+             <FormGroup>
+            <Label for="tanggallahir">4. Tanggal lahir</Label>
+            <Input
+                type="text"
+                name="tanggallahir"
+                id="tanggallahir"
+                value={selectedItem.tanggallahir}
+              //   value={
+              //     selectedItem.tanggallahir 
+              //         ? moment(selectedItem.tanggallahir).format("DD/MM/YYYY") 
+              //         : ""
+              // }
+                onChange={handleInputChange}
+                disabled={selectedItem.statusrumah === "Tidak Berpenghuni"}
+                className="input-center"
+                placeholder="DD/MM/YYYY"
+            />
+            {errors.tanggallahir && (
+                <div className="error-message">{errors.tanggallahir}</div>
+            )}
+        </FormGroup>
 
           <FormGroup>
             <Label for="jenisKelamin">5. Jenis Kelamin</Label>
@@ -979,7 +1147,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
               {errors.nomorKK && <div className="invalid-feedback">{errors.nomorKK}</div>}
             </FormGroup>
           {/* Continue adding the rest of your additional form fields in a similar manner */}
-        </Form>
+        
         <FormGroup>
               <Label for="nomorKTP">7. Nomor KTP</Label>
               <Input type="text" name="nomorKTP" id="nomorKTP" value={selectedItem.nomorKTP || ""} onChange={handleInputChange} className={`input-center ${errors.nomorKTP ? "is-invalid" : ""}`} />
@@ -994,10 +1162,30 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
               </Input>
               {errors.asalKTP && <div className="error-message">{errors.asalKTP}</div>}
             </FormGroup>
-            <FormGroup>
+            {/* <FormGroup>
               <Label for="jumlahKK">9. Jumlah KK Dalam Rumah</Label>
               <Input type="number" name="jumlahKK" id="jumlahKK" value={selectedItem.jumlahKK || ""} onChange={handleInputChange} className="input-center" />
               {errors.jumlahKK && <div className="error-message">{errors.jumlahKK}</div>}
+            </FormGroup> */}
+            <FormGroup>
+              <Label for="jumlahKK">9. Jumlah KK Dalam Rumah</Label>
+              <Input
+                type="number"
+                name="jumlahKK"
+                id="jumlahKK"
+                value={selectedItem.jumlahKK || ""}
+                onChange={handleInputChange}
+                // disabled={formData.statusrumah === "Tidak Berpenghuni"}
+                className="input-center"
+              />
+              {errors.jumlahKK && <div className="error-message">{errors.jumlahKK}</div>}
+
+              {/* Conditionally render "Backlog" message if jumlahKK is more than 1 */}
+              {isBacklog && (
+                <div className="info-message">
+                  Rumah ini dianggap "Backlog" karena terdapat lebih dari 1 KK.
+                </div>
+              )}
             </FormGroup>
              	
 
@@ -1196,7 +1384,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
             </FormGroup>
 
             <FormGroup>
-              <Label for="modelRumah">25. Model Rumah</Label>
+              <Label for="modelRumah">25. Jenis Rumah</Label>
               <Input type="select" name="modelRumah" id="modelRumah" value={selectedItem.modelRumah} onChange={handleInputChange}>
                 <option value="">Pilih</option>
                 <option value="Permanen">Permanen</option>

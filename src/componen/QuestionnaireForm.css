@@ -10,7 +10,7 @@
   
   form {
     width: 100%;
-    max-width: 600px; /* Membatasi lebar form */
+    max-width: none; /* Membatasi lebar form */
     padding: 20px; /* Menambahkan padding di dalam form */
     background-color: #fff; /* Memberikan background putih pada form */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Menambahkan bayangan pada form */
@@ -19,12 +19,35 @@
   
   h3 {
     text-align: center; /* Membuat teks judul di tengah */
-    margin-bottom: 100px; /* Menambahkan margin bawah untuk memberi jarak dengan form */
+    margin-bottom: 10px; /* Menambahkan margin bawah untuk memberi jarak dengan form */
     color: #333; /* Menambahkan warna teks */
     font-size: 24px; /* Mengatur ukuran font */
     font-weight: bold; /* Mengatur ketebalan font */
   }
+  .home-logo-container {
+    display: flex; /* Menggunakan flexbox untuk menata logo */
+    align-items: center; /* Memastikan logo berada di tengah secara vertikal */
+    justify-content: center; /* Memastikan logo berada di tengah secara horizontal */
+    margin-bottom: 20px; /* Memberikan jarak antara logo dan form */
+  }
   
+  .home-logo {
+    width: 150px; /* Menentukan ukuran logo */
+    height: auto; /* Memastikan rasio gambar tetap terjaga */
+  }
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+  }
+  
+  /* Tambahkan padding atau margin pada Col jika diperlukan */
+  .mb-3 {
+    margin-bottom: 20px;
+  }
   .form-group {
     margin-bottom: 15px;
   }

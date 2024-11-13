@@ -1,18 +1,15 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // Carousel CSS
-import "./Home.css"; // Custom styling
-import { NavbarDasboard } from "../map/NavbarDasboard";
+import "./Home.css"; 
+import { Grafik } from "./Grafik";
 
 function Home() {
   return (
-    <div>
-       <NavbarDasboard />
     <div className="home-container">
-     
-      {/* Carousel */}
-      <div className="home-carousel">
+        {/* Carousel and other content */}
+        <div className="home-carousel">
         <Carousel showThumbs={false} infiniteLoop autoPlay>
           <div>
             <img src="/images/map1.jpg" alt="Peta 1" />
@@ -30,23 +27,12 @@ function Home() {
             <img src="/images/map5.jpg" alt="Peta 5" />
           </div>
         </Carousel>
-        <div className="overlay">
-          <img src="/images/logo.png" alt="Logo Aplikasi" className="home-logo" />
-          <h1 className="app-title">Sistem Informasi Pendataan Kualitas Rumah Sumbawa Barat (SIP-AKURAT)</h1>
-        </div>
+      <div className="overlay">
+        <img src="/images/logobaru.png" alt="Logo Aplikasi" className="home-logo" />
+        <h1 className="app-title">Sistem Informasi Pendataan Kualitas Rumah</h1>
       </div>
-
-      {/* Button Links */}
-      <div className="home-text-container">
-        <Link to="/data-perumahan" className="home-button data-perumahan-button">
-          <i className="home-icon">🏠</i> Data Perumahan
-        </Link>
-        <Link to="/data-rusun" className="home-button data-rusun-button">
-          <i className="home-icon">🏢</i> Data Rusun
-        </Link>
-        <Link to="/peta-perumahan" className="home-button peta-perumahan-button">
-          <i className="home-icon">🗺️</i> Peta Perumahan
-        </Link>
+    </div>
+    <div className="home-text-container">
         <a href="https://www.lapor.go.id/" className="home-button lapor-button" target="_blank" rel="noopener noreferrer">
           <i className="home-icon">📢</i> Lapor
         </a>
@@ -56,9 +42,23 @@ function Home() {
         <Link to="/login" className="home-button login-button">
           <i className="home-icon">🔑</i> Login
         </Link>
+       
+      </div>
+  
+    {/* Dashboard Widgets */}
+    <div className="home-text-container">
+      <div>
+      <Grafik />
       </div>
     </div>
+  
+    {/* Button Links */}
+    <div className="home-text-container">
+      {/* Link buttons */}
     </div>
+   
+  </div>
+  
   );
 }
 

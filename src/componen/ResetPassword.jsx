@@ -16,11 +16,13 @@ const getApiBaseUrl = () => {
 
 const fetcher = url => axios.get(url).then(res => res.data);
 
-function Login() {
+function ResetPassword() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [email, setEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, isError, isSuccess, isLoading, message } = useSelector(
@@ -30,32 +32,25 @@ function Login() {
   const { data, error } = useSWR(`${getApiBaseUrl()}/`, fetcher);
 
   useEffect(() => {
-    const savedUsername = localStorage.getItem('username');
-    const savedPassword = localStorage.getItem('password');
-    if (savedUsername && savedPassword) {
-      setUsername(savedUsername);
-      setPassword(savedPassword);
-      setRememberMe(true);
-    }
-  }, []);
-
-  useEffect(() => {
     if (user || isSuccess) {
       navigate("/admin/dashboard");
     }
     dispatch(reset());
   }, [user, isSuccess, dispatch, navigate]);
 
-  const handleLogin = (e) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault();
-    if (rememberMe) {
-      localStorage.setItem('username', username);
-      localStorage.setItem('password', password);
-    } else {
-      localStorage.removeItem('username');
-      localStorage.removeItem('password');
+    try {
+      const response = await axios.put(`${getApiBaseUrl()}/reset`, {
+        email,
+        username,
+        newPassword,
+      });
+      alert(response.data.msg);
+      navigate('/login')
+    } catch (err) {
+      alert(err.response?.data?.msg || "Terjadi kesalahan saat reset password.");
     }
-    dispatch(LoginAdmin({ username, password }));
   };
 
   const handleLogoClick = () => {
@@ -70,43 +65,34 @@ function Login() {
       </div>
       <Row className="justify-content-center">
         <Col xs="12" md="10" className="mb-3">
-          <form onSubmit={handleLogin} className="login-form">
-            {isError && <p className="error-message">{message}</p>}
-            {error ? (
-              <p className="error-message">Server Offline</p>
-            ) : data ? (
-              <p className="success-message">Server Online: {data}</p>
-            ) : (
-              <p className="loading-message">Checking server status...</p>
-            )}
+          <form onSubmit={handleResetPassword} className="reset-password-form">
+            <h2>Reset Password</h2>
+            <label>
+              Email:
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Masukkan email" required />
+            </label>
             <label>
               Username:
               <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Masukkan username" required />
             </label>
             <label>
-              Password:
+              Password Baru:
               <div className="password-container">
-                <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Masukkan password" required />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Masukkan password baru"
+                  required
+                />
                 <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
             </label>
-            <div className="field">
-              <label className="checkbox">
-                <input 
-                  type="checkbox" 
-                  checked={rememberMe} 
-                  onChange={(e) => setRememberMe(e.target.checked)} 
-                /> Remember me
-              </label>
-            </div>
-            <div className="extra-links">
-              <a href="/reset-password">Lupa Password?</a>
-            </div>
             <button type="submit">
               <FaLock style={{ marginRight: "10px" }} />
-              {isLoading ? "Loading..." : "Login"}
+              Reset Password
             </button>
           </form>
         </Col>
@@ -115,4 +101,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default ResetPassword;

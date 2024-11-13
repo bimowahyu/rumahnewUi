@@ -1,0 +1,11 @@
+.btn-custom {
+    display: flex;
+    align-items: center; /* Menjaga agar teks dan icon tetap sejajar secara vertikal */
+    justify-content: center; /* Menengahkan teks dan icon secara horizontal */
+    width: 100%; /* Opsional, jika Anda ingin button memenuhi lebar kontainer */
+  }
+  
+  .btn-custom .icon {
+    margin-right: 5px; /* Memberikan jarak antara icon dan teks */
+  }
+  

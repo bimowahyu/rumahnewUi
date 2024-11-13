@@ -1,0 +1,38 @@
+/* Navbar Logo */
+.homelogo {
+    width: 40px; /* Adjusted smaller size for desktop */
+    height: 40px;
+    margin-right: 10px;
+}
+
+/* Navbar Text */
+.brand-text {
+    color: white;
+    font-size: 0.9rem; /* Slightly smaller font size for desktop */
+}
+
+/* Navbar padding adjustments for desktop */
+.navbar, .brand-content {
+    padding: 5px 10px; /* Reduced padding to decrease height */
+}
+
+/* Navbar responsive adjustments */
+@media (max-width: 768px) {
+    .homelogo, .brand-text {
+        display: none; /* Hide logo and text on smaller screens */
+    }
+
+    .navbar-nav {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .navbar-toggler {
+        border-color: white;
+    }
+
+    .btn-danger {
+        width: 100%;
+        margin-top: 10px;
+    }
+}

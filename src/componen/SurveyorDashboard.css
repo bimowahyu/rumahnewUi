@@ -28,7 +28,7 @@
   }
   
   .dashboard-widgets {
-    display: grid;
+    display: auto;
     grid-template-columns: 1fr 1fr;
     gap: 1.25rem; /* 20px menggunakan ukuran font dasar 16px */
     margin-top: 1.25rem; /* 20px menggunakan ukuran font dasar 16px */
@@ -80,6 +80,9 @@
   }
   
   @media (max-width: 768px) {
+    .dashboard{
+      width: auto;
+    }
     .dashboard h2 {
       font-size: 1.5rem; /* 24px */
     }
