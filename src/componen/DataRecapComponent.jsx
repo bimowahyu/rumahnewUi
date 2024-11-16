@@ -805,11 +805,11 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
       />
 
       {/* Single button to choose and upload file */}
-      <Button color="primary" onClick={handleButtonClick}  className="me-2">
+      <Button color="primary" onClick={handleButtonClick}  className="me-2" style={{ borderRadius: "10px" }}>
         {selectedFile ? `Upload File: ${selectedFile.name}` : "Pilih dan Upload File"}
       </Button>
-            <Button color="primary" onClick={handleExportExcel} className="me-2">Export to Excel</Button>
-          <Button color="primary" className="btn-custom text-center">
+            <Button color="primary" onClick={handleExportExcel} className="me-2" style={{ borderRadius: "10px" }}>Export to Excel</Button>
+          <Button color="primary" className="btn-custom text-center" style={{ borderRadius: "10px" }}>
       <NavLink
         to="/questionnaire"
         className="d-flex align-items-center justify-content-center text-white"

@@ -3,6 +3,7 @@
     align-items: center; /* Menjaga agar teks dan icon tetap sejajar secara vertikal */
     justify-content: center; 
     width: 100%;
+    border-radius: 10px;
   }
   
   .btn-custom .icon {

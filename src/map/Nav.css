@@ -1,4 +1,7 @@
 /* Navbar Logo */
+.navbar {
+    background: linear-gradient(135deg, #1abc9c, #3498db);
+}
 .homelogo {
     width: 40px; /* Ukuran logo di desktop */
     height: 40px;
@@ -25,8 +28,8 @@
     }
 
     .brand-text {
-        font-size: 0.8rem; 
-        margin-left: 10px; 
+        font-size: 0.6rem; 
+        margin-left: 1px; 
     }
 
     .navbar-nav {
