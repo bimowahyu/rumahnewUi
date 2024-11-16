@@ -2,7 +2,7 @@ import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 // import { useNavigate } from 'react-router-dom';
 
-import './Nav.css';
+import './NavbarDashboard.css';
 
 export const NavbarDasboard = () => {
   // const navigate = useNavigate();

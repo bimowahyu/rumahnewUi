@@ -1,11 +1,16 @@
 .btn-custom {
     display: flex;
     align-items: center; /* Menjaga agar teks dan icon tetap sejajar secara vertikal */
-    justify-content: center; /* Menengahkan teks dan icon secara horizontal */
-    width: 100%; /* Opsional, jika Anda ingin button memenuhi lebar kontainer */
+    justify-content: center; 
+    width: 100%;
   }
   
   .btn-custom .icon {
     margin-right: 5px; /* Memberikan jarak antara icon dan teks */
+  }
+  .table-header th {
+    white-space: nowrap; /* Mencegah teks terpotong */
+    text-transform: capitalize; /* Membuat huruf kapital di awal setiap kata */
+    padding: 8px; /* Opsional: Memberikan padding agar terlihat lebih rapi */
   }
   

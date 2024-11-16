@@ -1,6 +1,6 @@
 /* Navbar Logo */
 .homelogo {
-    width: 40px; /* Adjusted smaller size for desktop */
+    width: 40px; /* Ukuran logo di desktop */
     height: 40px;
     margin-right: 10px;
 }
@@ -8,18 +8,25 @@
 /* Navbar Text */
 .brand-text {
     color: white;
-    font-size: 0.9rem; /* Slightly smaller font size for desktop */
+    font-size: 0.9rem; /* Ukuran font teks di desktop */
+    white-space: nowrap; /* Mencegah teks menjadi dua baris */
 }
 
 /* Navbar padding adjustments for desktop */
 .navbar, .brand-content {
-    padding: 5px 10px; /* Reduced padding to decrease height */
+    padding: 5px 10px; /* Padding untuk desktop */
 }
 
 /* Navbar responsive adjustments */
 @media (max-width: 768px) {
-    .homelogo, .brand-text {
-        display: none; /* Hide logo and text on smaller screens */
+    .homelogo {
+        width: 30px; /* Ukuran logo lebih kecil untuk tampilan mobile */
+        height: 30px;
+    }
+
+    .brand-text {
+        font-size: 0.8rem; 
+        margin-left: 10px; 
     }
 
     .navbar-nav {
@@ -28,11 +35,17 @@
     }
 
     .navbar-toggler {
-        border-color: white;
+        border-color: white; /* Menyesuaikan warna border toggle button */
     }
 
     .btn-danger {
-        width: 100%;
+        width: 100%; /* Tombol Logout memenuhi lebar penuh di mobile */
         margin-top: 10px;
+    }
+
+    .brand-content {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; /* Menyusun logo dan teks secara horizontal */
     }
 }

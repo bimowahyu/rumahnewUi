@@ -17,8 +17,11 @@ const MyNavbar = () => {
           Dinas Perumahan dan Permukiman
         </span>
       </Navbar.Brand>
+
       {/* Toggle Button for mobile view */}
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
+      {/* Navbar Collapse */}
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ms-auto text-center">
           <Nav.Link href="/recap" style={{ color: 'white' }}>Rekapitulasi</Nav.Link>

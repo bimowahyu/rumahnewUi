@@ -47,7 +47,7 @@
   }
   
   .home-logo {
-    max-width: 80px;
+    max-width: 120px;
     height: auto;
     margin-bottom: 15px;
     animation: logoFadeIn 2s ease-in-out;

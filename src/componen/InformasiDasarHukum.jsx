@@ -1,16 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { NavbarDasboard } from "../map/NavbarDasboard";
-import { pdfjs, Document, Page } from "react-pdf";
 import axios from "axios";
-
-
-// Atur workerSrc dari pdfjs menggunakan path dari folder public
-pdfjs.GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.min.js`;
+import { Worker, Viewer } from "@react-pdf-viewer/core";
+import { fullScreenPlugin } from "@react-pdf-viewer/full-screen";
+import { thumbnailPlugin } from "@react-pdf-viewer/thumbnail";
+import { zoomPlugin } from "@react-pdf-viewer/zoom";
+import { toolbarPlugin } from "@react-pdf-viewer/toolbar";
+import "@react-pdf-viewer/core/lib/styles/index.css";
+import "@react-pdf-viewer/thumbnail/lib/styles/index.css";
+import "@react-pdf-viewer/zoom/lib/styles/index.css";
+import "@react-pdf-viewer/toolbar/lib/styles/index.css";
+import { FaDownload, FaExpand } from "react-icons/fa";
+import "./InformasiDasarHukum.css";
 
 function InformasiDasarHukum() {
   const [pdfList, setPdfList] = useState([]);
   const [selectedPdf, setSelectedPdf] = useState(null);
-  const [numPages, setNumPages] = useState(null);
+
+  // Initialize plugins
+  const fullScreenPluginInstance = fullScreenPlugin();
+  const thumbnailPluginInstance = thumbnailPlugin();
+  const zoomPluginInstance = zoomPlugin();
+  const toolbarPluginInstance = toolbarPlugin();
+  const { Toolbar } = toolbarPluginInstance;
+  const { EnterFullScreen } = fullScreenPluginInstance;
 
   useEffect(() => {
     const fetchPdfList = async () => {
@@ -44,48 +57,66 @@ function InformasiDasarHukum() {
     }
   };
 
-  const onDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages);
+  const handleView = (pdfPath) => {
+    setSelectedPdf(pdfPath);
   };
 
   return (
     <div>
       <NavbarDasboard />
-      <h1>Informasi dan Dasar Hukum</h1>
-      <p>Halaman ini akan menampilkan informasi dan dasar hukum terkait.</p>
-
-      {/* Daftar PDF */}
-      <div>
-        <h2>Daftar PDF</h2>
-        <ul>
-          {pdfList.map((pdf) => (
-            <li key={pdf.id}>
-              <button onClick={() => setSelectedPdf(pdf.path)}>
-                {pdf.filename}
-              </button>
-              <button onClick={() => handleDownload(pdf.filename)}>
-                Download
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Tampilkan halaman PDF yang dipilih */}
-      {selectedPdf && (
-        <div>
-          <h3>Preview PDF</h3>
-          <Document
-            file={`${process.env.REACT_APP_URL}/${selectedPdf}`}
-            onLoadSuccess={onDocumentLoadSuccess}
-            onLoadError={(error) => console.error("Error loading PDF:", error)}
-          >
-            {Array.from(new Array(numPages), (el, index) => (
-              <Page key={index + 1} pageNumber={index + 1} />
+      <div className="container">
+        {/* PDF List Section */}
+        <div className="pdf-list">
+          <h2 className="section-title">Informasi Dan Dasar Hukum</h2>
+          <div className="pdf-cards">
+            {pdfList.map((pdf) => (
+              <div key={pdf.id} className="pdf-card">
+                <h3 className="pdf-filename">{pdf.filename}</h3>
+                <div className="pdf-actions">
+                  <button onClick={() => handleView(pdf.path)} className="view-button">
+                    Lihat
+                  </button>
+                  <button onClick={() => handleDownload(pdf.filename)} className="download-button">
+                    <FaDownload /> Download
+                  </button>
+                </div>
+              </div>
             ))}
-          </Document>
+          </div>
+
+          {selectedPdf && (
+            <div className="pdf-viewer">
+              <div className="pdf-viewer-header">
+                <h3 className="viewer-title">Preview PDF</h3>
+                <button className="fullscreen-button">
+                  <EnterFullScreen>
+                    {(props) => (
+                      <div onClick={props.onClick}>
+                        <FaExpand /> Layar Penuh
+                      </div>
+                    )}
+                  </EnterFullScreen>
+                </button>
+              </div>
+              <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.16.105/build/pdf.worker.min.js">
+                <div className="viewer-container">
+                  <Toolbar>{(props) => <>{props.slot}</>}</Toolbar>
+                  <div className="pdf-thumbnail">{thumbnailPluginInstance.Thumbnails()}</div>
+                  <Viewer
+                    fileUrl={`${process.env.REACT_APP_URL}/${selectedPdf}`}
+                    plugins={[
+                      fullScreenPluginInstance,
+                      thumbnailPluginInstance,
+                      zoomPluginInstance,
+                      toolbarPluginInstance,
+                    ]}
+                  />
+                </div>
+              </Worker>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

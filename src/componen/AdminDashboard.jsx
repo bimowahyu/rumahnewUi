@@ -57,7 +57,7 @@ function AdminDashboard() {
                         <button onClick={() => navigate("/userlist")}>User list</button>
                       </>
                     )}
-                    <button className="btn-logout" onClick={() => handleLogout()}>Logout</button>
+                    <button className="btn btn-danger" style={{ background: 'red' }}onClick={() => handleLogout()}>Logout</button>
                   </div>
                 </>
               }

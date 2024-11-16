@@ -28,7 +28,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import MyNavbar from "../map/Navbar";
 import "./Datarecap.css"
-
+import DashboardWidget from "./DashboardWidget";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -699,9 +699,10 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
     return datePattern.test(date);
 };
   return (
-   
-    <Container fluid className="data-recap-page p-4">
-       <MyNavbar />
+   <div>
+     <MyNavbar />
+    <Container fluid className="data-recap-page p-6">
+      
       <Row className="justify-content-center">
       </Row>
       {error && (
@@ -808,56 +809,75 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
         {selectedFile ? `Upload File: ${selectedFile.name}` : "Pilih dan Upload File"}
       </Button>
             <Button color="primary" onClick={handleExportExcel} className="me-2">Export to Excel</Button>
-            {/* <Button color="primary" className="btn-custom">
-              <NavLink to="/questionnaire" className="d-flex align-items-center text-white">
-                <FaHome className="icon me-2" />
-                Tambah Data
-              </NavLink>
-            </Button> */}
-           <Button color="primary" className="btn-custom text-center">
-            <NavLink to="/questionnaire" className="d-flex align-items-center justify-content-center text-white">
-              <FaHome className="icon me-2" />
-              Tambah Data
-            </NavLink>
-          </Button>
+          <Button color="primary" className="btn-custom text-center">
+      <NavLink
+        to="/questionnaire"
+        className="d-flex align-items-center justify-content-center text-white"
+        style={{ textDecoration: "none" }}
+      >
+        <FaHome className="icon me-2" />
+        Tambah Data
+      </NavLink>
+    </Button>
+    {/* <DashboardWidget
+  content={
+    <>
+      <Button color="primary" onClick={handleButtonClick} className="me-2">
+        {selectedFile ? `Upload File: ${selectedFile.name}` : "Pilih dan Upload File"}
+      </Button>
+      <Button color="primary" onClick={handleExportExcel} className="me-2">
+        Export to Excel
+      </Button>
+      <Button color="primary" className="btn-custom text-center">
+        <NavLink
+          to="/questionnaire"
+          className="d-flex align-items-center justify-content-center text-white"
+          style={{ textDecoration: "none" }}
+        >
+          <FaHome className="icon me-2" />
+          Tambah Data
+        </NavLink>
+      </Button>
+    </>
+  }
+/> */}
+
             <Table responsive className="mt-3">
               <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Nomor Data</th>
-                  <th>Nama Lengkap KK</th>
-                  <th>Alamat Rumah</th>
-                  <th>Desa/Kelurahan</th>
-                  <th>Kecamatan</th>
-                  <th>Kategori</th>
-                  <th>Detail</th>
-                  <th>Foto</th>
-                  {user && user.role === "admin" &&(
-                  <th>Aksi</th>
-                )}
-                  <th>Maps</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentRows.map((item, index) => (
-                  <React.Fragment key={index}>
-                    <tr>
-                      <td>{index + 1}</td>
-                      <td>{item.nomorUrut}</td>
-                      <td>{item.namaLengkapKK}</td>
-                      <td>{item.alamatRumah}</td>
-                      <td>{item.desaKelurahan}</td>
-                      <td>{item.kecamatan}</td>
-                      <td>{item.kategori}</td>
-                      <td>
-                      <FaEye
-                      onClick={item.statusrumah !== 'Tidak Berpenghuni' ? () => handleToggleExpand(index) : null} // Hanya aktifkan onClick jika statusrumah bukan "Tidak Berpenghuni"
-                      style={{
-                        cursor: item.statusrumah !== 'Tidak Berpenghuni' ? "pointer" : "not-allowed", // Ubah cursor jika disabled
-                        color: item.statusrumah !== 'Tidak Berpenghuni' ? "#007bff" : "#d6d6d6", // Ubah warna jika disabled
-                        opacity: item.statusrumah === 'Tidak Berpenghuni' ? 0.5 : 1 // Ubah opacity jika disabled
-                      }}
-                    />
+              <tr className="table-header">
+  <th>No</th>
+  <th>Nomor Data</th>
+  <th>Nama Lengkap KK</th>
+  <th>Alamat Rumah</th>
+  <th>Desa/Kelurahan</th>
+  <th>Kecamatan</th>
+  <th>Kategori</th>
+  <th>Detail</th>
+  <th>Foto</th>
+  {user && user.role === "admin" && <th>Aksi</th>}
+  <th>Maps</th>
+</tr>
+</thead>
+<tbody>
+  {currentRows.map((item, index) => (
+    <React.Fragment key={index}>
+      <tr>
+        <td>{index + 1}</td>
+        <td>{item.nomorUrut}</td>
+        <td>{item.namaLengkapKK}</td>
+        <td>{item.alamatRumah}</td>
+        <td>{item.desaKelurahan}</td>
+        <td>{item.kecamatan}</td>
+        <td>{item.kategori}</td>
+        <td>
+          <FaEye
+            onClick={item.statusrumah !== "Tidak Berpenghuni" ? () => handleToggleExpand(index) : null}
+            style={{
+              cursor: item.statusrumah !== "Tidak Berpenghuni" ? "pointer" : "not-allowed",
+              color: item.statusrumah !== "Tidak Berpenghuni" ? "#007bff" : "#d6d6d6",
+              opacity: item.statusrumah === "Tidak Berpenghuni" ? 0.5 : 1,
+            }}
+          />
         </td>
         <td>
                 <FaEye style={{ cursor: "pointer" }} onClick={() => handleFotoClick(item.id)} />
@@ -1773,6 +1793,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
         </Col>
       </Row>
     </Container>
+    </div>
   );
 };
 
