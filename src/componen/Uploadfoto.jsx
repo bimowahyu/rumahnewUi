@@ -9,6 +9,7 @@ export const UploadFoto = () => {
   const [foto, setPhoto] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [nomorKTPTerm, setNomorKTPTerm] = useState('');
+  const [imagePreview, setImagePreview] = useState(null);
   const [isPreviewing, setIsPreviewing] = useState(false);
   const videoRef = useRef(null);
   const navigate = useNavigate();
@@ -16,8 +17,8 @@ export const UploadFoto = () => {
   useEffect(() => {
     const fetchQuestionnaires = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_URL}/getquestionnaires`,{
-          withCredentials:true
+        const response = await axios.get(`${process.env.REACT_APP_URL}/getquestionnaires`, {
+          withCredentials: true,
         });
         setQuestionnaires(response.data);
       } catch (error) {
@@ -27,14 +28,10 @@ export const UploadFoto = () => {
     fetchQuestionnaires();
   }, []);
 
-  const handlePhotoChange = (e) => {
-    setPhoto(e.target.files[0]);
-  };
-
   const startPreview = async () => {
     setIsPreviewing(true);
     const stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: 'environment' }
+      video: { facingMode: 'environment' },
     });
     videoRef.current.srcObject = stream;
     await videoRef.current.play();
@@ -47,15 +44,43 @@ export const UploadFoto = () => {
     canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
 
     const dataUrl = canvas.toDataURL('image/png');
-    const blob = await fetch(dataUrl).then(res => res.blob());
+    const blob = await fetch(dataUrl).then((res) => res.blob());
     setPhoto(new File([blob], 'captured-photo.png', { type: 'image/png' }));
+    setImagePreview(dataUrl);
 
-    videoRef.current.srcObject.getTracks().forEach(track => track.stop());
+    videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
     setIsPreviewing(false);
   };
 
+  const cancelPreview = () => {
+    setImagePreview(null);
+    setPhoto(null);
+    if (isPreviewing) {
+      const stream = videoRef.current.srcObject;
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+      setIsPreviewing(false);
+    }
+  };
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagePreview(reader.result);
+        setPhoto(file);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleUpload = async () => {
-    if (!selectedQuestionnaire || !foto) return;
+    if (!selectedQuestionnaire || !foto) {
+      alert('Pilih data dan foto terlebih dahulu!');
+      return;
+    }
 
     const formData = new FormData();
     formData.append('questionnaireId', selectedQuestionnaire);
@@ -64,7 +89,7 @@ export const UploadFoto = () => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_URL}/uploadfoto`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
-        withCredentials: true
+        withCredentials: true,
       });
       alert(response.data.message);
       navigate('/recap');
@@ -80,8 +105,11 @@ export const UploadFoto = () => {
   );
 
   return (
+    <div className="col mb-6">
+      
     <div>
       <MyNavbar />
+      <div style={{margin: "5px"}}>
       <h2>Upload Foto</h2>
 
       {/* Input untuk mencari Nama Lengkap */}
@@ -98,7 +126,7 @@ export const UploadFoto = () => {
       {/* Input untuk mencari Nomor KTP */}
       <label htmlFor="searchKTP">Cari Nomor KTP:</label>
       <input
-        type="text"
+        type="number"
         id="searchKTP"
         placeholder="Cari nomor KTP..."
         value={nomorKTPTerm}
@@ -129,19 +157,34 @@ export const UploadFoto = () => {
         {isPreviewing ? (
           <div>
             <video ref={videoRef} style={{ width: '100%', height: 'auto' }} />
-            <button onClick={capturePhoto} className="btn btn-primary mt-2">Take Picture</button>
+            <button onClick={capturePhoto} className="btn btn-primary mt-2">
+              Take Picture
+            </button>
           </div>
         ) : (
-          <button onClick={startPreview} className="btn btn-primary">
+          <button onClick={startPreview} className="btn btn-primary mt-2">
             Start Camera Preview
           </button>
         )}
       </div>
 
+      {/* Preview Gambar */}
+      {imagePreview && (
+        <div className="mt-4">
+          <h5>Preview Foto:</h5>
+          <img src={imagePreview} alt="Preview" style={{ width: '100%', maxHeight: '400px', objectFit: 'contain' }} />
+          <button onClick={cancelPreview} className="btn btn-danger mt-2">
+            Cancel
+          </button>
+        </div>
+      )}
+
       {/* Tombol untuk mengupload foto */}
-      <button onClick={handleUpload} className="btn btn-success mt-4">
+      <button onClick={handleUpload} className="btn btn-success mt-4" disabled={!foto}>
         Upload Foto
       </button>
+    </div>
+    </div>
     </div>
   );
 };
