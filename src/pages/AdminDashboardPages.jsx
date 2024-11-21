@@ -3,6 +3,7 @@ import AdminDashboard from "../componen/AdminDashboard";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getMeAdmin } from "../fitur/AuthSlice";
+import Footer from "../componen/Footer";
 
 
 export const AdminDashboardPages = () => {
@@ -20,6 +21,10 @@ export const AdminDashboardPages = () => {
       }
     }, [isError, navigate]);
   return (
+    <>
    <AdminDashboard />
+
+   <Footer />
+   </>
   )
 }

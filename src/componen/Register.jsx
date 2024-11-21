@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Input, Button, Alert } from "reactstrap";
 import "./Register.css";
+import Footer from "./Footer";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -43,6 +44,7 @@ const Register = () => {
   };
 
   return (
+    <>
     <div className="register-container">
       <div className="logo-container" onClick={handleLogoClick}>
         <img src="/images/logo.png" alt="Logo Aplikasi" className="register-logo" />
@@ -77,6 +79,8 @@ const Register = () => {
         </Button>
       </Form>
     </div>
+    <Footer />
+    </>
   );
 };
 

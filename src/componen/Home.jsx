@@ -4,9 +4,11 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // Carousel CSS
 import "./Home.css"; 
 import { Grafik } from "./Grafik";
+import Footer from "./Footer";
 
 function Home() {
   return (
+    <>
     <div className="home-container">
         {/* Carousel and other content */}
         <div className="home-carousel">
@@ -56,9 +58,10 @@ function Home() {
     <div className="home-text-container">
       {/* Link buttons */}
     </div>
-   
+ 
   </div>
-  
+    <Footer />
+    </>
   );
 }
 

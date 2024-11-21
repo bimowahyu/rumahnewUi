@@ -3,6 +3,8 @@ import { UploadFoto } from "../componen/Uploadfoto";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getMeAdmin } from "../fitur/AuthSlice";
+import Footer from "../componen/Footer";
+import "./Upload.css"
 
 export const UploadFotoPages = () => {
     const dispatch = useDispatch();
@@ -19,6 +21,13 @@ export const UploadFotoPages = () => {
       }
     }, [isError, navigate]);
   return (
-   <UploadFoto />
+    <div className="page-container">
+    
+    <div className="content-wrap">
+      <UploadFoto />
+    </div>
+
+    <Footer />
+  </div>
   )
 }

@@ -7,6 +7,7 @@ import { FaEye, FaEyeSlash, FaLock } from "react-icons/fa";
 import { LoginAdmin, reset } from "../fitur/AuthSlice";
 import useSWR from 'swr';
 import { Row, Col } from "reactstrap";
+import Footer from "./Footer";
 
 const getApiBaseUrl = () => {
   const protocol = window.location.protocol === 'https:' ? 'https' : 'http';
@@ -63,6 +64,7 @@ function Login() {
   };
 
   return (
+    <>
     <div className="login-container">
       <div className="logo-container" onClick={handleLogoClick}>
         <img src="/images/logobaru.png" alt="Logo Aplikasi" className="login-logo" />
@@ -112,6 +114,8 @@ function Login() {
         </Col>
       </Row>
     </div>
+    <Footer />
+    </>
   );
 }
 

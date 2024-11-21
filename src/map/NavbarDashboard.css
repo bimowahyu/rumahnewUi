@@ -18,6 +18,7 @@
 }
 
 /* Navbar responsive adjustments */
+/*  */
 @media (max-width: 768px) {
   .homelogo {
       width: 30px; /* Ukuran logo lebih kecil untuk tampilan mobile */

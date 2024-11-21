@@ -5,6 +5,7 @@ import { FaLocationArrow } from "react-icons/fa";
 import axios from "axios";
 import MyNavbar from "../map/Navbar";
 import "./QuestionnaireForm.css";
+import Footer from "./Footer";
 
 const QuestionnaireForm = () => {
   const { id } = useParams();
@@ -536,7 +537,8 @@ const QuestionnaireForm = () => {
 };
 
   return (
-    <Container>
+    <>
+   
       <Row className="justify-content-center">
         <Col xs="12" md="10" className="mb-3">
           <MyNavbar className ="navbar"/>
@@ -1274,7 +1276,9 @@ const QuestionnaireForm = () => {
           </Button>
         </ModalFooter>
       </Modal>
-    </Container>
+  
+    <Footer />
+    </>
   );
 };
 

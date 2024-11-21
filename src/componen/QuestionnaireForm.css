@@ -106,7 +106,7 @@
   
     form {
       max-width: 100%; /* Membuat form mengisi seluruh lebar pada perangkat kecil */
-      padding: 10px; /* Mengurangi padding pada perangkat kecil */
+      /* padding: 10px; */
     }
   
     .btn-primary {

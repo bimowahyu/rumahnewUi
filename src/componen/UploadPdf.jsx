@@ -75,6 +75,8 @@ export const UploadPdf = () => {
     };
 
     return (
+        <>
+        <div className="footer">
         <div>
             <MyNavbar />
             <div>
@@ -110,6 +112,8 @@ export const UploadPdf = () => {
                 </tbody>
             </Table>
         </div>
+        </div>
+        </>
     );
 };
 

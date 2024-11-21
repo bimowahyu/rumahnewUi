@@ -102,32 +102,6 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
     };
       fetchData();
   }, [onStatisticsUpdate]);
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(`${process.env.REACT_APP_URL}/getquestionnaires`, {
-  //         withCredentials: true 
-  //       });
-  
-  //       if (response.status === 200) {
-  //         setData(response.data);
-  //         console.log("Data yang diterima:", response.data);
-  
-  //         const calculatedStatistics = calculateStatistics(response.data);
-  //         if (onStatisticsUpdate) {
-  //           onStatisticsUpdate(calculatedStatistics);
-  //         }
-  //       } else {
-  //         console.error("Error fetching data: ", response.statusText);
-  //         setError("Terjadi kesalahan saat memuat data.");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching data", error);
-  //       setError("Terjadi kesalahan saat memuat data.");
-  //     }
-  //   };
-  
-  //   fetchData();
-  // }, [onStatisticsUpdate]);
   //filter rumah kosong
   const fetchData = async () => {
     try {
@@ -281,22 +255,6 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
     Sekongkang: ["Talonang", "Tatar", "Ai Kangkung", "Sekongkang Atas", "Tongo", "Kemuning", "Sekongkang Bawah"],
   };
 
-  // const handleFilterChange = (e) => {
-  //   const { name, value } = e.target;
-
-  //   if (name === "kecamatan") {
-  //     setFilters({
-  //       ...filters,
-  //       kecamatan: value,
-  //       desaKelurahan: "",
-  //     });
-  //   } else {
-  //     setFilters({
-  //       ...filters,
-  //       [name]: value,
-  //     });
-  //   }
-  // };
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters({
@@ -322,22 +280,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
     }
   };
 
-  // const filteredData = data.filter(
-  //   (item) =>
-  //     (filters.kecamatan === "" || filters.kecamatan === "Semua Kecamatan" || item.kecamatan.includes(filters.kecamatan)) &&
-  //     (filters.desaKelurahan ? item.desaKelurahan.includes(filters.desaKelurahan) : true) &&
-  //     (filters.kategori === "" || item.kategori === filters.kategori) &&
-  //     // (filters.jenis === "" || item.jenis === filters.jenis) &&
-  //     (filters.status === "" || item.status === filters.status) 
 
-  // const filteredData = data.filter(item => {
-  //   const isKecamatanMatch = filters.kecamatan ? item.kecamatan === filters.kecamatan || filters.kecamatan === "Semua Kecamatan" : true;
-  //   const isKategoriMatch = filters.kategori ? item.kategori === filters.kategori : true;
-  //   // const isUserMatch = filters.user ? item.user === filters.user : true;
-  //   const isUserMatch = filters.user ? item.Admin?.username === filters.user : true; // Change this line
-  //   const isStatusMatch = filters.statusrumah ? item.statusrumah === filters.statusrumah : true;
-  //   return isKecamatanMatch && isKategoriMatch && isUserMatch && isStatusMatch;
-  // });
   const filteredData = data.filter(item => {
     // Ambil nilai filter gabungan
     const [kategori, statusrumah] = filters.kategoriStatusRumah
@@ -385,17 +328,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
   const handleModalToggle = () => {
     setIsModalOpen(!isModalOpen);
   };
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setSelectedItem({ ...selectedItem, [name]: value });
-  // };
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setSelectedItem(prevItem => ({
-  //     ...prevItem,
-  //     [name]: value
-  //   }));
-  // };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     
@@ -495,27 +428,6 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
     }
   };
   
-  // const handleGetCoordinates = () => {
-  //   if (navigator.geolocation) {
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         const { latitude, longitude } = position.coords;
-  //         setSelectedItem((prevData) => ({
-  //           ...prevData,
-  //           titikKoordinatRumah: `${latitude}, ${longitude}`,
-  //           manualTitikKoordinatRumah: "", // Kosongkan input manual jika koordinat otomatis diisi
-  //         }));
-  //       },
-  //       (error) => {
-  //         setErrorMessage("Error getting coordinates: " + error.message);
-  //         setModalOpen(true); // Tampilkan modal error
-  //       }
-  //     );
-  //   } else {
-  //     setErrorMessage("Geolocation is not supported by this browser.");
-  //     setModalOpen(true); // Tampilkan modal error
-  //   }
-  // };
   const handleGetCoordinates = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -537,39 +449,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
       setModalOpen(true); 
     }
   };
-  //upload
-  // const handleFileChange = (e) => {
-  //   setSelectedFile(e.target.files[0]);
-  // };
 
-  // // Fungsi untuk membuka dialog pemilihan file
-  // const handleChooseFile = () => {
-  //   document.getElementById("fileInput").click();
-  // };
-  // const handleUploadExcel = async () => {
-  //   if (!selectedFile) {
-  //     alert("Silakan pilih file untuk diunggah.");
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-  //   formData.append("file", selectedFile);
-
-  //   try {
-  //     await axios.post(`${process.env.REACT_APP_URL}/uploadexcel`, formData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //       withCredentials: true,
-  //     });
-
-  //     alert("File berhasil diunggah!");
-  //     setSelectedFile(null);
-  //   } catch (error) {
-  //     console.error("Error uploading file:", error);
-    
-  //   }
-  // };
   const handleButtonClick = () => {
     document.getElementById("fileInput").click();
   };
@@ -701,6 +581,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
   return (
    <div>
      <MyNavbar />
+     <div style={{margin : "10px"}}>
     <Container fluid className="data-recap-page p-6">
       
       <Row className="justify-content-center">
@@ -1093,18 +974,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
           {/* <FormGroup>
             <Label for="desaKelurahan">Desa/Kelurahan</Label>
             <Input type="text" name="desaKelurahan" value={selectedItem.desaKelurahan || ""} onChange={handleInputChange} />
-          </FormGroup> */} <FormGroup>
-              <Label for="desaKelurahan">13. Desa/Kelurahan</Label>
-              <Input type="select" name="desaKelurahan" id="desaKelurahan" value={selectedItem.desaKelurahan} onChange={handleInputChange}>
-                <option value="">Pilih</option>
-                {desaOptions.map((desa, index) => (
-                  <option key={index} value={desa}>
-                    {desa}
-                  </option>
-                ))}
-              </Input>
-              {errors.desaKelurahan && <div className="error-message">{errors.desaKelurahan}</div>}
-            </FormGroup>
+          </FormGroup> */} 
 
           {/* <FormGroup>
             <Label for="kategori">Kategori</Label>
@@ -1793,6 +1663,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
         </Col>
       </Row>
     </Container>
+    </div>
     </div>
   );
 };

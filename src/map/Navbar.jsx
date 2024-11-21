@@ -8,10 +8,10 @@ const MyNavbar = () => {
   const navigate = useNavigate();
 
   return (
-    <Navbar bg="primary" variant="dark" expand="lg" className="p-3">
+    <Navbar variant="dark" expand="lg" className="p-3">
     <Navbar.Brand href="/recap" className="d-flex align-items-center brand-content flex-grow-1">
       <img src="/images/logobaru.png" alt="Logo Aplikasi" className="homelogo" />
-      <span className="brand-text">Dinas Perumahan dan Permukiman</span>
+      <span className="brand-text">Sistem Informasi Pendataan Kualitas Rumah</span>
     </Navbar.Brand>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">

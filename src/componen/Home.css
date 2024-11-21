@@ -1,209 +1,209 @@
 /* Container styling with a more modern gradient and layout */
 .home-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: linear-gradient(135deg, #1abc9c, #3498db);
-    /* background-color:darkslategrey; */
-    min-height: 100vh;
-    color: #ffffff;
-    font-family: "Poppins", sans-serif;
-    /* padding: 20px; */
-  }
-  
-  /* Carousel styling for a sleeker look */
-  .home-carousel {
-    position: relative;
-    width: 100%;
-    max-height: 450px;
-    overflow: hidden;
-    /* border-radius: 10px; */
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
-  }
-  
-  .home-carousel .carousel .slide img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 10px;
-  }
-  
-  /* Overlay with enhanced styling */
-  .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    text-align: center;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 20px;
-    /* border-radius: 10px; */
-  }
-  
-  .home-logo {
-    max-width: 120px;
-    height: auto;
-    margin-bottom: 15px;
-    animation: logoFadeIn 2s ease-in-out;
-  }
-  
-  @keyframes logoFadeIn {
-    0% {
-      transform: scale(0);
-      opacity: 0;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-  
-  .app-title {
-    font-size: 2.5rem;
-    margin: 0;
-    padding: 5px 10px;
-    background: rgba(0, 0, 0, 0.5);
-    /* border-radius: 8px; */
-    animation: titleSlideIn 2s ease-in-out;
-  }
-  
-  @keyframes titleSlideIn {
-    0% {
-      transform: translateY(-50px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-  
-  /* Button container with a more dynamic layout */
-  .home-text-container {
-    margin: 20px auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-  }
-  
-  .home-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    padding: 15px 25px;
-    border-radius: 8px;
-    border: 1px solid #ffffff;
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    backdrop-filter: blur(10px);
-  }
-  
-  .home-button:hover {
-    background-color: rgba(255, 255, 255, 0.4);
-    transform: scale(1.05);
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
-  }
-  
-  .home-icon {
-    margin-right: 10px;
-    font-size: 1.2rem;
-  }
-  
-  /* Responsive styling for smaller screens */
-  @media (max-width: 768px) {
-    .home-logo {
-      max-width: 70px;
-    }
-  
-    .app-title {
-      font-size: 2rem;
-    }
-  
-    .home-text-container {
-      flex-direction: column;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .home-carousel .carousel .slide img {
-      height: 250px;
-    }
-  
-    .home-logo {
-      max-width: 60px;
-    }
-  
-    .app-title {
-      font-size: 1.5rem;
-      padding: 5px;
-    }
-  
-    .home-button {
-      font-size: 0.9rem;
-      padding: 10px 20px;
-    }
-  
-    .home-icon {
-      font-size: 1rem;
-    }
-  }
-  
-  /* Ensure chart is responsive and visible */
-.dashboard-widget-wrapper {
-  flex: 1 1 45%;
-  padding: 20px;
-  background-color: #f9f9f9;
-  /* border-radius: 8px; */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  font-family: 'Arial', sans-serif;
-  height: auto; /* Ensure there's no height restriction */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, #1abc9c, #3498db);
+  /* background-color:darkslategrey; */
+  min-height: 100vh;
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  /* padding: 20px; */
 }
 
-/* Media Queries for Responsiveness */
+/* Carousel styling for a sleeker look */
+.home-carousel {
+  position: relative;
+  width: 100%;
+  max-height: 450px;
+  overflow: hidden;
+  /* border-radius: 10px; */
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.home-carousel .carousel .slide img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Overlay with enhanced styling */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  /* border-radius: 10px; */
+}
+
+.home-logo {
+  max-width: 120px;
+  height: auto;
+  margin-bottom: 15px;
+  animation: logoFadeIn 2s ease-in-out;
+}
+
+@keyframes logoFadeIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.app-title {
+  font-size: 2.5rem;
+  margin: 0;
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.5);
+  /* border-radius: 8px; */
+  animation: titleSlideIn 2s ease-in-out;
+}
+
+@keyframes titleSlideIn {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Button container with a more dynamic layout */
+.home-text-container {
+  margin: 20px auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.home-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 15px 25px;
+  border-radius: 8px;
+  border: 1px solid #ffffff;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.home-button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.05);
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.home-icon {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+/* Responsive styling for smaller screens */
 @media (max-width: 768px) {
-  .dashboard-container {
-    flex-direction: column; /* Stack widgets vertically on smaller screens */
-    align-items: center;
-    width: auto;
+  .home-logo {
+    max-width: 70px;
   }
 
-  .dashboard-widget-wrapper {
-    max-width: 90%; /* Allow widgets to take up more space */
-    margin-bottom: 20px;
+  .app-title {
+    font-size: 2rem;
   }
 
-  /* Ensure chart inside the widget scales appropriately */
-  .dashboard-widget-wrapper .chart-container {
-    width: 100%; /* Make chart take full width of the container */
-    height: auto; /* Adjust chart height for mobile view */
+  .home-text-container {
+    flex-direction: column;
   }
 }
 
 @media (max-width: 480px) {
-  .dashboard-widget-wrapper {
-    max-width: 100%; /* Full width on very small screens */
+  .home-carousel .carousel .slide img {
+    height: 250px;
   }
 
-  /* Adjust the chart height and responsiveness */
-  .dashboard-widget-wrapper .chart-container {
-    height: 250px; /* Make chart smaller if needed on very small screens */
+  .home-logo {
+    max-width: 60px;
   }
+
+  .app-title {
+    font-size: 1.5rem;
+    padding: 5px;
+  }
+
+  .home-button {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+
+  .home-icon {
+    font-size: 1rem;
+  }
+}
+
+/* Ensure chart is responsive and visible */
+.dashboard-widget-wrapper {
+flex: 1 1 45%;
+padding: 20px;
+background-color: #f9f9f9;
+/* border-radius: 8px; */
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+margin-bottom: 20px;
+font-family: 'Arial', sans-serif;
+height: auto; /* Ensure there's no height restriction */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+.dashboard-container {
+  flex-direction: column; /* Stack widgets vertically on smaller screens */
+  align-items: center;
+  width: auto;
+}
+
+.dashboard-widget-wrapper {
+  max-width: 90%; /* Allow widgets to take up more space */
+  margin-bottom: 20px;
+}
+
+/* Ensure chart inside the widget scales appropriately */
+.dashboard-widget-wrapper .chart-container {
+  width: 100%; /* Make chart take full width of the container */
+  height: auto; /* Adjust chart height for mobile view */
+}
+}
+
+@media (max-width: 480px) {
+.dashboard-widget-wrapper {
+  max-width: 100%; /* Full width on very small screens */
+}
+
+/* Adjust the chart height and responsiveness */
+.dashboard-widget-wrapper .chart-container {
+  height: 250px; /* Make chart smaller if needed on very small screens */
+}
 }
 
 /* Optional: Additional chart style for better rendering */
 .chart-container canvas {
-  width: 100% !important; /* Ensure the chart canvas scales to the container */
-  height: 100% !important; /* Ensure the height of the chart scales accordingly */
+width: 100% !important; /* Ensure the chart canvas scales to the container */
+height: 100% !important; /* Ensure the height of the chart scales accordingly */
 }

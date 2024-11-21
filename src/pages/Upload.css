@@ -1,0 +1,16 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Tinggi minimum layar penuh */
+  }
+  
+  .content-wrap {
+    flex: 1; /* Membuat konten utama memenuhi ruang yang tersedia */
+  }
+  
+  footer {
+    background-color: #f8f9fa; /* Contoh warna latar belakang */
+    text-align: center;
+    padding: 10px;
+  }
+  

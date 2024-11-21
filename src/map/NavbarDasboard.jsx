@@ -14,7 +14,7 @@ export const NavbarDasboard = () => {
         <img src="/images/logobaru.png" alt="Logo Aplikasi" className="homelogo" />
         {/* Navbar text */}
         <span className="brand-text" style={{ color: 'white', marginLeft: '10px' }}>
-          Dinas Perumahan dan Permukiman
+        Sistem Informasi Pendataan Kualitas Rumah
         </span>
       </Navbar.Brand>
       {/* Toggle Button for mobile view */}
