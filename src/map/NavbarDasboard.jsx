@@ -8,12 +8,13 @@ export const NavbarDasboard = () => {
   // const navigate = useNavigate();
 
   return (
-    <Navbar bg="primary" variant="dark" expand="lg" className="p-3">
+    // <Navbar bg="primary" variant="dark" expand="lg" className="p-3">
+    <Navbar bg="primary" variant="dark" expand="lg" className="p-3 justify-content-between">
       <Navbar.Brand href="/" className="d-flex align-items-center brand-content">
         {/* Logo */}
         <img src="/images/logobaru.png" alt="Logo Aplikasi" className="homelogo" />
         {/* Navbar text */}
-        <span className="brand-text" style={{ color: 'white', marginLeft: '10px' }}>
+        <span className="brand-text" style={{ color: 'white', marginLeft: '1px' }}>
         Sistem Informasi Pendataan Kualitas Rumah
         </span>
       </Navbar.Brand>

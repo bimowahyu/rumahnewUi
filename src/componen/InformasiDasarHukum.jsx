@@ -64,8 +64,11 @@ function InformasiDasarHukum() {
 
   return (
     <>
-    <div>
+   
       <NavbarDasboard />
+      <div>
+        <div>
+          <div>
       <div className="info-container">
         <h1 className="info-title">Sistem Informasi Pendataan Kualitas Rumah (SIDALIMAH)</h1>
 
@@ -225,6 +228,9 @@ function InformasiDasarHukum() {
         </div>
       </div>
     </div>
+    </div>
+    </div>
+
     <Footer />
     </>
   );

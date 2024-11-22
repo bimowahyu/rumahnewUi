@@ -142,7 +142,7 @@ const QuestionnaireForm = () => {
       BrangEne: ["Lampok", "Mujahidin", "Kalimantong", "Manemeng", "Mataiyang", "Mura"],
       Jereweh: ["Dasan Anyar", "Goa", "Beru", "Belo"],
       Maluk: ["Benete", "Bukit Damai", "Mantun", "Pasir Putih", "Maluk"],
-      Sekongkang: ["Talonang", "Tatar", "Ai Kangkung", "Sekongkang Atas", "Tongo", "Kemuning", "Sekongkang Bawah"],
+      Sekongkang: ["Talonang Baru", "Tatar", "Ai Kangkung", "Sekongkang Atas", "Tongo", "Kemuning", "Sekongkang Bawah"],
     };
 
     setDesaOptions(kecamatanDesa[formData.kecamatan.replace(/\s/g, "")] || []);
@@ -784,6 +784,7 @@ const QuestionnaireForm = () => {
                 <option value="1000000">Rp. 1.000.000</option>
                 <option value="900000">Rp. 900.000</option>
                 <option value="600000">Rp. 600.000</option>
+                <option value="0">Rp. 0</option>
               </Input>
               {errors.penghasilan && <div className="error-message">{errors.penghasilan}</div>}
             </FormGroup>

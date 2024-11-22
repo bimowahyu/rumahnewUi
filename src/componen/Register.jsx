@@ -47,8 +47,8 @@ const Register = () => {
     <>
     <div className="register-container">
       <div className="logo-container" onClick={handleLogoClick}>
-        <img src="/images/logo.png" alt="Logo Aplikasi" className="register-logo" />
-        <h3 className="app-register-title">Sistem Web Database Perumahan</h3>
+        <img src="/images/logobaru.png" alt="Logo Aplikasi" className="login-logo" />
+        <h3 className="app-register-title">Sistem Informasi Pendataan Kualitas Rumah</h3>
       </div>
       {error && <Alert color="danger">{error}</Alert>}
       {success && <Alert color="success">{success}</Alert>}
