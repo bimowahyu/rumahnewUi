@@ -20,7 +20,7 @@
     max-width: 600px; /* Limit the max width of each chart */
   }
   
-  @media (max-width: 1000px) {
+  @media (max-width: 1168px) {
     main.charts {
       flex-direction: column; /* Stack charts on mobile */
     }

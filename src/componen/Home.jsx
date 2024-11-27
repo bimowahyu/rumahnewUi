@@ -5,6 +5,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // Carousel CSS
 import "./Home.css"; 
 import { Grafik } from "./Grafik";
 import Footer from "./Footer";
+import { GrafikHome } from "./GrafikHome";
 
 function Home() {
   return (
@@ -49,17 +50,15 @@ function Home() {
   
     {/* Dashboard Widgets */}
     <div className="home-text-container">
-      <div>
-      <Grafik />
-      </div>
+      
+    <GrafikHome />
+     
     </div>
   
-    {/* Button Links */}
-    <div className="home-text-container">
-      {/* Link buttons */}
-    </div>
  
   </div>
+  {/* <GrafikHome />
+  <div className="home-text-container"></div> */}
     <Footer />
     </>
   );

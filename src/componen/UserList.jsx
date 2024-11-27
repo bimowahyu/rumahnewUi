@@ -25,38 +25,38 @@ export const UserList = () => {
 
   return (
     <div className="page-container">
-      {/* Navbar */}
-      <MyNavbar />
+    {/* Navbar */}
+    <MyNavbar />
 
-      {/* Konten utama */}
-      <div className="content-wrap">
-        <h2>List User</h2>
-        <p>Gunakan ID untuk input data manual melalui Excel</p>
-        <Table bordered hover responsive>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Username</th>
-              {/* <th>Email</th>
-              <th>Role</th> */}
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.username}</td>
-                {/* <td>{user.email}</td>
-                <td>{user.role}</td> */}
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+    {/* Konten utama */}
+    <div className="content-wrap">
+      <div className="text">
+      <p>List User</p>
+      <p>Gunakan ID untuk input data manual melalui Excel</p>
       </div>
+    
 
-      {/* Footer tetap di bawah */}
-      <Footer />
+      <Table bordered hover responsive>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.username}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </div>
+
+    {/* Footer tetap di bawah */}
+    <Footer />
+  </div>
   );
 };
 

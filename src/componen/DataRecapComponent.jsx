@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaEdit, FaEye, FaTrash,FaHome } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrash,FaHome,FaPlus } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import moment from "moment/moment";
 import { useSelector } from "react-redux";
@@ -595,72 +595,75 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
       )}
       <Row className="justify-content-center">
         <Col xs={12} md={8}>
-          <div className="filters mb-3">
-            <label>
-              Kecamatan:
-              <select name="kecamatan" value={filters.kecamatan} onChange={handleFilterChange}>
-                <option value="">Pilih Kecamatan</option>
-                <option value="Semua Kecamatan">Semua Kecamatan</option>
-                {Object.keys(kecamatanOptions).map((kecamatan) => (
-                  <option key={kecamatan} value={kecamatan}>
-                    {kecamatan}
-                  </option>
-                ))}
-              </select>
-            </label>
-            {filters.kecamatan && filters.kecamatan !== "Semua Kecamatan" && (
-              <label>
-                Desa/Kelurahan:
-                <select name="desaKelurahan" value={filters.desaKelurahan} onChange={handleFilterChange}>
-                  <option value="">Pilih Desa/Kelurahan</option>
-                  {kecamatanOptions[filters.kecamatan].map((desa) => (
-                    <option key={desa} value={desa}>
-                      {desa}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            )}
-            {/* <label>
-            Kategori:
-            <select name="kategori" value={filters.kategori} onChange={handleFilterChange}>
-              <option value="">Pilih Kategori</option>
-              <option value="Rumah Layak Huni">Rumah Layak Huni</option>
-              <option value="Rumah Tidak Layak Huni">Rumah Tidak Layak Huni</option>
-            </select>
-          </label> */}
-          <label>
-            Kategori:
-          <select name="kategoriStatusRumah" value={filters.kategoriStatusRumah} onChange={handleFilterChange}>
-            <option value="">Pilih Kategori & Status Rumah</option>
-            <option value="Rumah Layak Huni - Berpenghuni">Rumah Layak Huni - Berpenghuni</option>
-            <option value="Rumah Layak Huni - Tidak Berpenghuni">Rumah Layak Huni - Tidak Berpenghuni</option>
-            <option value="Rumah Tidak Layak Huni - Berpenghuni">Rumah Tidak Layak Huni - Berpenghuni</option>
-            <option value="Rumah Tidak Layak Huni - Tidak Berpenghuni">Rumah Tidak Layak Huni - Tidak Berpenghuni</option>
-          </select>
-          </label>
+        <div className="filters mb-3">
+  <div className="filter-item">
+    <label htmlFor="kecamatan">Kecamatan:</label>
+    <select
+      id="kecamatan"
+      name="kecamatan"
+      value={filters.kecamatan}
+      onChange={handleFilterChange}
+    >
+      <option value="">Pilih Kecamatan</option>
+      <option value="Semua Kecamatan">Semua Kecamatan</option>
+      {Object.keys(kecamatanOptions).map((kecamatan) => (
+        <option key={kecamatan} value={kecamatan}>
+          {kecamatan}
+        </option>
+      ))}
+    </select>
+  </div>
+  {filters.kecamatan && filters.kecamatan !== "Semua Kecamatan" && (
+    <div className="filter-item">
+      <label htmlFor="desaKelurahan">Desa/Kelurahan:</label>
+      <select
+        id="desaKelurahan"
+        name="desaKelurahan"
+        value={filters.desaKelurahan}
+        onChange={handleFilterChange}
+      >
+        <option value="">Pilih Desa/Kelurahan</option>
+        {kecamatanOptions[filters.kecamatan].map((desa) => (
+          <option key={desa} value={desa}>
+            {desa}
+          </option>
+        ))}
+      </select>
+    </div>
+  )}
+  <div className="filter-item">
+    <label htmlFor="kategori">Kategori:</label>
+    <select
+      id="kategori"
+      name="kategoriStatusRumah"
+      value={filters.kategoriStatusRumah}
+      onChange={handleFilterChange}
+    >
+      <option value="">Pilih Kategori & Status Rumah</option>
+      <option value="Rumah Layak Huni - Berpenghuni">Rumah Layak Huni - Berpenghuni</option>
+      <option value="Rumah Layak Huni - Tidak Berpenghuni">Rumah Layak Huni - Tidak Berpenghuni</option>
+      <option value="Rumah Tidak Layak Huni - Berpenghuni">Rumah Tidak Layak Huni - Berpenghuni</option>
+      <option value="Rumah Tidak Layak Huni - Tidak Berpenghuni">Rumah Tidak Layak Huni - Tidak Berpenghuni</option>
+    </select>
+  </div>
+  <div className="filter-item">
+    <label htmlFor="user">User:</label>
+    <select
+      id="user"
+      name="user"
+      value={filters.user}
+      onChange={handleFilterChange}
+    >
+      <option value="">Pilih User</option>
+      {userOptions.map((user) => (
+        <option key={user.id} value={user.username}>
+          {user.username}
+        </option>
+      ))}
+    </select>
+  </div>
+</div>
 
-          <label>
-            User:
-            <select name="user" value={filters.user} onChange={handleFilterChange}>
-              <option value="">Pilih User</option>
-              {userOptions.map((user) => (
-                <option key={user.id} value={user.username}>
-                  {user.username}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          {/* <label>
-            Status Rumah:
-            <select name="statusrumah" value={filters.statusrumah} onChange={handleFilterChange}>
-              <option value="">Pilih Status Rumah</option>
-              <option value="Berpenghuni">Berpenghuni</option>
-              <option value="Tidak Berpenghuni">Tidak Berpenghuni</option>
-            </select>
-          </label> */}
-          </div>
           <div className="table-wrapper">
           <Input
         type="file"
@@ -678,28 +681,57 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
       <Button color="primary" onClick={handleUploadExcel} className="me-2">
         Upload Excel
       </Button> */}
-      <input
-        type="file"
-        id="fileInput"
-        style={{ display: "none" }}
-        onChange={handleFileChange}
-      />
+    <Button
+  color="primary"
+  onClick={handleButtonClick}
+  className="me-2"
+  style={{
+    borderRadius: "10px",
+    backgroundImage: "linear-gradient(135deg, #1abc9c, #3498db)",
+    color: "#fff", // Pastikan teks tetap terlihat
+    border: "none", // Hapus border default
+  }}
+>
+  {selectedFile ? `Upload File: ${selectedFile.name}` : "Pilih dan Upload File"}
+</Button>
 
-      {/* Single button to choose and upload file */}
-      <Button color="primary" onClick={handleButtonClick}  className="me-2" style={{ borderRadius: "10px" }}>
-        {selectedFile ? `Upload File: ${selectedFile.name}` : "Pilih dan Upload File"}
-      </Button>
-            <Button color="primary" onClick={handleExportExcel} className="me-2" style={{ borderRadius: "10px" }}>Export to Excel</Button>
-          <Button color="primary" className="btn-custom text-center" style={{ borderRadius: "10px" }}>
-      <NavLink
-        to="/questionnaire"
-        className="d-flex align-items-center justify-content-center text-white"
-        style={{ textDecoration: "none" }}
-      >
-        <FaHome className="icon me-2" />
-        Tambah Data
-      </NavLink>
-    </Button>
+<Button
+  color="primary"
+  onClick={handleExportExcel}
+  className="me-2"
+  style={{
+    borderRadius: "10px",
+    backgroundImage: "linear-gradient(135deg, #1abc9c, #3498db)",
+    color: "#fff",
+    border: "none",
+  }}
+>
+  Export to Excel
+</Button>
+
+<Button
+  color="primary"
+  className="btn-custom text-center"
+  style={{
+    borderRadius: "10px",
+    backgroundImage: "linear-gradient(135deg, #1abc9c, #3498db)",
+    color: "#fff",
+    border: "none",
+  }}
+>
+  <NavLink
+    to="/questionnaire"
+    className="d-flex align-items-center justify-content-center text-white"
+    style={{
+      textDecoration: "none",
+      color: "inherit", // Pastikan teks mengikuti warna tombol
+    }}
+  >
+    <FaPlus className="icon me-2" />
+    Tambah Data
+  </NavLink>
+</Button>
+
     {/* <DashboardWidget
   content={
     <>
@@ -1001,13 +1033,13 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
               className="input-center" />
               {errors.tanggallahir && <div className="error-message">{errors.tanggallahir}</div>}
             </FormGroup> */}
-             <FormGroup>
+             {/* <FormGroup>
             <Label for="tanggallahir">4. Tanggal lahir</Label>
             <Input
                 type="text"
                 name="tanggallahir"
                 id="tanggallahir"
-                value={selectedItem.tanggallahir}
+                value={selectedItem.tanggallahir  ? moment(selectedItem.tanggallahir).format("DD/MM/YYYY") : ""}
               //   value={
               //     selectedItem.tanggallahir 
               //         ? moment(selectedItem.tanggallahir).format("DD/MM/YYYY") 
@@ -1021,8 +1053,21 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
             {errors.tanggallahir && (
                 <div className="error-message">{errors.tanggallahir}</div>
             )}
-        </FormGroup>
-
+        </FormGroup> */}
+        <Label for="tanggallahir">4. Tanggal lahir</Label>
+            <Input
+                type="text"
+                name="tanggallahir"
+                id="tanggallahir"
+                value={selectedItem.tanggallahir}
+                onChange={handleInputChange}
+                disabled={selectedItem.statusrumah === "Tidak Berpenghuni"}
+                className="input-center"
+                placeholder="DD/MM/YYYY"
+            />
+            {errors.tanggallahir && (
+                <div className="error-message">{errors.tanggallahir}</div>
+            )}
           <FormGroup>
             <Label for="jenisKelamin">5. Jenis Kelamin</Label>
             <Input type="select" name="jenisKelamin" id="jenisKelamin" value={selectedItem.jenisKelamin || ""} onChange={handleInputChange}>
@@ -1144,12 +1189,14 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
                 <option value="">Pilih</option>
                 <option value="Tidak Bekerja">Tidak Bekerja</option>
                 <option value="Pensiunan">Pensiunan</option>
+                <option value="Karyawan BUMN">Karyawan BUMN</option>
+                <option value="Wirausaha">Wirausaha</option>
                 <option value="Petani/Pekebun">Petani/Pekebun</option>
                 <option value="Nelayan">Nelayan</option>
                 <option value="Pedagang">Pedagang</option>
                 <option value="Karyawan Swasta">Karyawan Swasta</option>
                 <option value="Tukang/Montir">Tukang/Montir</option>
-                <option value="Buruh">Buruh</option>
+                <option value="Buruh Harian">Buruh Harian</option>
                 <option value="Honorer">Honorer</option>
                 <option value="TNI/POLRI">TNI/POLRI</option>
                 <option value="ASN">ASN</option>
@@ -1653,13 +1700,27 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
           </ModalFooter>
         </Modal>
       )}
-            <div className="pagination">
-              {[...Array(totalPages)].map((_, i) => (
-                <Button key={i + 1} onClick={() => handlePageChange(i + 1)} color={currentPage === i + 1 ? "primary" : "secondary"}>
-                  {i + 1}
-                </Button>
-              ))}
-            </div>
+      <div style={{ overflowX: 'auto', whiteSpace: 'nowrap', padding: '10px 0' }}>
+  <div className="pagination" style={{ display: 'inline-flex', gap: '8px' }}>
+    {[...Array(totalPages)].map((_, i) => (
+      <Button
+        key={i + 1}
+        onClick={() => handlePageChange(i + 1)}
+        color={currentPage === i + 1 ? "primary" : "secondary"}
+        style={{
+          minWidth: '40px',
+          height: '40px',
+          borderRadius: '50%',
+          fontSize: '14px',
+          fontWeight: currentPage === i + 1 ? 'bold' : 'normal',
+        }}
+      >
+        {i + 1}
+      </Button>
+    ))}
+  </div>
+</div>
+
           </div>
         </Col>
       </Row>

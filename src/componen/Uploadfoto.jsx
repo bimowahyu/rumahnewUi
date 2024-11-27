@@ -110,10 +110,15 @@ export const UploadFoto = () => {
     <div>
       <MyNavbar />
       <div style={{margin: "5px"}}>
+      <div className="mb-4">
       <h2>Upload Foto</h2>
+      </div>
 
       {/* Input untuk mencari Nama Lengkap */}
+      <div className="mb-4">
+      
       <label htmlFor="searchName">Cari Nama:</label>
+      <div className="mb-4">
       <input
         type="text"
         id="searchName"
@@ -122,6 +127,8 @@ export const UploadFoto = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="form-control my-2"
       />
+      </div>
+      </div>
 
       {/* Input untuk mencari Nomor KTP */}
       <label htmlFor="searchKTP">Cari Nomor KTP:</label>

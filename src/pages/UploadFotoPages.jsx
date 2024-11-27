@@ -23,7 +23,7 @@ export const UploadFotoPages = () => {
   return (
     <div className="page-container">
     
-    <div className="content-wrap">
+    <div>
       <UploadFoto />
     </div>
 

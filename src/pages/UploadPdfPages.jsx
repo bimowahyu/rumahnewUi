@@ -24,7 +24,7 @@ export const UploadPdfPages = () => {
   return (
     <div className="page-container">
     
-      <div className="content-wrap">
+      <div>
         <UploadPdf />
       </div>
   

@@ -28,6 +28,7 @@ function AdminDashboard() {
 
 
   return (
+    <>
     <div className="page-container">
     <header>
       {/* <p>Welcome, {user ? user.username : "Guest"}</p> */}
@@ -48,8 +49,35 @@ function AdminDashboard() {
 
                   {/* Quick Actions */}
                   <div className="quick-actions">
-                    <button onClick={() => navigate("/recap")}>Rekapitulasi</button>
-                    <button onClick={() => navigate("/questionnaire")}>Tambah Data</button>
+                  <button
+                      onClick={() => navigate("/recap")}
+                      style={{
+                        background: "linear-gradient(135deg, #1abc9c, #3498db)",
+                        color: "white",
+                        border: "none",
+                        padding: "10px 20px",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        transition: "background 0.3s ease",
+                      }}
+                    >
+                      Rekapitulasi
+                    </button>
+
+                    <button
+                      onClick={() => navigate("/questionnaire")}
+                      style={{
+                        background: "linear-gradient(135deg, #1abc9c, #3498db)",
+                        color: "white",
+                        border: "none",
+                        padding: "10px 20px",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        transition: "background 0.3s ease",
+                      }}
+                    >
+                      Tambah Data
+                    </button>
                     {user && user.role === "admin" && (
                       <>
                         <button onClick={() => navigate("/register")}>Register</button>
@@ -65,7 +93,10 @@ function AdminDashboard() {
       </div>
     </main>
   </div>
-  
+  <div className="new">
+
+  </div>
+  </>
   );
 }
 

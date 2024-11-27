@@ -121,7 +121,7 @@
 }
 
 /* Responsive styling for smaller screens */
-@media (max-width: 768px) {
+@media (max-width: 1168px) {
   .home-logo {
     max-width: 70px;
   }
@@ -206,4 +206,7 @@ height: auto; /* Ensure there's no height restriction */
 .chart-container canvas {
 width: 100% !important; /* Ensure the chart canvas scales to the container */
 height: 100% !important; /* Ensure the height of the chart scales accordingly */
+}
+.grafik2{
+  width: 100%;
 }

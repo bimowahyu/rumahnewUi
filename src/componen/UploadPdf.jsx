@@ -80,10 +80,11 @@ export const UploadPdf = () => {
         <div>
             <MyNavbar />
             <div>
-            <p>Upload PDF Informasi Dan Dasar Hukum</p>
+           
             </div>
             
             <form onSubmit={handleUpload}>
+            <p>Upload PDF Informasi Dan Dasar Hukum</p>
                 <input type="file" accept="application/pdf" onChange={handleFileChange} ref={fileInputRef}/>
                 <button type="submit">Upload PDF</button>
             </form>

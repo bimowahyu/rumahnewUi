@@ -19,7 +19,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 ChartJS.register(ChartDataLabels);
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export const Grafik = () => {
+export const GrafikHome = () => {
     const navigate = useNavigate();
   // const [username, setUsername] = useState("");
   const [backlogCounts, setBacklogCounts] = useState([]);

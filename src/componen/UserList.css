@@ -1,16 +1,74 @@
+/* Tata letak umum */
 .page-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Memastikan kontainer mencakup seluruh tinggi layar */
-  }
-  
-  .content-wrap {
-    flex: 1; /* Membuat konten utama mengambil sisa ruang vertikal */
-  }
-  
-  footer {
-    background-color: #f8f9fa; /* Warna latar belakang untuk footer */
-    text-align: center;
-    padding: 10px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Tinggi penuh layar */
+}
+
+.content-wrap {
+  flex: 1;
+  padding: 20px;
+  background-color: #f8f9fa; /* Latar belakang terang */
+}
+
+/* Upload Form */
+.upload-form {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Jarak antar elemen */
+  margin-bottom: 20px;
+}
+
+.file-input {
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.upload-button {
+  background: linear-gradient(135deg, #1abc9c, #3498db);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.upload-button:hover {
+  background: linear-gradient(135deg, #3498db, #1abc9c);
+}
+
+/* Pesan */
+.message {
+  margin-top: 10px;
+  color: green;
+  font-weight: bold;
+}
+
+/* Tabel */
+table {
+  margin-top: 20px;
+}
+
+.delete-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
+/* Footer */
+footer {
+  background-color: #343a40;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  margin-top: auto; /* Posisi tetap di bawah */
+}

@@ -14,4 +14,37 @@
     text-transform: capitalize; /* Membuat huruf kapital di awal setiap kata */
     padding: 8px; /* Opsional: Memberikan padding agar terlihat lebih rapi */
   }
+  .filters {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Jarak antar elemen filter */
+    margin: 1rem 0;
+  }
+  
+  .filter-item {
+    display: flex;
+    flex-direction: column; /* Vertikal untuk label dan input */
+    gap: 0.5rem; /* Jarak antara label dan input */
+  }
+  
+  label {
+    font-weight: bold; /* Membuat label lebih menonjol */
+    font-size: 0.9rem;
+    color: #333;
+  }
+  
+  select {
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background-color: #fff;
+    width: 100%; /* Pastikan dropdown mengambil lebar penuh */
+  }
+  
+  select:focus {
+    outline: none;
+    border-color: #3498db; /* Warna saat fokus */
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+  }
   

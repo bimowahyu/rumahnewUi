@@ -734,12 +734,14 @@ const QuestionnaireForm = () => {
                 <option value="">Pilih</option>
                 <option value="Tidak Bekerja">Tidak Bekerja</option>
                 <option value="Pensiunan">Pensiunan</option>
+                <option value="Karyawan BUMN">Karyawan BUMN</option>
+                <option value="Wirausaha">Wirausaha</option>
                 <option value="Petani/Pekebun">Petani/Pekebun</option>
                 <option value="Nelayan">Nelayan</option>
                 <option value="Pedagang">Pedagang</option>
                 <option value="Karyawan Swasta">Karyawan Swasta</option>
                 <option value="Tukang/Montir">Tukang/Montir</option>
-                <option value="Buruh">Buruh</option>
+                <option value="Buruh Harian">Buruh Harian</option>
                 <option value="Honorer">Honorer</option>
                 <option value="TNI/POLRI">TNI/POLRI</option>
                 <option value="ASN">ASN</option>
