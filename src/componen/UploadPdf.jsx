@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Button, Table } from 'react-bootstrap';
 import MyNavbar from '../map/Navbar';
+import './Pdf.css'
 
 export const UploadPdf = () => {
     const [pdfs, setPdfs] = useState([]);
@@ -77,44 +78,47 @@ export const UploadPdf = () => {
     return (
         <>
         <div className="footer">
-        <div>
+          <div>
             <MyNavbar />
-            <div>
-           
-            </div>
-            
+            <div></div>
+      
             <form onSubmit={handleUpload}>
-            <p>Upload PDF Informasi Dan Dasar Hukum</p>
-                <input type="file" accept="application/pdf" onChange={handleFileChange} ref={fileInputRef}/>
-                <button type="submit">Upload PDF</button>
+              <p>Upload PDF Informasi Dan Dasar Hukum</p>
+              <input
+                type="file"
+                accept="application/pdf"
+                onChange={handleFileChange}
+                ref={fileInputRef}
+              />
+              <button type="submit">Upload PDF</button>
             </form>
             {message && <p>{message}</p>}
-            
+      
             <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama File</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {pdfs.map((pdf, index) => (
-                        <tr key={pdf.id}>
-                            <td>{index + 1}</td>
-                            <td>{pdf.filename}</td>
-                            <td>
-                                <Button variant="warning" onClick={() => deletePdf(pdf.id)}>
-                                    Hapus
-                                </Button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Nama File</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pdfs.map((pdf, index) => (
+                  <tr key={pdf.id}>
+                    <td>{index + 1}</td>
+                    <td className="break-word">{pdf.filename}</td>
+                    <td>
+                      <Button variant="warning" onClick={() => deletePdf(pdf.id)}>
+                        Hapus
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
             </Table>
+          </div>
         </div>
-        </div>
-        </>
+      </>      
     );
 };
 
