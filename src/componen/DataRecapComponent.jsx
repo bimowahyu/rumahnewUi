@@ -993,30 +993,8 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
                 {errors.statusrumah && <div className="error-message">{errors.statusrumah}</div>}
               </FormGroup>
         
-          <FormGroup>
-            <Label for="namaLengkapKK">Nama Lengkap KK</Label>
-            <Input type="text" name="namaLengkapKK" value={selectedItem.namaLengkapKK || ""} onChange={handleInputChange} />
-          </FormGroup>
+         
           
-          {/* <FormGroup>
-            <Label for="alamatRumah">Alamat Rumah</Label>
-            <Input type="text" name="alamatRumah" value={selectedItem.alamatRumah || ""} onChange={handleInputChange} />
-          </FormGroup> */}
-
-          {/* <FormGroup>
-            <Label for="desaKelurahan">Desa/Kelurahan</Label>
-            <Input type="text" name="desaKelurahan" value={selectedItem.desaKelurahan || ""} onChange={handleInputChange} />
-          </FormGroup> */} 
-
-          {/* <FormGroup>
-            <Label for="kategori">Kategori</Label>
-            <Input type="select" name="kategori" value={selectedItem.kategori || ""} onChange={handleInputChange}>
-              <option value="Rumah Layak Huni">Rumah Layak Huni</option>
-              <option value="Rumah Tidak Layak Huni">Rumah Tidak Layak Huni</option>
-            </Input>
-          </FormGroup> */}
-
-          {/* Additional Form Fields */}
           <FormGroup>
             <Label for="nomorUrut">1. Nomor Data</Label>
             <Input type="number" name="nomorUrut" id="nomorUrut" value={selectedItem.nomorUrut || ""} onChange={handleInputChange} />
@@ -1026,37 +1004,13 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
             <Label for="nomorRumahPadaPeta">2. Nomor Peta</Label>
             <Input type="number" name="nomorRumahPadaPeta" id="nomorRumahPadaPeta" value={selectedItem.nomorRumahPadaPeta || ""} onChange={handleInputChange} />
           </FormGroup>
-          {/* <FormGroup>
-              <Label for="tanggallahir">4. Tanggal lahir</Label>
-              <Input type="date" name="tanggallahir" id="tanggallahir" value={selectedItem.tanggallahir} onChange={handleInputChange} 
-              //  disabled={formData.statusrumah === "Tidak Berpenghuni"}
-              className="input-center" />
-              {errors.tanggallahir && <div className="error-message">{errors.tanggallahir}</div>}
-            </FormGroup> */}
-             {/* <FormGroup>
-            <Label for="tanggallahir">4. Tanggal lahir</Label>
-            <Input
-                type="text"
-                name="tanggallahir"
-                id="tanggallahir"
-                value={selectedItem.tanggallahir  ? moment(selectedItem.tanggallahir).format("DD/MM/YYYY") : ""}
-              //   value={
-              //     selectedItem.tanggallahir 
-              //         ? moment(selectedItem.tanggallahir).format("DD/MM/YYYY") 
-              //         : ""
-              // }
-                onChange={handleInputChange}
-                disabled={selectedItem.statusrumah === "Tidak Berpenghuni"}
-                className="input-center"
-                placeholder="DD/MM/YYYY"
-            />
-            {errors.tanggallahir && (
-                <div className="error-message">{errors.tanggallahir}</div>
-            )}
-        </FormGroup> */}
+          <FormGroup>
+            <Label for="namaLengkapKK">3. Nama Lengkap KK</Label>
+            <Input type="text" name="namaLengkapKK" value={selectedItem.namaLengkapKK || ""} onChange={handleInputChange} />
+          </FormGroup>
         <Label for="tanggallahir">4. Tanggal lahir</Label>
             <Input
-                type="text"
+                type="date"
                 name="tanggallahir"
                 id="tanggallahir"
                 value={selectedItem.tanggallahir}
