@@ -783,14 +783,22 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
         <td>{item.kecamatan}</td>
         <td>{item.kategori}</td>
         <td>
-          <FaEye
+          {/* <FaEye
             onClick={item.statusrumah !== "Tidak Berpenghuni" ? () => handleToggleExpand(index) : null}
             style={{
               cursor: item.statusrumah !== "Tidak Berpenghuni" ? "pointer" : "not-allowed",
               color: item.statusrumah !== "Tidak Berpenghuni" ? "#007bff" : "#d6d6d6",
               opacity: item.statusrumah === "Tidak Berpenghuni" ? 0.5 : 1,
             }}
-          />
+          /> */}
+          <FaEye
+              onClick={() => handleToggleExpand(index)}
+              style={{
+                cursor: "pointer",
+                color: "#007bff",
+              }}
+            />
+
         </td>
         <td>
                 <FaEye style={{ cursor: "pointer" }} onClick={() => handleFotoClick(item.id)} />

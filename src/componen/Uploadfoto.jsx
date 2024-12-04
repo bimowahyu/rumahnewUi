@@ -94,8 +94,12 @@ export const UploadFoto = () => {
       alert(response.data.message);
       navigate('/recap');
     } catch (error) {
-      console.error('Error uploading photo', error);
-      alert('Failed to upload photo');
+      console.error('Error uploading photo:', error); 
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(error.response.data.message); 
+      } else {
+        alert('Terjadi kesalahan saat mengunggah foto. Silakan coba lagi.');
+      }
     }
   };
 
