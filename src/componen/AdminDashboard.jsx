@@ -63,6 +63,20 @@ function AdminDashboard() {
                     >
                       Rekapitulasi
                     </button>
+                    <button
+                      onClick={() => navigate("/maps")}
+                      style={{
+                        background: "linear-gradient(135deg, #1abc9c, #3498db)",
+                        color: "white",
+                        border: "none",
+                        padding: "10px 20px",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        transition: "background 0.3s ease",
+                      }}
+                    >
+                      Sebaran Lokasi Rumah
+                    </button>
 
                     <button
                       onClick={() => navigate("/questionnaire")}

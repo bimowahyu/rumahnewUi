@@ -1,0 +1,25 @@
+
+
+.map-container {
+  flex: 1;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.leaflet-container {
+  width: 100% !important;
+  height: calc(100vh - 120px) !important; /* Adjust based on navbar + footer height */
+}
+
+.navbar {
+  z-index: 2;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  z-index: 2;
+}

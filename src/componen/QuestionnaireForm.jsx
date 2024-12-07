@@ -75,6 +75,7 @@ const QuestionnaireForm = () => {
     namaSurveyor: "", // Otomatisasi nama surveyor
     kategori: "", // Otomatisasi kategori
     score: 0, // Otomatisasi score
+    catatan:""
   });
 
   const [errors, setErrors] = useState({});
@@ -211,8 +212,17 @@ const QuestionnaireForm = () => {
       "namaSurveyor",
     ];
 
+    // requiredFields.forEach((field) => {
+    //   if (!formData[field]) {
+    //     newErrors[field] = `${field.replace(/([A-Z])/g, " $1").toUpperCase()} tidak boleh kosong.`;
+    //   }
+    // });
     requiredFields.forEach((field) => {
-      if (!formData[field]) {
+      if (field === "jumlahJamban" && formData.kepemilikanKamarMandiDanJamban === "Tidak Ada") {
+        return;
+      }
+    
+      if (!formData[field] && formData[field] !== 0) {
         newErrors[field] = `${field.replace(/([A-Z])/g, " $1").toUpperCase()} tidak boleh kosong.`;
       }
     });
@@ -265,36 +275,210 @@ const QuestionnaireForm = () => {
   //     ...prevData,
   //     [name]: value,
   //   }));
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData ((prevData) => ({
+  //     ...prevData,
+  //     [name]: value,
+  //     // Kosongkan titikKoordinatRumah jika manualTitikKoordinatRumah diisi, dan sebaliknya
+  //     ...(name === "manualTitikKoordinatRumah" ? { titikKoordinatRumah: "" } : {}),
+  //     ...(name === "titikKoordinatRumah" ? { manualTitikKoordinatRumah: "" } : {}),
+  //   }));
+    
+  //   if (name === "jumlahKK" && parseInt(value) > 1) {
+  //     setIsBacklog(true);
+  //   } else if (name === "jumlahKK" && parseInt(value) <= 1) {
+  //     setIsBacklog(false);
+  //   }
+  
+  
+  //   // Validasi untuk nomorKK dan nomorKTP agar 16 digit
+  //   if (name === "nomorKK" || name === "nomorKTP") {
+  //     if (value.length !== 16) {
+  //       setErrors((prevErrors) => ({
+  //         ...prevErrors,
+  //         [name]: `${name === "nomorKK" ? "Nomor KK" : "Nomor KTP"} harus terdiri dari 16 digit`,
+  //       }));
+  //     } else {
+  //       setErrors((prevErrors) => ({
+  //         ...prevErrors,
+  //         [name]: "",
+  //       }));
+  //     }
+  //   } else if (!value) {
+  //     setErrors((prevErrors) => ({
+  //       ...prevErrors,
+  //       [name]: "Jawaban Tidak Boleh Kosong",
+  //     }));
+  //   } else {
+  //     setErrors((prevErrors) => ({
+  //       ...prevErrors,
+  //       [name]: "",
+  //     }));
+  //   }
+    
+  
+  //   // Jika status rumah adalah "kosong", isi field tertentu dengan "-"
+  //   if (name === "statusrumah" && value === "Tidak Berpenghuni") {
+  //     setFormData((prevData) => ({
+  //       ...prevData,
+  //       tanggallahir: null,
+  //       jenisKelamin: "0",
+  //       nomorKK: "0000000000000000",
+  //       nomorKTP: "0000000000000000",
+  //       asalKTP: "0",
+  //       jumlahKK: "0",
+  //       jumlahPenghuni: "0",
+  //       pendidikanTerakhir: "0",
+  //       pekerjaan: "0",
+  //       fungsiBangunan: "0",
+  //       penghasilan: "0",
+  //       statusKepemilikanRumah: "0",
+  //       asetRumahDiTempatLain: "0",
+  //       statusKepemilikanTanah: "0",
+  //       asetTanahDiTempatLain: "0",
+  //       sumberPenerangan: "0",
+  //       dayaListrik: "0",
+  //       bantuanPerumahan: "0",
+  //       modelRumah: "0",
+  //       pondasi: "0",
+  //       kolom: "0",
+  //       rangkaAtap: "0",
+  //       plafon: "0",
+  //       balok: "0",
+  //       sloof: "0",
+  //       pintuJendelaKonsen: "0",
+  //       ventilasi: "0",
+  //       materialLantaiTerluas: "0",
+  //       kondisiLantai: "0",
+  //       materialDindingTerluas: "0",
+  //       kondisiDinding: "0",
+  //       materialPenutupAtapTerluas: "0",
+  //       kondisiPenutupAtap: "0",
+  //       luasRumah: "0",
+  //       luasTanah: "0",
+  //       buanganAirLimbahRumahTangga: "0",
+  //       saranaPengelolaanLimbahCair: "0",
+  //       pemiliharaanSaranaPengelolaanLimbah: "0",
+  //       jenisTempatPembuanganAirTinja: "0",
+  //       kepemilikanKamarMandiDanJamban: "0",
+  //       jumlahJamban: "0",
+  //       jenisKloset: "0",
+  //       jenisTangkiSeptik: "0",
+  //       materialTangkiSeptik: "0",
+  //       alasTangkiSeptik: "0",
+  //       lubangPenyedotan: "0",
+  //       posisiTangkiSeptik: "0",
+  //       jarakTangkiSeptikDenganSumberAir: "0",
+  //       sumberAirMinum: "0"
+  //     }));
+  //   }
+  // };
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData ((prevData) => ({
-      ...prevData,
-      [name]: value,
-      // Kosongkan titikKoordinatRumah jika manualTitikKoordinatRumah diisi, dan sebaliknya
-      ...(name === "manualTitikKoordinatRumah" ? { titikKoordinatRumah: "" } : {}),
-      ...(name === "titikKoordinatRumah" ? { manualTitikKoordinatRumah: "" } : {}),
-    }));
-    if (name === "jumlahKK" && parseInt(value) > 1) {
-      setIsBacklog(true);
-    } else if (name === "jumlahKK" && parseInt(value) <= 1) {
-      setIsBacklog(false);
+  
+    setFormData((prevData) => {
+      // Logika dinamis untuk memperbarui formData
+      let updatedData = {
+        ...prevData,
+        [name]: value,
+        // Kosongkan titikKoordinatRumah jika manualTitikKoordinatRumah diisi, dan sebaliknya
+        ...(name === "manualTitikKoordinatRumah" ? { titikKoordinatRumah: "" } : {}),
+        ...(name === "titikKoordinatRumah" ? { manualTitikKoordinatRumah: "" } : {}),
+      };
+  
+      console.log("Updated Data Before Conditional Logic:", updatedData);
+
+    if (name === "kepemilikanKamarMandiDanJamban" && value === "Tidak Ada") {
+      updatedData = {
+        ...updatedData,
+        jumlahJamban: 0,
+        jenisKloset: "Tidak Ada",
+        jenisTangkiSeptik: "Tidak Ada",
+        materialTangkiSeptik: "Tidak Ada",
+        alasTangkiSeptik: "Tidak Ada",
+        lubangPenyedotan: "Tidak Ada",
+        posisiTangkiSeptik: "Tidak Ada",
+        jarakTangkiSeptikDenganSumberAir: "Tidak Ada",
+      };
     }
   
-  
-    // Validasi untuk nomorKK dan nomorKTP agar 16 digit
-    if (name === "nomorKK" || name === "nomorKTP") {
-      if (value.length !== 16) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [name]: `${name === "nomorKK" ? "Nomor KK" : "Nomor KTP"} harus terdiri dari 16 digit`,
-        }));
-      } else {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [name]: "",
-        }));
+      // Jika status rumah adalah "Tidak Berpenghuni", otomatis set semua field tertentu ke default
+      if (name === "statusrumah" && value === "Tidak Berpenghuni") {
+        updatedData = {
+          ...updatedData,
+          tanggallahir: null,
+          jenisKelamin: "0",
+          nomorKK: "0000000000000000",
+          nomorKTP: "0000000000000000",
+          asalKTP: "0",
+          jumlahKK: "0",
+          jumlahPenghuni: "0",
+          pendidikanTerakhir: "0",
+          pekerjaan: "0",
+          fungsiBangunan: "0",
+          penghasilan: "0",
+          statusKepemilikanRumah: "0",
+          asetRumahDiTempatLain: "0",
+          statusKepemilikanTanah: "0",
+          asetTanahDiTempatLain: "0",
+          sumberPenerangan: "0",
+          dayaListrik: "0",
+          bantuanPerumahan: "0",
+          modelRumah: "0",
+          pondasi: "0",
+          kolom: "0",
+          rangkaAtap: "0",
+          plafon: "0",
+          balok: "0",
+          sloof: "0",
+          pintuJendelaKonsen: "0",
+          ventilasi: "0",
+          materialLantaiTerluas: "0",
+          kondisiLantai: "0",
+          materialDindingTerluas: "0",
+          kondisiDinding: "0",
+          materialPenutupAtapTerluas: "0",
+          kondisiPenutupAtap: "0",
+          luasRumah: "0",
+          luasTanah: "0",
+          buanganAirLimbahRumahTangga: "0",
+          saranaPengelolaanLimbahCair: "0",
+          pemiliharaanSaranaPengelolaanLimbah: "0",
+          jenisTempatPembuanganAirTinja: "0",
+          kepemilikanKamarMandiDanJamban: "0",
+          jumlahJamban: "0",
+          jenisKloset: "0",
+          jenisTangkiSeptik: "0",
+          materialTangkiSeptik: "0",
+          alasTangkiSeptik: "0",
+          lubangPenyedotan: "0",
+          posisiTangkiSeptik: "0",
+          jarakTangkiSeptikDenganSumberAir: "0",
+          sumberAirMinum: "0",
+        };
       }
-    } else if (!value) {
+  
+      return updatedData;
+    });
+  
+    // Set backlog jika jumlahKK lebih dari 1
+    if (name === "jumlahKK") {
+      setIsBacklog(parseInt(value) > 1);
+    }
+  
+    // Validasi nomor KK dan nomor KTP agar 16 digit
+    if (name === "nomorKK" || name === "nomorKTP") {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]:
+          value.length !== 16
+            ? `${name === "nomorKK" ? "Nomor KK" : "Nomor KTP"} harus terdiri dari 16 digit`
+            : "",
+      }));
+    }
+  
+    if (value === "") {
       setErrors((prevErrors) => ({
         ...prevErrors,
         [name]: "Jawaban Tidak Boleh Kosong",
@@ -305,60 +489,12 @@ const QuestionnaireForm = () => {
         [name]: "",
       }));
     }
-  
-    // Jika status rumah adalah "kosong", isi field tertentu dengan "-"
-    if (name === "statusrumah" && value === "Tidak Berpenghuni") {
-      setFormData((prevData) => ({
-        ...prevData,
-        tanggallahir: null,
-        jenisKelamin: "0",
-        nomorKK: "0000000000000000",
-        nomorKTP: "0000000000000000",
-        asalKTP: "0",
-        jumlahKK: "0",
-        jumlahPenghuni: "0",
-        pendidikanTerakhir: "0",
-        pekerjaan: "0",
-        fungsiBangunan: "0",
-        penghasilan: "0",
-        statusKepemilikanRumah: "0",
-        asetRumahDiTempatLain: "0",
-        statusKepemilikanTanah: "0",
-        asetTanahDiTempatLain: "0",
-        sumberPenerangan: "0",
-        dayaListrik: "0",
-        bantuanPerumahan: "0",
-        modelRumah: "0",
-        pondasi: "0",
-        kolom: "0",
-        rangkaAtap: "0",
-        plafon: "0",
-        balok: "0",
-        sloof: "0",
-        pintuJendelaKonsen: "0",
-        ventilasi: "0",
-        materialLantaiTerluas: "0",
-        kondisiLantai: "0",
-        materialDindingTerluas: "0",
-        kondisiDinding: "0",
-        materialPenutupAtapTerluas: "0",
-        kondisiPenutupAtap: "0",
-        luasRumah: "0",
-        luasTanah: "0",
-        buanganAirLimbahRumahTangga: "0",
-        saranaPengelolaanLimbahCair: "0",
-        pemiliharaanSaranaPengelolaanLimbah: "0",
-        jenisTempatPembuanganAirTinja: "0",
-        kepemilikanKamarMandiDanJamban: "0",
-        jumlahJamban: "0",
-        jenisKloset: "0",
-        jenisTangkiSeptik: "0",
-        materialTangkiSeptik: "0",
-        alasTangkiSeptik: "0",
-        lubangPenyedotan: "0",
-        posisiTangkiSeptik: "0",
-        jarakTangkiSeptikDenganSumberAir: "0",
-        sumberAirMinum: "0"
+
+    // Pastikan "0" dan "Tidak Ada" tidak dianggap kosong
+    if (value === "0" || value === "Tidak Ada") {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: "",
       }));
     }
   };
@@ -563,7 +699,7 @@ const QuestionnaireForm = () => {
             </FormGroup>
 
             <FormGroup>
-              <Label for="nomorUrut">1. Nomor Data</Label>
+              <Label for="nomorUrut">1. Nomor Blok</Label>
               <Input type="number" name="nomorUrut" id="nomorUrut" value={formData.nomorUrut || ""} onChange={handleChange} 
               className="input-center" />
               {errors.nomorUrut && <div className="error-message">{errors.nomorUrut}</div>}
@@ -1124,7 +1260,8 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="jumlahJamban">47. Jumlah Jamban</Label>
-              <Input type="number" name="jumlahJamban" id="jumlahJamban" value={formData.jumlahJamban} onChange={handleChange} className="input-center"  disabled={formData.statusrumah === "Tidak Berpenghuni"}/>
+              <Input type="number" name="jumlahJamban" id="jumlahJamban" value={formData.jumlahJamban} onChange={handleChange} className="input-center"  disabled={formData.statusrumah === "Tidak Berpenghuni" || formData.kepemilikanKamarMandiDanJamban === "Tidak Ada"}
+ />
               {errors.jumlahJamban && <div className="error-message">{errors.jumlahJamban}</div>}
             </FormGroup>
 
@@ -1247,6 +1384,11 @@ const QuestionnaireForm = () => {
               <Label for="namaSurveyor">58. Nama Surveyor</Label>
               <Input type="text" name="namaSurveyor" id="namaSurveyor" value={formData.namaSurveyor} readOnly />
               {errors.namaSurveyor && <div className="error-message">{errors.namaSurveyor}</div>}
+            </FormGroup>
+            <FormGroup>
+              <Label for="catatan">59.Catatan</Label>
+              <Input type="text" name="catatan" id="catatan" value={formData.catatan} onChange={handleChange} className="input-center" />
+              {errors.catatan && <div className="error-message">{errors.catatan}</div>}
             </FormGroup>
 
             {/* <FormGroup>

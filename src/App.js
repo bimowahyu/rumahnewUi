@@ -13,6 +13,7 @@ import { AdminDashboardPages } from "./pages/AdminDashboardPages";
 import { SurveyorDashboardPages } from "./pages/SurveyorDashboardPages";
 import { UploadFotoPages } from "./pages/UploadFotoPages";
 import { UploadPdfPages } from "./pages/UploadPdfPages";
+import { MapsPages } from "./pages/MapsPages";
 import ResetPassword from "./componen/ResetPassword";
 import UserList from "./componen/UserList";
 
@@ -38,6 +39,7 @@ return (
         <Route path="/uploadpdf" element={<UploadPdfPages />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/userlist" element={<UserList />}/>
+        <Route path="/maps" element={<MapsPages />}/>
   </Routes>
   {/* <Footer /> */}
   <Routes>

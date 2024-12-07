@@ -344,6 +344,19 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
       } else if (name === "jumlahKK" && parseInt(value) <= 1) {
         setIsBacklog(false);
       }
+      if (name === "kepemilikanKamarMandiDanJamban" && value === "Tidak Ada") {
+        updatedData = {
+          ...updatedData,
+          jumlahJamban: 0,
+          jenisKloset: "Tidak Ada",
+          jenisTangkiSeptik: "Tidak Ada",
+          materialTangkiSeptik: "Tidak Ada",
+          alasTangkiSeptik: "Tidak Ada",
+          lubangPenyedotan: "Tidak Ada",
+          posisiTangkiSeptik: "Tidak Ada",
+          jarakTangkiSeptikDenganSumberAir: "Tidak Ada",
+        };
+      }
       
       // Jika status rumah "Tidak Berpenghuni", update beberapa field default
       if (name === "statusrumah" && value === "Tidak Berpenghuni") {
@@ -759,7 +772,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
               <thead>
               <tr className="table-header">
   <th>No</th>
-  <th>Nomor Data</th>
+  <th>Nomor Blok</th>
   <th>Nama Lengkap KK</th>
   <th>Alamat Rumah</th>
   <th>Desa/Kelurahan</th>
@@ -838,7 +851,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
                         <td colSpan="10">
                           <div className="detail-content">
                           <p>Status Rumah: {item.statusrumah}</p>
-                            <p>Nomor Urut: {item.nomorUrut}</p>
+                            <p>Nomor Blok: {item.nomorUrut}</p>
                             <p>Nomor Rumah Pada Peta: {item.nomorRumahPadaPeta}</p>
                             <p>Nama Lengkap KK: {item.namaLengkapKK}</p>
                             <p>Usia: {item.usia} Tahun</p>
@@ -902,6 +915,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
                             <p>Nama Surveyor: {item.Admin?.username || "Data tidak tersedia"}</p>
                             <p>Skor: {item.score}</p>
                             <p>Kategori: {item.kategori}</p>
+                            <p>Catatan: {item.catatan ||"Tidak ada catatan"}</p>
                           </div>
                         </td>
                       </tr>
@@ -1004,7 +1018,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
          
           
           <FormGroup>
-            <Label for="nomorUrut">1. Nomor Data</Label>
+            <Label for="nomorUrut">1. Nomor Blok</Label>
             <Input type="number" name="nomorUrut" id="nomorUrut" value={selectedItem.nomorUrut || ""} onChange={handleInputChange} />
           </FormGroup>
 
@@ -1637,6 +1651,11 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
               <Label for="tanggalPendataan">57. Tanggal Pendataan</Label>
               <Input type="date" name="tanggalPendataan" id="tanggalPendataan" value={selectedItem.tanggalPendataan} onChange={handleInputChange} className="input-center" />
               {errors.tanggalPendataan && <div className="error-message">{errors.tanggalPendataan}</div>}
+            </FormGroup>
+            <FormGroup>
+              <Label for="catatan">58. Catatan</Label>
+              <Input type="text" name="catatan" id="catatan" value={selectedItem.catatan} onChange={handleInputChange} className="input-center" />
+              {errors.catatan && <div className="error-message">{errors.catatan}</div>}
             </FormGroup>
 
             {/* <FormGroup>
