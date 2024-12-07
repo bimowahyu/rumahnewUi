@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import MyNavbar from "../map/Navbar";
 import "./Maps.css"
+import axios from "axios";
 
 // Set default Leaflet marker icons
 delete L.Icon.Default.prototype._getIconUrl;
@@ -74,25 +75,38 @@ function Maps({ selectedItem }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await fetch(`${process.env.REACT_APP_URL}/maps`);
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+        try {
+          const response = await axios.get(`${process.env.REACT_APP_URL}/maps`, {
+            withCredentials: true,
+          });
+          console.log("Fetched data:", response.data);
+          setData(response.data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
     fetchData();
   }, []);
 
   // Helper function to safely get coordinates
-  const getCoordinates = (item) => {
+//   const getCoordinates = (item) => {
+//     const koordinat = item.titikKoordinatRumah || item.manualTitikKoordinatRumah;
+//     if (koordinat && koordinat !== "-" && koordinat.trim() !== "") {
+//       return koordinat.split(",").map(Number);
+//     }
+//     return null; // Return null if no valid coordinates
+//   };
+const getCoordinates = (item) => {
     const koordinat = item.titikKoordinatRumah || item.manualTitikKoordinatRumah;
     if (koordinat && koordinat !== "-" && koordinat.trim() !== "") {
-      return koordinat.split(",").map(Number);
+      const [lat, lng] = koordinat.split(",").map(Number);
+      if (!isNaN(lat) && !isNaN(lng)) { // Validate numeric values
+        return [lat, lng];
+      }
     }
-    return null; // Return null if no valid coordinates
+    return null; // Return null if coordinates are invalid
   };
+  
 
   return (
     <>

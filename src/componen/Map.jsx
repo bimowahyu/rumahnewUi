@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import axios from "axios";
 
 // Konfigurasi icon marker default
 delete L.Icon.Default.prototype._getIconUrl;
@@ -17,15 +18,16 @@ function Maps({ selectedItem }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_URL}/maps`);
-        const result = await response.json();
-        setData(result);
+        const response = await axios.get(`${process.env.REACT_APP_URL}/maps`, {
+          withCredentials: true,
+        });
+        setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-    fetchData();
-  }, []);
+  fetchData();
+}, []);
 
   return (
     <MapContainer
