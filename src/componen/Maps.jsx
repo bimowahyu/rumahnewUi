@@ -60,15 +60,19 @@ const generateMarkerColors = (kecamatanDesa) => {
 const markerColors = generateMarkerColors(kecamatanDesa);
 
 // Function to create custom icon based on color
-const getCustomIcon = (color) =>
-  L.icon({
-    iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-${color}.png`,
-    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41],
-  });
+const getCustomIcon = (color) => {
+    const svgIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" width="36" height="36">
+      <path fill="${color}" stroke="#000" strokeWidth="1" d="M12 0C7.6 0 3.6 3.9 3.6 8.7c0 2.4 1 4.6 2.5 6.5L12 24l5.9-8.8c1.5-1.9 2.5-4.1 2.5-6.5C20.4 3.9 16.4 0 12 0zm0 12c-1.9 0-3.4-1.5-3.4-3.3s1.5-3.3 3.4-3.3 3.4 1.5 3.4 3.3S13.9 12 12 12z"/>
+    </svg>`;
+  
+    return L.divIcon({
+      className: 'custom-leaflet-marker',
+      html: svgIcon,
+      iconSize: [36, 36],
+      iconAnchor: [18, 36], // Anchor the bottom of the marker
+      popupAnchor: [0, -34], // Position popup above the marker
+    });
+  };
 
 function Maps({ selectedItem }) {
   const [data, setData] = useState([]);

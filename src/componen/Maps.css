@@ -23,3 +23,31 @@ footer {
   padding: 10px 0;
   z-index: 2;
 }
+
+.custom-leaflet-marker {
+  position: relative;
+  width: 25px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.marker-icon {
+  width: 25px;
+  height: 30px;
+  border-radius: 50% 50% 0 0; /* Top rounded for marker head */
+  background-color: blue; /* Default color */
+  position: relative;
+  z-index: 1;
+}
+
+.marker-pointer {
+  width: 0;
+  height: 0;
+  border-left: 12.5px solid transparent;
+  border-right: 12.5px solid transparent;
+  border-top: 10px solid blue; /* Same color as marker head */
+  position: absolute;
+  bottom: -10px; /* Position below marker head */
+}
