@@ -1534,13 +1534,13 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
 
             <FormGroup>
               <Label for="jumlahJamban">47. Jumlah Jamban</Label>
-              <Input type="number" name="jumlahJamban" id="jumlahJamban" value={selectedItem.jumlahJamban} onChange={handleInputChange} className="input-center" />
+              <Input type="number" name="jumlahJamban" id="jumlahJamban" value={selectedItem.jumlahJamban} onChange={handleInputChange} disabled ={selectedItem.kepemilikanKamarMandiDanJamban === "Tidak Ada"} className="input-center" />
               {errors.jumlahJamban && <div className="error-message">{errors.jumlahJamban}</div>}
             </FormGroup>
 
             <FormGroup>
               <Label for="jenisKloset">48. Jenis Kloset</Label>
-              <Input type="select" name="jenisKloset" id="jenisKloset" value={selectedItem.jenisKloset} onChange={handleInputChange}>
+              <Input type="select" name="jenisKloset" id="jenisKloset" value={selectedItem.jenisKloset} disabled ={selectedItem.kepemilikanKamarMandiDanJamban === "Tidak Ada"} onChange={handleInputChange}>
                 <option value="">Pilih</option>
                 <option value="Leher Angsa">Leher Angsa</option>
                 <option value="Cubluk/Cemplung">Cubluk/Cemplung</option>
@@ -1551,7 +1551,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
 
             <FormGroup>
               <Label for="jenisTangkiSeptik">49. Jenis Tangki Septik</Label>
-              <Input type="select" name="jenisTangkiSeptik" id="jenisTangkiSeptik" value={selectedItem.jenisTangkiSeptik} onChange={handleInputChange}>
+              <Input type="select" name="jenisTangkiSeptik" id="jenisTangkiSeptik" value={selectedItem.jenisTangkiSeptik} disabled ={selectedItem.kepemilikanKamarMandiDanJamban === "Tidak Ada"} onChange={handleInputChange}>
                 <option value="">Pilih</option>
                 <option value="Pabrikasi">Pabrikasi</option>
                 <option value="Konvensional">Konvensional</option>
@@ -1561,7 +1561,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
 
             <FormGroup>
               <Label for="materialTangkiSeptik">50. Material Tangki Septik</Label>
-              <Input type="select" name="materialTangkiSeptik" id="materialTangkiSeptik" value={selectedItem.materialTangkiSeptik} onChange={handleInputChange}>
+              <Input type="select" name="materialTangkiSeptik" id="materialTangkiSeptik" value={selectedItem.materialTangkiSeptik} disabled ={selectedItem.kepemilikanKamarMandiDanJamban === "Tidak Ada"} onChange={handleInputChange}>
                 <option value="">Pilih</option>
                 <option value="Fiber">Fiber</option>
                 <option value="Dinding Beton">Dinding Beton</option>
@@ -1573,7 +1573,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
 
             <FormGroup>
               <Label for="alasTangkiSeptik">51. Alas Tangki Septik</Label>
-              <Input type="select" name="alasTangkiSeptik" id="alasTangkiSeptik" value={selectedItem.alasTangkiSeptik} onChange={handleInputChange}>
+              <Input type="select" name="alasTangkiSeptik" id="alasTangkiSeptik" value={selectedItem.alasTangkiSeptik} disabled ={selectedItem.kepemilikanKamarMandiDanJamban === "Tidak Ada"} onChange={handleInputChange}>
                 <option value="">Pilih</option>
                 <option value="Kedap">Kedap</option>
                 <option value="Tidak Kedap">Tidak Kedap</option>
@@ -1583,7 +1583,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
 
             <FormGroup>
               <Label for="lubangPenyedotan">52. Lubang Penyedotan</Label>
-              <Input type="select" name="lubangPenyedotan" id="lubangPenyedotan" value={selectedItem.lubangPenyedotan} onChange={handleInputChange}>
+              <Input type="select" name="lubangPenyedotan" id="lubangPenyedotan" value={selectedItem.lubangPenyedotan} disabled ={selectedItem.kepemilikanKamarMandiDanJamban === "Tidak Ada"} onChange={handleInputChange}>
                 <option value="">Pilih</option>
                 <option value="Ada">Ada</option>
                 <option value="Tidak Ada">Tidak Ada</option>
@@ -1593,7 +1593,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
 
             <FormGroup>
               <Label for="posisiTangkiSeptik">53. Posisi Tangki Septik</Label>
-              <Input type="select" name="posisiTangkiSeptik" id="posisiTangkiSeptik" value={selectedItem.posisiTangkiSeptik} onChange={handleInputChange}>
+              <Input type="select" name="posisiTangkiSeptik" id="posisiTangkiSeptik" value={selectedItem.posisiTangkiSeptik} disabled ={selectedItem.kepemilikanKamarMandiDanJamban === "Tidak Ada"} onChange={handleInputChange}>
                 <option value="">Pilih</option>
                 <option value="Dalam Rumah">Dalam Rumah</option>
                 <option value="Luar Rumah">Luar Rumah</option>
@@ -1603,7 +1603,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
 
             <FormGroup>
               <Label for="jarakTangkiSeptikDenganSumberAir">54. Jarak Tangki Septik Dengan Sumber Air</Label>
-              <Input type="select" name="jarakTangkiSeptikDenganSumberAir" id="jarakTangkiSeptikDenganSumberAir" value={selectedItem.jarakTangkiSeptikDenganSumberAir} onChange={handleInputChange}>
+              <Input type="select" name="jarakTangkiSeptikDenganSumberAir" id="jarakTangkiSeptikDenganSumberAir" value={selectedItem.jarakTangkiSeptikDenganSumberAir} disabled ={selectedItem.kepemilikanKamarMandiDanJamban === "Tidak Ada"} onChange={handleInputChange}>
                 <option value="">Pilih</option>
                 <option value="9">&lt; 10 meter</option>
                 <option value="11">&gt; 10 meter</option>
