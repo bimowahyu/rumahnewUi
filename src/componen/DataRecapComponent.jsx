@@ -773,6 +773,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
               <tr className="table-header">
   <th>No</th>
   <th>Nomor Blok</th>
+  <th>Nomor Rumah Pada Peta</th>
   <th>Nama Lengkap KK</th>
   <th>Alamat Rumah</th>
   <th>Desa/Kelurahan</th>
@@ -790,6 +791,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
       <tr>
         <td>{index + 1}</td>
         <td>{item.nomorUrut}</td>
+        <td>{item.nomorRumahPadaPeta}</td>
         <td>{item.namaLengkapKK}</td>
         <td>{item.alamatRumah}</td>
         <td>{item.desaKelurahan}</td>
