@@ -66,6 +66,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [userOptions, setUserOptions] = useState([]);
   const { user } = useSelector((state) => state.authAdmin || {});
+  const [selectedKecamatan, setSelectedKecamatan] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -501,24 +502,29 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
   };
 
   
+ 
   const handleExportExcel = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_URL}/download`, {
-        responseType: "blob", // Pastikan respons dalam bentuk Blob untuk file
-        withCredentials: true,
-      });
-  
-      // Buat URL sementara untuk file unduhan
+      const response = await axios.get(
+        `${process.env.REACT_APP_URL}/download`,
+        {
+          params: { kecamatan: selectedKecamatan },
+          responseType: "blob", // Respons berupa file
+          withCredentials: true,
+        }
+      );
+
+      // Unduh file
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "questionnaires.xlsx"); // Nama file unduhan
+      link.setAttribute("download", "questionnaires.xlsx");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } catch (error) {
       console.error("Error exporting to Excel:", error);
-    alert("Hanya admin yang dapat unduh data.");
+      alert("Gagal mengunduh data. Pastikan Anda memilih kecamatan yang benar.");
     }
   };
   const handleDetailClick = async (id) => {
@@ -708,19 +714,48 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
   {selectedFile ? `Upload File: ${selectedFile.name}` : "Pilih dan Upload File"}
 </Button>
 
-<Button
-  color="primary"
-  onClick={handleExportExcel}
-  className="me-2"
-  style={{
-    borderRadius: "10px",
-    backgroundImage: "linear-gradient(135deg, #1abc9c, #3498db)",
-    color: "#fff",
-    border: "none",
-  }}
->
-  Export to Excel
-</Button>
+<div className="filter-item">
+      <label htmlFor="kecamatan" style={{ fontWeight: "bold", marginBottom: "10px" }}>
+        Pilih Kecamatan:
+      </label>
+      <select
+        id="kecamatan"
+        value={selectedKecamatan}
+        onChange={(e) => setSelectedKecamatan(e.target.value)}
+        style={{
+          width: "100%",
+          padding: "8px",
+          borderRadius: "5px",
+          border: "1px solid #ccc",
+          marginBottom: "20px",
+        }}
+      >
+        <option value="">Semua Kecamatan</option>
+        <option value="Taliwang">Taliwang</option>
+        <option value="Seteluk">Seteluk</option>
+        <option value="Poto Tano">Poto Tano</option>
+        <option value="Brang Rea">Brang Rea</option>
+        <option value="Brang Ene">Brang Ene</option>
+        <option value="Jereweh">Jereweh</option>
+        <option value="Maluk">Maluk</option>
+        <option value="Sekongkang">Sekongkang</option>
+      </select>
+      <Button
+        color="primary"
+        onClick={handleExportExcel}
+        className="me-2"
+        style={{
+          borderRadius: "10px",
+          backgroundImage: "linear-gradient(135deg, #1abc9c, #3498db)",
+          color: "#fff",
+          border: "none",
+          width: "100%",
+          padding: "10px",
+        }}
+      >
+        Export to Excel
+      </Button>
+    </div>
 
 <Button
   color="primary"
