@@ -153,96 +153,88 @@ const QuestionnaireForm = () => {
   const validateForm = () => {
     const newErrors = {};
     const requiredFields = [
-      "statusrumah",
-      "nomorUrut",
-      "nomorRumahPadaPeta",
-      "namaLengkapKK",
-      "jenisKelamin",
-      "nomorKK",
-      "nomorKTP",
-      "asalKTP",
-      "jumlahKK",
-      "jumlahPenghuni",
-      "alamatRumah",
-      "kecamatan",
-      "desaKelurahan",
-      "pendidikanTerakhir",
-      "pekerjaan",
-      "fungsiBangunan",
-      "penghasilan",
-      "statusKepemilikanRumah",
-      "asetRumahDiTempatLain",
-      "statusKepemilikanTanah",
-      "asetTanahDiTempatLain",
-      "sumberPenerangan",
-      "dayaListrik",
-      "bantuanPerumahan",
-      "modelRumah",
-      "pondasi",
-      "kolom",
-      "rangkaAtap",
-      "plafon",
-      "balok",
-      "sloof",
-      "pintuJendelaKonsen",
-      "ventilasi",
-      "materialLantaiTerluas",
-      "kondisiLantai",
-      "materialDindingTerluas",
-      "kondisiDinding",
-      "materialPenutupAtapTerluas",
-      "kondisiPenutupAtap",
-      "luasRumah",
-      "luasTanah",
-      "buanganAirLimbahRumahTangga",
-      "saranaPengelolaanLimbahCair",
-      "pemiliharaanSaranaPengelolaanLimbah",
-      "jenisTempatPembuanganAirTinja",
-      "kepemilikanKamarMandiDanJamban",
-      "jumlahJamban",
-      "jenisKloset",
-      "jenisTangkiSeptik",
-      "materialTangkiSeptik",
-      "alasTangkiSeptik",
-      "lubangPenyedotan",
-      "posisiTangkiSeptik",
-      "jarakTangkiSeptikDenganSumberAir",
-      "sumberAirMinum",
-      "tanggalPendataan",
-      "namaSurveyor",
+      { field: "statusrumah", number: 0 },
+      { field: "nomorUrut", number: 1 },
+      { field: "nomorRumahPadaPeta", number: 2 },
+      { field: "namaLengkapKK", number: 3 },
+      { field: "jenisKelamin", number: 5 },
+      { field: "nomorKK", number: 6 },
+      { field: "nomorKTP", number: 7 },
+      { field: "asalKTP", number: 8 },
+      { field: "jumlahKK", number: 9 },
+      { field: "jumlahPenghuni", number: 10 },
+      { field: "alamatRumah", number: 11 },
+      { field: "kecamatan", number: 12 },
+      { field: "desaKelurahan", number: 13 },
+      { field: "pendidikanTerakhir", number: 14 },
+      { field: "pekerjaan", number: 15 },
+      { field: "fungsiBangunan", number: 16 },
+      { field: "penghasilan", number: 17 },
+      { field: "statusKepemilikanRumah", number: 18 },
+      { field: "asetRumahDiTempatLain", number: 19 },
+      { field: "statusKepemilikanTanah", number: 20 },
+      { field: "asetTanahDiTempatLain", number: 21 },
+      { field: "sumberPenerangan", number: 22 },
+      { field: "dayaListrik", number: 23 },
+      { field: "bantuanPerumahan", number: 24 },
+      { field: "modelRumah", number: 25 },
+      { field: "pondasi", number: 26 },
+      { field: "kolom", number: 27 },
+      { field: "rangkaAtap", number: 28 },
+      { field: "plafon", number: 29 },
+      { field: "balok", number: 30 },
+      { field: "sloof", number: 31 },
+      { field: "pintuJendelaKonsen", number: 32 },
+      { field: "ventilasi", number: 33 },
+      { field: "materialLantaiTerluas", number: 34 },
+      { field: "kondisiLantai", number: 35 },
+      { field: "materialDindingTerluas", number: 36 },
+      { field: "kondisiDinding", number: 37 },
+      { field: "materialPenutupAtapTerluas", number: 38 },
+      { field: "kondisiPenutupAtap", number: 39 },
+      { field: "luasRumah", number: 40 },
+      { field: "luasTanah", number: 41 },
+      { field: "buanganAirLimbahRumahTangga", number: 42 },
+      { field: "saranaPengelolaanLimbahCair", number: 43 },
+      { field: "pemiliharaanSaranaPengelolaanLimbah", number: 44 },
+      { field: "jenisTempatPembuanganAirTinja", number: 45 },
+      { field: "kepemilikanKamarMandiDanJamban", number: 46 },
+      { field: "jumlahJamban", number: 47 },
+      { field: "jenisKloset", number: 48 },
+      { field: "jenisTangkiSeptik", number: 49 },
+      { field: "materialTangkiSeptik", number: 50 },
+      { field: "alasTangkiSeptik", number: 51 },
+      { field: "lubangPenyedotan", number: 52 },
+      { field: "posisiTangkiSeptik", number: 53 },
+      { field: "jarakTangkiSeptikDenganSumberAir", number: 54 },
+      { field: "sumberAirMinum", number: 55 },
+      { field: "tanggalPendataan", number: 57 },
+      { field: "namaSurveyor", number: 58 },
     ];
-
-    // requiredFields.forEach((field) => {
-    //   if (!formData[field]) {
-    //     newErrors[field] = `${field.replace(/([A-Z])/g, " $1").toUpperCase()} tidak boleh kosong.`;
-    //   }
-    // });
-    requiredFields.forEach((field) => {
+  
+    // Validasi setiap field
+    requiredFields.forEach(({ field, number }) => {
       if (field === "jumlahJamban" && formData.kepemilikanKamarMandiDanJamban === "Tidak Ada") {
         return;
       }
-    
+  
       if (!formData[field] && formData[field] !== 0) {
-        newErrors[field] = `${field.replace(/([A-Z])/g, " $1").toUpperCase()} tidak boleh kosong.`;
+        newErrors[field] = `(${number}) ${field.replace(/([A-Z])/g, " $1").toUpperCase()} tidak boleh kosong.`;
       }
     });
-
-    // Validasi khusus untuk Nomor KK dan Nomor KTP
+  
+    // Validasi spesifik
     if (formData.nomorKK && formData.nomorKK.length !== 16) {
-      newErrors.nomorKK = "Nomor KK harus terdiri dari 16 digit";
+      newErrors.nomorKK = "(6) Nomor KK harus terdiri dari 16 digit.";
     }
     if (formData.nomorKTP && formData.nomorKTP.length !== 16) {
-      newErrors.nomorKTP = "Nomor KTP harus terdiri dari 16 digit";
+      newErrors.nomorKTP = "(7) Nomor KTP harus terdiri dari 16 digit.";
     }
-
-    // Validasi untuk Titik Koordinat Rumah dan Manual Titik Koordinat Rumah
     if (!formData.titikKoordinatRumah && !formData.manualTitikKoordinatRumah) {
-      newErrors.titikKoordinatRumah = "Titik Koordinat Rumah atau Manual Titik Koordinat Rumah harus diisi";
+      newErrors.titikKoordinatRumah = "Titik Koordinat Rumah atau Manual Titik Koordinat Rumah harus diisi.";
     } else if (formData.titikKoordinatRumah && formData.manualTitikKoordinatRumah) {
-      newErrors.titikKoordinatRumah = "Hanya satu dari Titik Koordinat Rumah atau Manual Titik Koordinat Rumah yang boleh diisi";
+      newErrors.titikKoordinatRumah = "Hanya satu dari Titik Koordinat Rumah atau Manual Titik Koordinat Rumah yang boleh diisi.";
     }
-
-    // Validasi untuk Tanggal Pendataan
     if (formData.tanggalPendataan) {
       const tanggalPendataan = new Date(formData.tanggalPendataan);
       const hariIni = new Date();
@@ -250,21 +242,20 @@ const QuestionnaireForm = () => {
       tanggalPendataan.setHours(0, 0, 0, 0);
   
       if (tanggalPendataan > hariIni) {
-        newErrors.tanggalPendataan = "Tanggal Pendataan tidak boleh lebih dari tanggal hari ini";
+        newErrors.tanggalPendataan = "Tanggal Pendataan tidak boleh lebih dari tanggal hari ini.";
       }
     }
-
+  
+    // Set error dan tampilkan
     setErrors(newErrors);
-
-    // Jika ada error, tampilkan semua dalam satu alert
     if (Object.keys(newErrors).length > 0) {
       const errorMessages = Object.values(newErrors).join("\n");
       window.alert(`Harap perbaiki kesalahan berikut:\n\n${errorMessages}`);
       return false;
     }
-
+  
     return true;
-};
+  };
 
   // Fungsi untuk menangani perubahan input
   // const handleChange = (e) => {
@@ -865,8 +856,14 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="pekerjaan">15. Pekerjaan</Label>
-              <Input type="select" name="pekerjaan" id="pekerjaan" value={formData.pekerjaan} onChange={handleChange}
-               disabled={formData.statusrumah === "Tidak Berpenghuni"}>
+              <Input 
+                type="select" 
+                name="pekerjaan" 
+                id="pekerjaan" 
+                value={formData.pekerjaan} 
+                onChange={handleChange}
+                disabled={formData.statusrumah === "Tidak Berpenghuni"}
+              >
                 <option value="">Pilih</option>
                 <option value="Tidak Bekerja">Tidak Bekerja</option>
                 <option value="Pensiunan">Pensiunan</option>
@@ -887,9 +884,24 @@ const QuestionnaireForm = () => {
                 <option value="DPRD">DPRD</option>
                 <option value="Bupati">Bupati</option>
                 <option value="Wakil Bupati">Wakil Bupati</option>
+                <option value="manual">Manual</option> {/* Opsi manual */}
               </Input>
+
+              {/* Menampilkan input manual jika opsi 'Manual' dipilih */}
+              {formData.pekerjaan === "manual" && (
+                <Input
+                  type="text"
+                  name="pekerjaanManual"
+                  id="pekerjaanManual"
+                  value={formData.pekerjaanManual || ''}
+                  onChange={handleChange}
+                  placeholder="Masukkan pekerjaan secara manual"
+                />
+              )}
+
               {errors.pekerjaan && <div className="error-message">{errors.pekerjaan}</div>}
             </FormGroup>
+
 
             <FormGroup>
               <Label for="fungsiBangunan">16. Fungsi Bangunan</Label>
@@ -904,8 +916,13 @@ const QuestionnaireForm = () => {
 
             <FormGroup>
               <Label for="penghasilan">17. Penghasilan/Bulan</Label>
-              <Input type="select" name="penghasilan" id="penghasilan" value={formData.penghasilan} onChange={handleChange}
-               disabled={formData.statusrumah === "Tidak Berpenghuni"}
+              <Input 
+                type="select" 
+                name="penghasilan" 
+                id="penghasilan" 
+                value={formData.penghasilan} 
+                onChange={handleChange}
+                disabled={formData.statusrumah === "Tidak Berpenghuni"}
               >
                 <option value="">Pilih</option>
                 <option value="4300000">Rp. 4.300.000</option>
@@ -923,9 +940,24 @@ const QuestionnaireForm = () => {
                 <option value="900000">Rp. 900.000</option>
                 <option value="600000">Rp. 600.000</option>
                 <option value="0">Rp. 0</option>
+                <option value="manual">Manual</option> {/* Opsi manual */}
               </Input>
+
+              {/* Menampilkan input manual jika opsi 'Manual' dipilih */}
+              {formData.penghasilan === "manual" && (
+                <Input
+                  type="number"
+                  name="penghasilanManual"
+                  id="penghasilanManual"
+                  value={formData.penghasilanManual || ''}
+                  onChange={handleChange}
+                  placeholder="Masukkan penghasilan secara manual"
+                />
+              )}
+
               {errors.penghasilan && <div className="error-message">{errors.penghasilan}</div>}
             </FormGroup>
+
 
             <FormGroup>
               <Label for="statusKepemilikanRumah">18. Status Kepemilikan Rumah</Label>
@@ -1139,20 +1171,42 @@ const QuestionnaireForm = () => {
             </FormGroup>
 
             <FormGroup>
-              <Label for="materialDindingTerluas">36. Material Dinding Terluas</Label>
-              <Input type="select" name="materialDindingTerluas" id="materialDindingTerluas" value={formData.materialDindingTerluas} 
-              onChange={handleChange} disabled={formData.statusrumah === "Tidak Berpenghuni"}>
-                <option value="">Pilih</option>
-                <option value="Tembok Plesteran">Tembok Plesteran</option>
-                <option value="Tembok Belum Plesteran">Tembok Belum Plesteran</option>
-                <option value="Papan Kayu">Papan Kayu</option>
-                <option value="Kalsiplank">Kalsiplank</option>
-                <option value="Spandek">Spandek</option>
-                <option value="Bedek/Anyaman Bambu">Bedek/Anyaman Bambu</option>
-                <option value="Lainnya">Lainnya</option>
-              </Input>
-              {errors.materialDindingTerluas && <div className="error-message">{errors.materialDindingTerluas}</div>}
-            </FormGroup>
+                <Label for="materialDindingTerluas">36. Material Dinding Terluas</Label>
+                <Input 
+                  type="select" 
+                  name="materialDindingTerluas" 
+                  id="materialDindingTerluas" 
+                  value={formData.materialDindingTerluas} 
+                  onChange={handleChange} 
+                  disabled={formData.statusrumah === "Tidak Berpenghuni"}
+                >
+                  <option value="">Pilih</option>
+                  <option value="Tembok Plesteran">Tembok Plesteran</option>
+                  <option value="Tembok Belum Plesteran">Tembok Belum Plesteran</option>
+                  <option value="Triplek">Triplek</option>
+                  <option value="Kalsiboard">Kalsiboard</option>
+                  <option value="Papan Kayu">Papan Kayu</option>
+                  <option value="Kalsiplank">Kalsiplank</option>
+                  <option value="Spandek">Spandek</option>
+                  <option value="Bedek/Anyaman Bambu">Bedek/Anyaman Bambu</option>
+                  <option value="Lainnya">Lainnya</option> {/* Opsi manual */}
+                </Input>
+
+                {/* Menampilkan input manual jika opsi 'Lainnya' dipilih */}
+                {formData.materialDindingTerluas === "Lainnya" && (
+                  <Input
+                    type="text"
+                    name="materialDindingManual"
+                    id="materialDindingManual"
+                    value={formData.materialDindingManual || ''}
+                    onChange={handleChange}
+                    placeholder="Masukkan material dinding lainnya"
+                  />
+                )}
+
+                {errors.materialDindingTerluas && <div className="error-message">{errors.materialDindingTerluas}</div>}
+              </FormGroup>
+
 
             <FormGroup>
               <Label for="kondisiDinding">37. Kondisi Dinding</Label>

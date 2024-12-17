@@ -554,7 +554,6 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
         withCredentials:true
       });
       if (response.data && response.data.fotos && response.data.fotos.length > 0) {
-        // Use the path directly as returned from the backend
         setPhotoUrl(`${process.env.REACT_APP_URL}/${response.data.fotos[0].foto_rumah}`,{
           withCredentials:true
         });
@@ -716,7 +715,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
 
 <div className="filter-item">
       <label htmlFor="kecamatan" style={{ fontWeight: "bold", marginBottom: "10px" }}>
-        Pilih Kecamatan:
+        Pilih Kecamatan (Export Data):
       </label>
       <select
         id="kecamatan"
