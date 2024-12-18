@@ -258,10 +258,13 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
+    console.log('Filter changed:', name, value);
+    console.log('Current filters:', filters);
+    
     setFilters({
       ...filters,
       [name]: value,
-      ...(name === "kecamatan" && { desaKelurahan: "" }), // Reset desaKelurahan if kecamatan changes
+      ...(name === "kecamatan" && { desaKelurahan: "" }), 
     });
   };
 
@@ -288,8 +291,12 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
       ? filters.kategoriStatusRumah.split(" - ")
       : [null, null];
   
-    const isKecamatanMatch = filters.kecamatan 
+      const isKecamatanMatch = filters.kecamatan 
       ? item.kecamatan === filters.kecamatan || filters.kecamatan === "Semua Kecamatan"
+      : true;
+
+  const isDesaMatch = filters.desaKelurahan 
+      ? item.desaKelurahan === filters.desaKelurahan
       : true;
   
     const isKategoriMatch = kategori ? item.kategori === kategori : true;
@@ -299,7 +306,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
       ? item.Admin?.username === filters.user 
       : true;
   
-    return isKecamatanMatch && isKategoriMatch && isStatusMatch && isUserMatch;
+    return isKecamatanMatch && isKategoriMatch && isStatusMatch && isUserMatch && isDesaMatch;
   });
   
   // setCurrentRows(filteredData);
@@ -832,14 +839,6 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
         <td>{item.kecamatan}</td>
         <td>{item.kategori}</td>
         <td>
-          {/* <FaEye
-            onClick={item.statusrumah !== "Tidak Berpenghuni" ? () => handleToggleExpand(index) : null}
-            style={{
-              cursor: item.statusrumah !== "Tidak Berpenghuni" ? "pointer" : "not-allowed",
-              color: item.statusrumah !== "Tidak Berpenghuni" ? "#007bff" : "#d6d6d6",
-              opacity: item.statusrumah === "Tidak Berpenghuni" ? 0.5 : 1,
-            }}
-          /> */}
           <FaEye
               onClick={() => handleToggleExpand(index)}
               style={{
