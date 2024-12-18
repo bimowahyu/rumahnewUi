@@ -28,7 +28,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${process.env.REACT_APP_URL}/register`, formData);
+      await axios.post(`${process.env.REACT_APP_URL}/register`, formData,{withCredentials:true});
       setSuccess("Surveyor registered successfully");
       setError("");
       setTimeout(() => navigate("/login"), 2000);

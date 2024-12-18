@@ -696,16 +696,6 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
         style={{ display: 'none' }}
         onChange={handleFileChange}
       />
-
-      {/* Tombol untuk membuka dialog pemilihan file */}
-      {/* <Button color="primary" onClick={handleChooseFile} className="me-2">
-        Pilih File
-      </Button>
-
-      {selectedFile && <p>File yang dipilih: {selectedFile.name}</p>}
-      <Button color="primary" onClick={handleUploadExcel} className="me-2">
-        Upload Excel
-      </Button> */}
     <Button
   color="primary"
   onClick={handleButtonClick}
@@ -719,7 +709,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
 >
   {selectedFile ? `Upload File: ${selectedFile.name}` : "Pilih dan Upload File"}
 </Button>
-
+{user && user.role === "admin" &&
 <div className="filter-item">
       <label htmlFor="kecamatan" style={{ fontWeight: "bold", marginBottom: "10px" }}>
         Pilih Kecamatan (Export Data):
@@ -762,7 +752,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
         Export to Excel
       </Button>
     </div>
-
+}
 <Button
   color="primary"
   className="btn-custom text-center"
