@@ -1718,6 +1718,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
           height: '40px',
           borderRadius: '50%',
           fontSize: '14px',
+          outline: 'none',
           fontWeight: currentPage === i + 1 ? 'bold' : 'normal',
         }}
       >

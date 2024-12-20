@@ -141,6 +141,7 @@ const getCoordinates = (item) => {
                 <p><strong>Kecamatan:</strong> {item.kecamatan}</p>
                 <p><strong>Desa/Kelurahan:</strong> {item.desaKelurahan || "Tidak tersedia"}</p>
                 <p><strong>Koordinat:</strong> {item.titikKoordinatRumah || item.manualTitikKoordinatRumah}</p>
+                <p><strong>Surveyor:</strong> {item.Admin?.username || "Tidak diketahui"}</p>
               </div>
             </Popup>
           </Marker>
