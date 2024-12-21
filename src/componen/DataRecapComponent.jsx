@@ -696,6 +696,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
         style={{ display: 'none' }}
         onChange={handleFileChange}
       />
+      {user && user.role === "admin" &&
     <Button
   color="primary"
   onClick={handleButtonClick}
@@ -703,12 +704,13 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
   style={{
     borderRadius: "10px",
     backgroundImage: "linear-gradient(135deg, #1abc9c, #3498db)",
-    color: "#fff", // Pastikan teks tetap terlihat
-    border: "none", // Hapus border default
+    color: "#fff", 
+    border: "none",
   }}
 >
   {selectedFile ? `Upload File: ${selectedFile.name}` : "Pilih dan Upload File"}
 </Button>
+}
 {user && user.role === "admin" &&
 <div className="filter-item">
       <label htmlFor="kecamatan" style={{ fontWeight: "bold", marginBottom: "10px" }}>
@@ -1707,25 +1709,30 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
         </Modal>
       )}
       <div style={{ overflowX: 'auto', whiteSpace: 'nowrap', padding: '10px 0' }}>
-  <div className="pagination" style={{ display: 'inline-flex', gap: '8px' }}>
-    {[...Array(totalPages)].map((_, i) => (
-      <Button
-        key={i + 1}
-        onClick={() => handlePageChange(i + 1)}
-        color={currentPage === i + 1 ? "primary" : "secondary"}
-        style={{
-          minWidth: '40px',
-          height: '40px',
-          borderRadius: '50%',
-          fontSize: '14px',
+      <div className="pagination" style={{ display: 'inline-flex', gap: '8px' }}>
+  {[...Array(totalPages)].map((_, i) => (
+    <Button
+      key={i + 1}
+      onClick={() => handlePageChange(i + 1)}
+      color={currentPage === i + 1 ? "primary" : "secondary"}
+      sx={{
+        minWidth: '40px',   
+        height: '40px',      //
+        padding: '0',       
+        borderRadius: '4px',
+        '&:active': {
+          transform: 'none', 
+        },
+        '&:focus': {
           outline: 'none',
-          fontWeight: currentPage === i + 1 ? 'bold' : 'normal',
-        }}
-      >
-        {i + 1}
-      </Button>
-    ))}
-  </div>
+        },
+      }}
+    >
+      {i + 1}
+    </Button>
+  ))}
+</div>
+
 </div>
 
           </div>
