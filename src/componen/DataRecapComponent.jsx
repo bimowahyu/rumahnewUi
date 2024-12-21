@@ -471,27 +471,33 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
     }
   };
 
-  const handleButtonClick = () => {
-    document.getElementById("fileInput").click();
-  };
+  // const handleButtonClick = () => {
+  //   document.getElementById("fileInput").click();
+  // };
 
+  // const handleFileChange = (event) => {
+  //   const file = event.target.files[0];
+  //   setSelectedFile(file);
+  //   if (file) {
+  //     handleUploadExcel(file);  // Automatically upload once a file is selected
+  //   }
+  // };
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
-    if (file) {
-      handleUploadExcel(file);  // Automatically upload once a file is selected
-    }
   };
-
-  const handleUploadExcel = async (file) => {
-    if (!file) {
+  const handleButtonClick = () => {
+    document.getElementById("fileInput").click();
+  };
+  const handleUploadExcel = async () => {
+    if (!selectedFile) {
       alert("Silakan pilih file untuk diunggah.");
       return;
     }
-
+  
     const formData = new FormData();
-    formData.append("file", file);
-
+    formData.append("file", selectedFile);
+  
     try {
       await axios.post(`${process.env.REACT_APP_URL}/uploadexcel`, formData, {
         headers: {
@@ -499,15 +505,16 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
         },
         withCredentials: true,
       });
-
+  
       alert("File berhasil diunggah!");
-      setSelectedFile(null);
+      setSelectedFile(null); // Reset setelah berhasil upload
     } catch (error) {
       console.error("Error uploading file:", error);
-      alert("Terjadi kesalahan saat mengunggah file.");
+      alert(
+        error.response?.data?.message || "Terjadi kesalahan saat mengunggah file."
+      );
     }
   };
-
   
  
   const handleExportExcel = async () => {
@@ -691,26 +698,40 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
 
           <div className="table-wrapper">
           <Input
-        type="file"
-        id="fileInput"
-        style={{ display: 'none' }}
-        onChange={handleFileChange}
-      />
-      {user && user.role === "admin" &&
-    <Button
-  color="primary"
-  onClick={handleButtonClick}
-  className="me-2"
-  style={{
-    borderRadius: "10px",
-    backgroundImage: "linear-gradient(135deg, #1abc9c, #3498db)",
-    color: "#fff", 
-    border: "none",
-  }}
->
-  {selectedFile ? `Upload File: ${selectedFile.name}` : "Pilih dan Upload File"}
-</Button>
-}
+    type="file"
+    id="fileInput"
+    style={{ display: "none" }}
+    onChange={(e) => setSelectedFile(e.target.files[0])}
+  />
+  {user && user.role === "admin" && (
+    <div>
+      <Button
+        color="primary"
+        onClick={() => document.getElementById("fileInput").click()}
+        className="me-2"
+        style={{
+          borderRadius: "10px",
+          backgroundImage: "linear-gradient(135deg, #1abc9c, #3498db)",
+          color: "#fff",
+          border: "none",
+        }}
+      >
+        {selectedFile ? `Pilih File: ${selectedFile.name}` : "Pilih File"}
+      </Button>
+      <Button
+        color="success"
+        onClick={handleUploadExcel}
+        style={{
+          borderRadius: "10px",
+          marginLeft: "10px",
+        }}
+        disabled={!selectedFile} // Nonaktifkan tombol jika tidak ada file yang dipilih
+      >
+        Upload
+      </Button>
+    </div>
+  )}
+
 {user && user.role === "admin" &&
 <div className="filter-item">
       <label htmlFor="kecamatan" style={{ fontWeight: "bold", marginBottom: "10px" }}>
@@ -806,7 +827,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
               <tr className="table-header">
   <th>No</th>
   <th>Nomor Blok</th>
-  <th>Nomor Rumah Pada Peta</th>
+  <th>Nomor Peta</th>
   <th>Nama Lengkap KK</th>
   <th>Alamat Rumah</th>
   <th>Desa/Kelurahan</th>
