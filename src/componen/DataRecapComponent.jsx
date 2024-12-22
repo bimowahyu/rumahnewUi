@@ -48,12 +48,18 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
   const [showPhotoModal, setShowPhotoModal] = useState(false);
   const [photoUrl, setPhotoUrl] = useState('');
   const [isBacklog, setIsBacklog] = useState(false);
+  const [desaKelurahan, setDesaKelurahan] = useState("");
+  const [kecamatan, setKecamatan] = useState("");
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+const [detailData, setDetailData] = useState(null);
+
   const [filters, setFilters] = useState({
     kecamatan: "",
     desaKelurahan: "",
     kategori: "",
     user: "", 
     statusrumah: "",
+    searchName: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -149,6 +155,26 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
     }
   }
 };
+const deleteByDesa = async (desaKelurahan) => {
+  try {
+    const response = await axios.delete(`${process.env.REACT_APP_URL}/questionnaires/desa/${desaKelurahan}`);
+    alert(response.data.message);
+  } catch (error) {
+    alert(error.response?.data?.message || "Terjadi kesalahan saat menghapus data");
+  }
+};
+const handleDelete = async () => {
+  if (!desaKelurahan) {
+    alert("Pilih desaKelurahan terlebih dahulu");
+    return;
+  }
+
+  try {
+    await deleteByDesa(desaKelurahan);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   
   useEffect(() => {
@@ -212,6 +238,15 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
     fetchUsers();
   }, []);
   
+  const handleDetailModalOpen = (item) => {
+    setDetailData(item);
+    setIsDetailModalOpen(true);
+  };
+  
+  const handleDetailModalClose = () => {
+    setDetailData(null);
+    setIsDetailModalOpen(false);
+  };
   
 
   const calculateStatistics = (data) => {
@@ -305,8 +340,11 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
     const isUserMatch = filters.user 
       ? item.Admin?.username === filters.user 
       : true;
+      const isNameMatch = filters.searchName 
+      ? item.namaLengkapKK.toLowerCase().includes(filters.searchName.toLowerCase())
+      : true;
   
-    return isKecamatanMatch && isKategoriMatch && isStatusMatch && isUserMatch && isDesaMatch;
+      return isKecamatanMatch && isDesaMatch && isKategoriMatch && isStatusMatch && isUserMatch && isNameMatch;
   });
   
   // setCurrentRows(filteredData);
@@ -629,6 +667,15 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
         <Col xs={12} md={8}>
         <div className="filters mb-3">
   <div className="filter-item">
+  <label htmlFor="searchName">Cari Nama:</label>
+  <input
+    type="text"
+    id="searchName"
+    name="searchName"
+    value={filters.searchName || ""}
+    onChange={handleFilterChange}
+    placeholder="Masukkan nama lengkap"
+  />
     <label htmlFor="kecamatan">Kecamatan:</label>
     <select
       id="kecamatan"
@@ -798,7 +845,121 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
     Tambah Data
   </NavLink>
 </Button>
+{user && user.role === "admin" && 
+  <div
+  style={{
+    maxWidth: "500px",
+    margin: "20px auto",
+    padding: "20px",
+    borderRadius: "10px",
+    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+    backgroundColor: "#f9f9f9",
+  }}
+>
+  <p
+    style={{
+      textAlign: "center",
+      color: "#2c3e50",
+      fontWeight: "bold",
+      marginBottom: "20px",
+    }}
+  >
+   Hapus berdasarkan Desa/Kelurahan
+  </p>
 
+  <div style={{ marginBottom: "20px" }}>
+    <label
+      htmlFor="kecamatan"
+      style={{
+        display: "block",
+        fontWeight: "bold",
+        marginBottom: "8px",
+        color: "#34495e",
+      }}
+    >
+      Pilih Kecamatan:
+    </label>
+    <select
+      id="kecamatan"
+      value={kecamatan}
+      onChange={(e) => setKecamatan(e.target.value)}
+      style={{
+        width: "100%",
+        padding: "10px",
+        borderRadius: "5px",
+        border: "1px solid #ccc",
+      }}
+    >
+      <option value="">Pilih Kecamatan</option>
+      {Object.keys(kecamatanOptions).map((key) => (
+        <option key={key} value={key}>
+          {key}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  <div style={{ marginBottom: "20px" }}>
+    <label
+      htmlFor="desaKelurahan"
+      style={{
+        display: "block",
+        fontWeight: "bold",
+        marginBottom: "8px",
+        color: "#34495e",
+      }}
+    >
+      Pilih Desa/Kelurahan:
+    </label>
+    <select
+      id="desaKelurahan"
+      value={desaKelurahan}
+      onChange={(e) => setDesaKelurahan(e.target.value)}
+      disabled={!kecamatan}
+      style={{
+        width: "100%",
+        padding: "10px",
+        borderRadius: "5px",
+        border: "1px solid #ccc",
+        backgroundColor: kecamatan ? "#fff" : "#f0f0f0",
+      }}
+    >
+      <option value="">Pilih Desa/Kelurahan</option>
+      {kecamatan &&
+        kecamatanOptions[kecamatan].map((desa) => (
+          <option key={desa} value={desa}>
+            {desa}
+          </option>
+        ))}
+    </select>
+  </div>
+
+  <button
+    onClick={handleDelete}
+    style={{
+      width: "100%",
+      padding: "12px",
+      borderRadius: "10px",
+      border: "none",
+      backgroundImage: "linear-gradient(135deg, #1abc9c, #3498db)",
+      color: "#fff",
+      fontWeight: "bold",
+      cursor: "pointer",
+      transition: "all 0.3s ease-in-out",
+    }}
+    onMouseOver={(e) =>
+      (e.target.style.backgroundImage =
+        "linear-gradient(135deg, #16a085, #2980b9)")
+    }
+    onMouseOut={(e) =>
+      (e.target.style.backgroundImage =
+        "linear-gradient(135deg, #1abc9c, #3498db)")
+    }
+  >
+    Hapus Data
+  </button>
+</div>
+}
     {/* <DashboardWidget
   content={
     <>
@@ -851,16 +1012,12 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
         <td>{item.desaKelurahan}</td>
         <td>{item.kecamatan}</td>
         <td>{item.kategori}</td>
-        <td>
-          <FaEye
-              onClick={() => handleToggleExpand(index)}
-              style={{
-                cursor: "pointer",
-                color: "#007bff",
-              }}
-            />
-
-        </td>
+      <td>
+  <FaEye
+    style={{ cursor: "pointer", color: "#007bff" }}
+    onClick={() => handleDetailModalOpen(item)}
+  />
+</td>
         <td>
                 <FaEye style={{ cursor: "pointer" }} onClick={() => handleFotoClick(item.id)} />
               </td>
@@ -893,77 +1050,14 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
             style={{ cursor: "pointer" }}
           />
         </td>
+        
                     </tr>
+                    
                     {expandedRows.includes(index) && (
                       <tr>
                         <td colSpan="10">
                           <div className="detail-content">
-                          <p>Status Rumah: {item.statusrumah}</p>
-                            <p>Nomor Blok: {item.nomorUrut}</p>
-                            <p>Nomor Rumah Pada Peta: {item.nomorRumahPadaPeta}</p>
-                            <p>Nama Lengkap KK: {item.namaLengkapKK}</p>
-                            <p>Usia: {item.usia} Tahun</p>
-                            {/* <p>Tanggal Lahir:{item.tanggallahir}</p> */}
-                            <p>Tanggal Lahir: {item.tanggallahir ? moment(item.tanggallahir).format('DD/MM/YYYY') : 'Tidak tersedia'}</p>
-                            <p>Jenis Kelamin: {item.jenisKelamin}</p>
-                            <p>Nomor KK: {item.nomorKK}</p>
-                            <p>Nomor KTP: {item.nomorKTP}</p>
-                            <p>Asal KTP: {item.asalKTP}</p>
-                            <p>Jumlah KK: {item.jumlahKK}</p>
-                            <p>Jumlah Penghuni: {item.jumlahPenghuni}</p>
-                            <p>Alamat Rumah: {item.alamatRumah}</p>
-                            <p>Kecamatan: {item.kecamatan}</p>
-                            <p>Desa/Kelurahan: {item.desaKelurahan}</p>
-                            <p>Pendidikan Terakhir: {item.pendidikanTerakhir}</p>
-                            <p>Pekerjaan: {item.pekerjaan}</p>
-                            <p>Fungsi Bangunan: {item.fungsiBangunan}</p>
-                            <p>Penghasilan: {item.penghasilan}</p>
-                            <p>Status Kepemilikan Rumah: {item.statusKepemilikanRumah}</p>
-                            <p>Aset Rumah di Tempat Lain: {item.asetRumahDiTempatLain}</p>
-                            <p>Status Kepemilikan Tanah: {item.statusKepemilikanTanah}</p>
-                            <p>Aset Tanah di Tempat Lain: {item.asetTanahDiTempatLain}</p>
-                            <p>Sumber Penerangan: {item.sumberPenerangan}</p>
-                            <p>Daya Listrik: {item.dayaListrik}</p>
-                            <p>Bantuan Perumahan: {item.bantuanPerumahan}</p>
-                            <p>Jenis Rumah: {item.modelRumah}</p>
-                            <p>Pondasi: {item.pondasi}</p>
-                            <p>Kolom: {item.kolom}</p>
-                            <p>Rangka Atap: {item.rangkaAtap}</p>
-                            <p>Plafon: {item.plafon}</p>
-                            <p>Balok: {item.balok}</p>
-                            <p>Sloof: {item.sloof}</p>
-                            <p>Pintu/Jendela/Konsen: {item.pintuJendelaKonsen}</p>
-                            <p>Ventilasi: {item.ventilasi}</p>
-                            <p>Material Lantai Terluas: {item.materialLantaiTerluas}</p>
-                            <p>Kondisi Lantai: {item.kondisiLantai}</p>
-                            <p>Material Dinding Terluas: {item.materialDindingTerluas}</p>
-                            <p>Kondisi Dinding: {item.kondisiDinding}</p>
-                            <p>Material Penutup Atap Terluas: {item.materialPenutupAtapTerluas}</p>
-                            <p>Kondisi Penutup Atap: {item.kondisiPenutupAtap}</p>
-                            <p>Luas Rumah: {item.luasRumah}</p>
-                            <p>Luas Tanah: {item.luasTanah}</p>
-                            <p>Buangan Air Limbah Rumah Tangga: {item.buanganAirLimbahRumahTangga}</p>
-                            <p>Sarana Pengelolaan Limbah Cair: {item.saranaPengelolaanLimbahCair}</p>
-                            <p>Pemeliharaan Sarana Pengelolaan Limbah: {item.pemeliharaanSaranaPengelolaanLimbah}</p>
-                            <p>Jenis Tempat Pembuangan Air Tinja: {item.jenisTempatPembuanganAirTinja}</p>
-                            <p>Kepemilikan Kamar Mandi dan Jamban: {item.kepemilikanKamarMandiDanJamban}</p>
-                            <p>Jumlah Jamban: {item.jumlahJamban}</p>
-                            <p>Jenis Kloset: {item.jenisKloset}</p>
-                            <p>Jenis Tangki Septik: {item.jenisTangkiSeptik}</p>
-                            <p>Material Tangki Septik: {item.materialTangkiSeptik}</p>
-                            <p>Alas Tangki Septik: {item.alasTangkiSeptik}</p>
-                            <p>Lubang Penyedotan: {item.lubangPenyedotan}</p>
-                            <p>Posisi Tangki Septik: {item.posisiTangkiSeptik}</p>
-                            <p>Jarak Tangki Septik dengan Sumber Air: {item.jarakTangkiSeptikDenganSumberAir}</p>
-                            <p>Sumber Air Minum: {item.sumberAirMinum}</p>
-                            
-                            <p>Titik Koordinat Rumah: {item.titikKoordinatRumah}</p>
-                            <p>Manual Titik Koordinat Rumah: {item.manualTitikKoordinatRumah}</p>
-                            <p>Tanggal Pendataan: {item.tanggalPendataan}</p>
-                            <p>Nama Surveyor: {item.Admin?.username || "Data tidak tersedia"}</p>
-                            <p>Skor: {item.score}</p>
-                            <p>Kategori: {item.kategori}</p>
-                            <p>Catatan: {item.catatan ||"Tidak ada catatan"}</p>
+                          
                           </div>
                         </td>
                       </tr>
@@ -1040,7 +1134,87 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
           <Button color="secondary" onClick={handleClosePhotoModal}>Close</Button>
         </ModalFooter>
       </Modal>
+<Modal isOpen={isDetailModalOpen} toggle={handleDetailModalClose}>
+  <ModalHeader toggle={handleDetailModalClose}>Detail Data</ModalHeader>
+  <ModalBody>
+  {detailData ? (
+    <div>
+      <p><strong>Status Rumah:</strong> {detailData.statusrumah}</p>
+      <p><strong>Nomor Blok:</strong> {detailData.nomorUrut}</p>
+      <p><strong>Nomor Rumah Pada Peta:</strong> {detailData.nomorRumahPadaPeta}</p>
+      <p><strong>Nama Lengkap KK:</strong> {detailData.namaLengkapKK}</p>
+      <p><strong>Usia:</strong> {detailData.usia} Tahun</p>
+      <p><strong>Tanggal Lahir:</strong> {detailData.tanggallahir ? moment(detailData.tanggallahir).format('DD/MM/YYYY') : 'Tidak tersedia'}</p>
+      <p><strong>Jenis Kelamin:</strong> {detailData.jenisKelamin}</p>
+      <p><strong>Nomor KK:</strong> {detailData.nomorKK}</p>
+      <p><strong>Nomor KTP:</strong> {detailData.nomorKTP}</p>
+      <p><strong>Asal KTP:</strong> {detailData.asalKTP}</p>
+      <p><strong>Jumlah KK:</strong> {detailData.jumlahKK}</p>
+      <p><strong>Jumlah Penghuni:</strong> {detailData.jumlahPenghuni}</p>
+      <p><strong>Alamat Rumah:</strong> {detailData.alamatRumah}</p>
+      <p><strong>Kecamatan:</strong> {detailData.kecamatan}</p>
+      <p><strong>Desa/Kelurahan:</strong> {detailData.desaKelurahan}</p>
+      <p><strong>Pendidikan Terakhir:</strong> {detailData.pendidikanTerakhir}</p>
+      <p><strong>Pekerjaan:</strong> {detailData.pekerjaan}</p>
+      <p><strong>Fungsi Bangunan:</strong> {detailData.fungsiBangunan}</p>
+      <p><strong>Penghasilan:</strong> {detailData.penghasilan}</p>
+      <p><strong>Status Kepemilikan Rumah:</strong> {detailData.statusKepemilikanRumah}</p>
+      <p><strong>Aset Rumah di Tempat Lain:</strong> {detailData.asetRumahDiTempatLain}</p>
+      <p><strong>Status Kepemilikan Tanah:</strong> {detailData.statusKepemilikanTanah}</p>
+      <p><strong>Aset Tanah di Tempat Lain:</strong> {detailData.asetTanahDiTempatLain}</p>
+      <p><strong>Sumber Penerangan:</strong> {detailData.sumberPenerangan}</p>
+      <p><strong>Daya Listrik:</strong> {detailData.dayaListrik}</p>
+      <p><strong>Bantuan Perumahan:</strong> {detailData.bantuanPerumahan}</p>
+      <p><strong>Jenis Rumah:</strong> {detailData.modelRumah}</p>
+      <p><strong>Pondasi:</strong> {detailData.pondasi}</p>
+      <p><strong>Kolom:</strong> {detailData.kolom}</p>
+      <p><strong>Rangka Atap:</strong> {detailData.rangkaAtap}</p>
+      <p><strong>Plafon:</strong> {detailData.plafon}</p>
+      <p><strong>Balok:</strong> {detailData.balok}</p>
+      <p><strong>Sloof:</strong> {detailData.sloof}</p>
+      <p><strong>Pintu/Jendela/Konsen:</strong> {detailData.pintuJendelaKonsen}</p>
+      <p><strong>Ventilasi:</strong> {detailData.ventilasi}</p>
+      <p><strong>Material Lantai Terluas:</strong> {detailData.materialLantaiTerluas}</p>
+      <p><strong>Kondisi Lantai:</strong> {detailData.kondisiLantai}</p>
+      <p><strong>Material Dinding Terluas:</strong> {detailData.materialDindingTerluas}</p>
+      <p><strong>Kondisi Dinding:</strong> {detailData.kondisiDinding}</p>
+      <p><strong>Material Penutup Atap Terluas:</strong> {detailData.materialPenutupAtapTerluas}</p>
+      <p><strong>Kondisi Penutup Atap:</strong> {detailData.kondisiPenutupAtap}</p>
+      <p><strong>Luas Rumah:</strong> {detailData.luasRumah}</p>
+      <p><strong>Luas Tanah:</strong> {detailData.luasTanah}</p>
+      <p><strong>Buangan Air Limbah Rumah Tangga:</strong> {detailData.buanganAirLimbahRumahTangga}</p>
+      <p><strong>Sarana Pengelolaan Limbah Cair:</strong> {detailData.saranaPengelolaanLimbahCair}</p>
+      <p><strong>Pemeliharaan Sarana Pengelolaan Limbah:</strong> {detailData.pemeliharaanSaranaPengelolaanLimbah}</p>
+      <p><strong>Jenis Tempat Pembuangan Air Tinja:</strong> {detailData.jenisTempatPembuanganAirTinja}</p>
+      <p><strong>Kepemilikan Kamar Mandi dan Jamban:</strong> {detailData.kepemilikanKamarMandiDanJamban}</p>
+      <p><strong>Jumlah Jamban:</strong> {detailData.jumlahJamban}</p>
+      <p><strong>Jenis Kloset:</strong> {detailData.jenisKloset}</p>
+      <p><strong>Jenis Tangki Septik:</strong> {detailData.jenisTangkiSeptik}</p>
+      <p><strong>Material Tangki Septik:</strong> {detailData.materialTangkiSeptik}</p>
+      <p><strong>Alas Tangki Septik:</strong> {detailData.alasTangkiSeptik}</p>
+      <p><strong>Lubang Penyedotan:</strong> {detailData.lubangPenyedotan}</p>
+      <p><strong>Posisi Tangki Septik:</strong> {detailData.posisiTangkiSeptik}</p>
+      <p><strong>Jarak Tangki Septik dengan Sumber Air:</strong> {detailData.jarakTangkiSeptikDenganSumberAir}</p>
+      <p><strong>Sumber Air Minum:</strong> {detailData.sumberAirMinum}</p>
+      <p><strong>Titik Koordinat Rumah:</strong> {detailData.titikKoordinatRumah}</p>
+      <p><strong>Manual Titik Koordinat Rumah:</strong> {detailData.manualTitikKoordinatRumah}</p>
+      <p><strong>Tanggal Pendataan:</strong> {detailData.tanggalPendataan}</p>
+      <p><strong>Nama Surveyor:</strong> {detailData.Admin?.username || "Data tidak tersedia"}</p>
+      <p><strong>Skor:</strong> {detailData.score}</p>
+      <p><strong>Kategori:</strong> {detailData.kategori}</p>
+      <p><strong>Catatan:</strong> {detailData.catatan || "Tidak ada catatan"}</p>
+    </div>
+  ) : (
+    <p>Data tidak tersedia</p>
+  )}
+</ModalBody>
 
+  <ModalFooter>
+    <Button color="secondary" onClick={handleDetailModalClose}>
+      Tutup
+    </Button>
+  </ModalFooter>
+</Modal>
              
 
             {selectedItem && (
@@ -1728,6 +1902,7 @@ const DataRecapComponent = ({ onStatisticsUpdate }) => {
             <Button color="secondary" onClick={handleModalToggle}>Batal</Button>
           </ModalFooter>
         </Modal>
+        
       )}
       <div style={{ overflowX: 'auto', whiteSpace: 'nowrap', padding: '10px 0' }}>
       <div className="pagination" style={{ display: 'inline-flex', gap: '8px' }}>
