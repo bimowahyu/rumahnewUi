@@ -157,7 +157,7 @@ const [detailData, setDetailData] = useState(null);
 };
 const deleteByDesa = async (desaKelurahan) => {
   try {
-    const response = await axios.delete(`${process.env.REACT_APP_URL}/questionnaires/desa/${desaKelurahan}`);
+    const response = await axios.delete(`${process.env.REACT_APP_URL}/questionnaires/desa/${desaKelurahan}`,{withCredentials: true});
     alert(response.data.message);
   } catch (error) {
     alert(error.response?.data?.message || "Terjadi kesalahan saat menghapus data");
