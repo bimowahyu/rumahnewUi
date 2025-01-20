@@ -3,17 +3,20 @@ import axios from "axios";
 import MyNavbar from "../map/Navbar";
 import { Table, Button } from "reactstrap";
 import Footer from "./Footer";
-import Swal from "sweetalert2"; // Untuk notifikasi
+import Swal from "sweetalert2";
+import UpdateUserModal from "./UpdateUserModal";
+import { FaEdit, FaTrash } from "react-icons/fa"; 
 import "./UserList.css";
 
 export const UserList = () => {
   const [users, setUsers] = useState([]);
+  const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     getUsers();
   }, []);
 
-  // Fungsi untuk mendapatkan data user
   const getUsers = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_URL}/user`, {
@@ -22,10 +25,14 @@ export const UserList = () => {
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching user data:", error);
+      Swal.fire({
+        title: "Error!",
+        text: "Gagal mengambil data user",
+        icon: "error",
+      });
     }
   };
 
-  // Fungsi untuk menghapus user
   const deleteUser = async (id) => {
     try {
       const confirm = await Swal.fire({
@@ -43,7 +50,6 @@ export const UserList = () => {
           withCredentials: true,
         });
         Swal.fire("Berhasil!", "User telah dihapus.", "success");
-        // Refresh daftar user setelah penghapusan
         getUsers();
       }
     } catch (error) {
@@ -52,12 +58,20 @@ export const UserList = () => {
     }
   };
 
+  const handleUpdateClick = (user) => {
+    setSelectedUser(user);
+    setUpdateModalOpen(true);
+  };
+
+  const handleUpdateModalClose = () => {
+    setUpdateModalOpen(false);
+    setSelectedUser(null);
+  };
+
   return (
     <div className="page-container">
-      {/* Navbar */}
       <MyNavbar />
 
-      {/* Konten utama */}
       <div className="content-wrap">
         <div className="text">
           <p>List User</p>
@@ -65,33 +79,50 @@ export const UserList = () => {
         </div>
 
         <Table bordered hover responsive>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Username</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.username}</td>
-                <td>
-                  <Button
-                    color="danger"
-                    onClick={() => deleteUser(user.id)}
-                  >
-                    Hapus
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    {users.map((user) => (
+      <tr key={user.id}>
+        <td>{user.id}</td>
+        <td>{user.username}</td>
+        <td>{user.email}</td>
+        <td>{user.role}</td>
+        <td className="table-actions">
+  <Button
+    // color="primary"
+    onClick={() => handleUpdateClick(user)}
+  >
+    <FaEdit />
+  </Button>
+  <Button
+    // color="danger"
+    onClick={() => deleteUser(user.id)}
+  >
+    <FaTrash />
+  </Button>
+</td>
+
+      </tr>
+    ))}
+  </tbody>
+</Table>
+
+        <UpdateUserModal
+          isOpen={updateModalOpen}
+          toggle={handleUpdateModalClose}
+          user={selectedUser}
+          onUserUpdated={getUsers}
+        />
       </div>
 
-      {/* Footer tetap di bawah */}
       <Footer />
     </div>
   );

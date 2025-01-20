@@ -51,17 +51,19 @@ table {
   margin-top: 20px;
 }
 
-.delete-button {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  cursor: pointer;
+/* Ensure the buttons are aligned on the same row and adjust spacing */
+.table-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.delete-button:hover {
-  background-color: #c0392b;
+.table-actions .btn {
+  margin-right: 8px; /* Adjust spacing between the buttons */
+}
+
+.table-actions .btn:last-child {
+  margin-right: 0; /* Remove margin for the last button */
 }
 
 /* Footer */
