@@ -92,8 +92,6 @@ const [detailData, setDetailData] = useState(null);
     
           setData(modifiedData);
           console.log("Data yang diterima:", modifiedData);
-    
-          // If there's an onStatisticsUpdate callback, calculate and pass the statistics
           const calculatedStatistics = calculateStatistics(modifiedData);
           if (onStatisticsUpdate) {
             onStatisticsUpdate(calculatedStatistics);
@@ -203,7 +201,6 @@ const handleDelete = async () => {
         });
   
         if (response.status === 200) {
-          // Gunakan setSelectedItem untuk memperbarui nilai namaSurveyor
           setSelectedItem((prevData) => ({
             ...prevData,
             namaSurveyor: data.Admin?.username || "Data tidak tersedia",
@@ -227,7 +224,7 @@ const handleDelete = async () => {
           withCredentials: true,
         });
         if (response.status === 200) {
-          setUserOptions(response.data); // Assuming response.data is an array of users
+          setUserOptions(response.data);
         } else {
           console.error("Failed to fetch users:", response.statusText);
         }
@@ -561,7 +558,7 @@ const handleDelete = async () => {
         `${process.env.REACT_APP_URL}/download`,
         {
           params: { kecamatan: selectedKecamatan },
-          responseType: "blob", // Respons berupa file
+          responseType: "blob", 
           withCredentials: true,
         }
       );
@@ -1184,7 +1181,7 @@ const handleDelete = async () => {
       <p><strong>Luas Tanah:</strong> {detailData.luasTanah}</p>
       <p><strong>Buangan Air Limbah Rumah Tangga:</strong> {detailData.buanganAirLimbahRumahTangga}</p>
       <p><strong>Sarana Pengelolaan Limbah Cair:</strong> {detailData.saranaPengelolaanLimbahCair}</p>
-      <p><strong>Pemeliharaan Sarana Pengelolaan Limbah:</strong> {detailData.pemeliharaanSaranaPengelolaanLimbah}</p>
+      <p><strong>Pemeliharaan Sarana Pengelolaan Limbah:</strong> {detailData.pemiliharaanSaranaPengelolaanLimbah}</p>
       <p><strong>Jenis Tempat Pembuangan Air Tinja:</strong> {detailData.jenisTempatPembuanganAirTinja}</p>
       <p><strong>Kepemilikan Kamar Mandi dan Jamban:</strong> {detailData.kepemilikanKamarMandiDanJamban}</p>
       <p><strong>Jumlah Jamban:</strong> {detailData.jumlahJamban}</p>

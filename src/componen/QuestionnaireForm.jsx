@@ -494,30 +494,35 @@ const QuestionnaireForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(errorMessage);
-
-    // Validasi form
     if (!validateForm()) {
       console.log(errorMessage);
       return;
     }
-
-    // Validasi koordinat
     const hasCoordinates = formData.titikKoordinatRumah || formData.manualTitikKoordinatRumah;
     if (!hasCoordinates) {
       console.log("Either 'titikKoordinatRumah' atau 'manualTitikKoordinatRumah' harus diisi.");
       setErrorMessage("Either 'Titik Koordinat Rumah' atau 'Manual Titik Koordinat Rumah' harus diisi.");
-      setModalOpen(true); // Tampilkan modal error
+      setModalOpen(true); 
       return;
     }
 
     try {
-      // Tentukan metode berdasarkan apakah `id` ada atau tidak
       const method = id ? "PATCH" : "POST";
       const BASE_URL = process.env.REACT_APP_URL;
       const url = id ? `${BASE_URL}/updatequestionnaires/${id}` : `${BASE_URL}/createquestionnaires`;
-
-      // Kirim data tanpa `kategori` dan `score`
       const { kategori, score, ...dataToSend } = formData;
+      const validateCoordinate = (coord) => {
+        const regex = /^-?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*-?(180(\.0+)?|1[0-7]\d(\.\d+)?|\d{1,2}(\.\d+)?)$/;
+        return regex.test(coord);
+      };
+    
+      if (dataToSend.titikKoordinatRumah && !validateCoordinate(dataToSend.titikKoordinatRumah)) {
+        throw new Error("Koordinat rumah tidak valid. Gunakan format latitude,longitude yang benar.");
+      }
+    
+      if (dataToSend.manualTitikKoordinatRumah && !validateCoordinate(dataToSend.manualTitikKoordinatRumah)) {
+        throw new Error("Koordinat manual tidak valid. Gunakan format latitude,longitude yang benar.");
+      }
 
       const response = await axios({
         method,
@@ -526,15 +531,13 @@ const QuestionnaireForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        withCredentials: true, // Pastikan session cookie terkirim
+        withCredentials: true, 
       });
 
       if (response.status === 200 || response.status === 201) {
         console.log("Data berhasil dikirim:", response.data);
-        setSuccessMessage("Data Berhasil Tersimpan"); // Set pesan sukses
-        setModalOpen(true); // Tampilkan modal sukses
-      
-        // Reset form data setelah berhasil menyimpan
+        setSuccessMessage("Data Berhasil Tersimpan"); 
+        setModalOpen(true); 
         setFormData({
           statusrumah: "",
           nomorUrut: "",
@@ -595,37 +598,38 @@ const QuestionnaireForm = () => {
           titikKoordinatRumah: "",
           manualTitikKoordinatRumah: "",
           tanggalPendataan: "",
-          namaSurveyor: formData.namaSurveyor, // Nama surveyor tidak di-reset
-          kategori: "", // Reset kategori
-          score: 0, // Reset score
+          namaSurveyor: formData.namaSurveyor, 
+          kategori: "", 
+          score: 0,
         });
 
-        setErrorMessage(""); // Kosongkan pesan error
+        setErrorMessage(""); 
         
       } else {
         console.error("Gagal mengirim data:", response.statusText);
-        setErrorMessage("Gagal mengirim data. Silakan coba lagi.");
-        setModalOpen(true); // Tampilkan modal error
+        setErrorMessage("Gagal mengirim data. Silakan coba lagi.",response.statusText);
+        setModalOpen(true); 
       }
     } catch (error) {
-      // Tangani kesalahan dari server dengan rincian pesan error
       if (error.response && error.response.data && error.response.data.errors) {
         console.error("Detail error dari server:", JSON.stringify(error.response.data.errors, null, 2));
-        const detailedErrors = error.response.data.errors
-          .map((err) => `Field: ${err.field}, Message: ${err.message}`)
-          .join("\n");
-
+    
+        const detailedErrors = error.response.data.errors.map((err) => {
+          if (err.field === "titikKoordinatRumah") {
+            return "Koordinat rumah wajib diisi.";
+          }
+          return `Field: ${err.field}, Message: ${err.message}`;
+        }).join("\n");
+    
         setErrorMessage(`Error dari server:\n${detailedErrors}`);
       } else {
         console.error("Error mengirim data:", error.message);
-        setErrorMessage("Gagal mengirim data. Silakan coba lagi.");
+        setErrorMessage(`Gagal mengirim data. ${error.message}`);
       }
-
-      // Kosongkan pesan sukses dan tampilkan modal error
       setSuccessMessage("");
       setModalOpen(true);
     }
-  };
+  }
 
 
   // // Toggle modal
@@ -645,17 +649,17 @@ const QuestionnaireForm = () => {
           setFormData((prevData) => ({
             ...prevData,
             titikKoordinatRumah: `${latitude}, ${longitude}`,
-            manualTitikKoordinatRumah: "", // Kosongkan input manual jika koordinat otomatis diisi
+            manualTitikKoordinatRumah: "", 
           }));
         },
         (error) => {
           setErrorMessage("Error getting coordinates: " + error.message);
-          setModalOpen(true); // Tampilkan modal error
+          setModalOpen(true); 
         }
       );
     } else {
       setErrorMessage("Geolocation is not supported by this browser.");
-      setModalOpen(true); // Tampilkan modal error
+      setModalOpen(true); 
     }
   };
   const validateDate = (date) => {
