@@ -80,6 +80,7 @@ const QuestionnaireForm = () => {
 
   const [errors, setErrors] = useState({});
   const [desaOptions, setDesaOptions] = useState([]);
+const [koordinatError, setKoordinatError] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -257,114 +258,7 @@ const QuestionnaireForm = () => {
     return true;
   };
 
-  // Fungsi untuk menangani perubahan input
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  
-  //   // Update formData dengan nilai baru
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     [name]: value,
-  //   }));
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData ((prevData) => ({
-  //     ...prevData,
-  //     [name]: value,
-  //     // Kosongkan titikKoordinatRumah jika manualTitikKoordinatRumah diisi, dan sebaliknya
-  //     ...(name === "manualTitikKoordinatRumah" ? { titikKoordinatRumah: "" } : {}),
-  //     ...(name === "titikKoordinatRumah" ? { manualTitikKoordinatRumah: "" } : {}),
-  //   }));
-    
-  //   if (name === "jumlahKK" && parseInt(value) > 1) {
-  //     setIsBacklog(true);
-  //   } else if (name === "jumlahKK" && parseInt(value) <= 1) {
-  //     setIsBacklog(false);
-  //   }
-  
-  
-  //   // Validasi untuk nomorKK dan nomorKTP agar 16 digit
-  //   if (name === "nomorKK" || name === "nomorKTP") {
-  //     if (value.length !== 16) {
-  //       setErrors((prevErrors) => ({
-  //         ...prevErrors,
-  //         [name]: `${name === "nomorKK" ? "Nomor KK" : "Nomor KTP"} harus terdiri dari 16 digit`,
-  //       }));
-  //     } else {
-  //       setErrors((prevErrors) => ({
-  //         ...prevErrors,
-  //         [name]: "",
-  //       }));
-  //     }
-  //   } else if (!value) {
-  //     setErrors((prevErrors) => ({
-  //       ...prevErrors,
-  //       [name]: "Jawaban Tidak Boleh Kosong",
-  //     }));
-  //   } else {
-  //     setErrors((prevErrors) => ({
-  //       ...prevErrors,
-  //       [name]: "",
-  //     }));
-  //   }
-    
-  
-  //   // Jika status rumah adalah "kosong", isi field tertentu dengan "-"
-  //   if (name === "statusrumah" && value === "Tidak Berpenghuni") {
-  //     setFormData((prevData) => ({
-  //       ...prevData,
-  //       tanggallahir: null,
-  //       jenisKelamin: "0",
-  //       nomorKK: "0000000000000000",
-  //       nomorKTP: "0000000000000000",
-  //       asalKTP: "0",
-  //       jumlahKK: "0",
-  //       jumlahPenghuni: "0",
-  //       pendidikanTerakhir: "0",
-  //       pekerjaan: "0",
-  //       fungsiBangunan: "0",
-  //       penghasilan: "0",
-  //       statusKepemilikanRumah: "0",
-  //       asetRumahDiTempatLain: "0",
-  //       statusKepemilikanTanah: "0",
-  //       asetTanahDiTempatLain: "0",
-  //       sumberPenerangan: "0",
-  //       dayaListrik: "0",
-  //       bantuanPerumahan: "0",
-  //       modelRumah: "0",
-  //       pondasi: "0",
-  //       kolom: "0",
-  //       rangkaAtap: "0",
-  //       plafon: "0",
-  //       balok: "0",
-  //       sloof: "0",
-  //       pintuJendelaKonsen: "0",
-  //       ventilasi: "0",
-  //       materialLantaiTerluas: "0",
-  //       kondisiLantai: "0",
-  //       materialDindingTerluas: "0",
-  //       kondisiDinding: "0",
-  //       materialPenutupAtapTerluas: "0",
-  //       kondisiPenutupAtap: "0",
-  //       luasRumah: "0",
-  //       luasTanah: "0",
-  //       buanganAirLimbahRumahTangga: "0",
-  //       saranaPengelolaanLimbahCair: "0",
-  //       pemiliharaanSaranaPengelolaanLimbah: "0",
-  //       jenisTempatPembuanganAirTinja: "0",
-  //       kepemilikanKamarMandiDanJamban: "0",
-  //       jumlahJamban: "0",
-  //       jenisKloset: "0",
-  //       jenisTangkiSeptik: "0",
-  //       materialTangkiSeptik: "0",
-  //       alasTangkiSeptik: "0",
-  //       lubangPenyedotan: "0",
-  //       posisiTangkiSeptik: "0",
-  //       jarakTangkiSeptikDenganSumberAir: "0",
-  //       sumberAirMinum: "0"
-  //     }));
-  //   }
-  // };
+ 
   const handleChange = (e) => {
     const { name, value } = e.target;
   
@@ -490,146 +384,152 @@ const QuestionnaireForm = () => {
     }
   };
   
+ const validateCoordinate = (coordinate) => {
+  const regex = /^-?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*-?(180(\.0+)?|1[0-7]\d(\.\d+)?|\d{1,2}(\.\d+)?)$/;
+  return regex.test(coordinate);
+};
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(errorMessage);
-    if (!validateForm()) {
-      console.log(errorMessage);
-      return;
-    }
-    const hasCoordinates = formData.titikKoordinatRumah || formData.manualTitikKoordinatRumah;
-    if (!hasCoordinates) {
-      console.log("Either 'titikKoordinatRumah' atau 'manualTitikKoordinatRumah' harus diisi.");
-      setErrorMessage("Either 'Titik Koordinat Rumah' atau 'Manual Titik Koordinat Rumah' harus diisi.");
-      setModalOpen(true); 
-      return;
-    }
+const validateCoordinateForSpecificKecamatan = (coordinate, kecamatan) => {
+  const allowedKecamatan = ["Maluk", "Jereweh"];
 
-    try {
-      const method = id ? "PATCH" : "POST";
-      const BASE_URL = process.env.REACT_APP_URL;
-      const url = id ? `${BASE_URL}/updatequestionnaires/${id}` : `${BASE_URL}/createquestionnaires`;
-      const { kategori, score, ...dataToSend } = formData;
-      const validateCoordinate = (coord) => {
-        const regex = /^-?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*-?(180(\.0+)?|1[0-7]\d(\.\d+)?|\d{1,2}(\.\d+)?)$/;
-        return regex.test(coord);
-      };
-    
-      if (dataToSend.titikKoordinatRumah && !validateCoordinate(dataToSend.titikKoordinatRumah)) {
-        throw new Error("Koordinat rumah tidak valid. Gunakan format latitude,longitude yang benar.");
-      }
-    
-      if (dataToSend.manualTitikKoordinatRumah && !validateCoordinate(dataToSend.manualTitikKoordinatRumah)) {
-        throw new Error("Koordinat manual tidak valid. Gunakan format latitude,longitude yang benar.");
-      }
+  if (!allowedKecamatan.includes(kecamatan)) {
+    return true;
+  }
 
-      const response = await axios({
-        method,
-        url,
-        data: dataToSend,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true, 
-      });
+  return coordinate && validateCoordinate(coordinate);
+};
 
-      if (response.status === 200 || response.status === 201) {
-        console.log("Data berhasil dikirim:", response.data);
-        setSuccessMessage("Data Berhasil Tersimpan"); 
-        setModalOpen(true); 
-        setFormData({
-          statusrumah: "",
-          nomorUrut: "",
-          nomorRumahPadaPeta: "",
-          namaLengkapKK: "",
-          tanggallahir: "",
-          jenisKelamin: "",
-          nomorKK: "",
-          nomorKTP: "",
-          asalKTP: "",
-          jumlahKK: "",
-          jumlahPenghuni: "",
-          alamatRumah: "",
-          kecamatan: "",
-          desaKelurahan: "",
-          pendidikanTerakhir: "",
-          pekerjaan: "",
-          fungsiBangunan: "",
-          penghasilan: "",
-          statusKepemilikanRumah: "",
-          asetRumahDiTempatLain: "",
-          statusKepemilikanTanah: "",
-          asetTanahDiTempatLain: "",
-          sumberPenerangan: "",
-          dayaListrik: "",
-          bantuanPerumahan: "",
-          modelRumah: "",
-          pondasi: "",
-          kolom: "",
-          rangkaAtap: "",
-          plafon: "",
-          balok: "",
-          sloof: "",
-          pintuJendelaKonsen: "",
-          ventilasi: "",
-          materialLantaiTerluas: "",
-          kondisiLantai: "",
-          materialDindingTerluas: "",
-          kondisiDinding: "",
-          materialPenutupAtapTerluas: "",
-          kondisiPenutupAtap: "",
-          luasRumah: "",
-          luasTanah: "",
-          buanganAirLimbahRumahTangga: "",
-          saranaPengelolaanLimbahCair: "",
-          pemiliharaanSaranaPengelolaanLimbah: "",
-          jenisTempatPembuanganAirTinja: "",
-          kepemilikanKamarMandiDanJamban: "",
-          jumlahJamban: "",
-          jenisKloset: "",
-          jenisTangkiSeptik: "",
-          materialTangkiSeptik: "",
-          alasTangkiSeptik: "",
-          lubangPenyedotan: "",
-          posisiTangkiSeptik: "",
-          jarakTangkiSeptikDenganSumberAir: "",
-          sumberAirMinum: "",
-          titikKoordinatRumah: "",
-          manualTitikKoordinatRumah: "",
-          tanggalPendataan: "",
-          namaSurveyor: formData.namaSurveyor, 
-          kategori: "", 
-          score: 0,
-        });
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-        setErrorMessage(""); 
-        
-      } else {
-        console.error("Gagal mengirim data:", response.statusText);
-        setErrorMessage("Gagal mengirim data. Silakan coba lagi.",response.statusText);
-        setModalOpen(true); 
-      }
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.errors) {
-        console.error("Detail error dari server:", JSON.stringify(error.response.data.errors, null, 2));
-    
-        const detailedErrors = error.response.data.errors.map((err) => {
-          if (err.field === "titikKoordinatRumah") {
-            return "Koordinat rumah wajib diisi.";
-          }
-          return `Field: ${err.field}, Message: ${err.message}`;
-        }).join("\n");
-    
-        setErrorMessage(`Error dari server:\n${detailedErrors}`);
-      } else {
-        console.error("Error mengirim data:", error.message);
-        setErrorMessage(`Gagal mengirim data. ${error.message}`);
-      }
-      setSuccessMessage("");
+  if (!validateForm()) return;
+
+  const requiredCoordinateKecamatan = ["Maluk", "Jereweh"];
+
+  if (requiredCoordinateKecamatan.includes(formData.kecamatan)) {
+    if (!formData.titikKoordinatRumah && !formData.manualTitikKoordinatRumah) {
+      setErrorMessage("Untuk Kecamatan Maluk dan Jereweh, salah satu koordinat harus diisi.");
       setModalOpen(true);
+      return;
+    }
+
+    if (formData.titikKoordinatRumah && !validateCoordinate(formData.titikKoordinatRumah)) {
+      setErrorMessage("Format Titik Koordinat Rumah tidak valid. Gunakan format latitude,longitude.");
+      setModalOpen(true);
+      return;
+    }
+
+    if (formData.manualTitikKoordinatRumah && !validateCoordinate(formData.manualTitikKoordinatRumah)) {
+      setErrorMessage("Format Koordinat Manual tidak valid. Gunakan format latitude,longitude.");
+      setModalOpen(true);
+      return;
     }
   }
+
+  try {
+    const method = id ? "PATCH" : "POST";
+    const BASE_URL = process.env.REACT_APP_URL;
+    const url = id ? `${BASE_URL}/updatequestionnaires/${id}` : `${BASE_URL}/createquestionnaires`;
+
+    const { kategori, score, ...dataToSend } = formData;
+
+    const response = await axios({
+      method,
+      url,
+      data: dataToSend,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+
+    if (response.status === 200 || response.status === 201) {
+      console.log("Data berhasil dikirim:", response.data);
+      setSuccessMessage("Data Berhasil Tersimpan");
+      setModalOpen(true);
+
+      setFormData({
+        statusrumah: "",
+        nomorUrut: "",
+        nomorRumahPadaPeta: "",
+        namaLengkapKK: "",
+        tanggallahir: "",
+        jenisKelamin: "",
+        nomorKK: "",
+        nomorKTP: "",
+        asalKTP: "",
+        jumlahKK: "",
+        jumlahPenghuni: "",
+        alamatRumah: "",
+        kecamatan: "",
+        desaKelurahan: "",
+        pendidikanTerakhir: "",
+        pekerjaan: "",
+        fungsiBangunan: "",
+        penghasilan: "",
+        statusKepemilikanRumah: "",
+        asetRumahDiTempatLain: "",
+        statusKepemilikanTanah: "",
+        asetTanahDiTempatLain: "",
+        sumberPenerangan: "",
+        dayaListrik: "",
+        bantuanPerumahan: "",
+        modelRumah: "",
+        pondasi: "",
+        kolom: "",
+        rangkaAtap: "",
+        plafon: "",
+        balok: "",
+        sloof: "",
+        pintuJendelaKonsen: "",
+        ventilasi: "",
+        materialLantaiTerluas: "",
+        kondisiLantai: "",
+        materialDindingTerluas: "",
+        kondisiDinding: "",
+        materialPenutupAtapTerluas: "",
+        kondisiPenutupAtap: "",
+        luasRumah: "",
+        luasTanah: "",
+        buanganAirLimbahRumahTangga: "",
+        saranaPengelolaanLimbahCair: "",
+        pemiliharaanSaranaPengelolaanLimbah: "",
+        jenisTempatPembuanganAirTinja: "",
+        kepemilikanKamarMandiDanJamban: "",
+        jumlahJamban: "",
+        jenisKloset: "",
+        jenisTangkiSeptik: "",
+        materialTangkiSeptik: "",
+        alasTangkiSeptik: "",
+        lubangPenyedotan: "",
+        posisiTangkiSeptik: "",
+        jarakTangkiSeptikDenganSumberAir: "",
+        sumberAirMinum: "",
+        titikKoordinatRumah: "",
+        manualTitikKoordinatRumah: "",
+        tanggalPendataan: "",
+        namaSurveyor: formData.namaSurveyor, 
+        kategori: "", 
+        score: 0,
+      });
+
+      setErrorMessage("");
+    } else {
+      console.error("Gagal mengirim data:", response.statusText);
+      setErrorMessage("Gagal mengirim data. Silakan coba lagi.");
+      setModalOpen(true);
+    }
+  } catch (error) {
+    if (error.response && error.response.data && error.response.data.errors) {
+      const detailedErrors = error.response.data.errors.map((err) => `Field: ${err.field}, Message: ${err.message}`).join("\n");
+      setErrorMessage(`Error dari server:\n${detailedErrors}`);
+    } else {
+      setErrorMessage(`Gagal mengirim data. ${error.message}`);
+    }
+    setSuccessMessage("");
+    setModalOpen(true);
+  }
+};
 
 
   // // Toggle modal
