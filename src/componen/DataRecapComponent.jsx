@@ -747,34 +747,45 @@ const handleDelete = async () => {
     style={{ display: "none" }}
     onChange={(e) => setSelectedFile(e.target.files[0])}
   />
-  {user && user.role === "admin" && (
-    <div>
-      <Button
-        color="primary"
-        onClick={() => document.getElementById("fileInput").click()}
-        className="me-2"
-        style={{
-          borderRadius: "10px",
-          backgroundImage: "linear-gradient(135deg, #1abc9c, #3498db)",
-          color: "#fff",
-          border: "none",
-        }}
-      >
-        {selectedFile ? `Pilih File: ${selectedFile.name}` : "Pilih File"}
-      </Button>
-      <Button
-        color="success"
-        onClick={handleUploadExcel}
-        style={{
-          borderRadius: "10px",
-          marginLeft: "10px",
-        }}
-        disabled={!selectedFile} // Nonaktifkan tombol jika tidak ada file yang dipilih
-      >
-        Upload
-      </Button>
-    </div>
-  )}
+ {user && user.role === "admin" && (
+  <div className="d-flex align-items-center gap-3 mt-3">
+    <input
+      type="file"
+      id="fileInput"
+      style={{ display: "none" }}
+      onChange={(e) => setSelectedFile(e.target.files[0])}
+    />
+
+    <Button
+      color="primary"
+      onClick={() => document.getElementById("fileInput").click()}
+      className="px-4 py-2 fw-bold"
+      style={{
+        borderRadius: "8px",
+        backgroundImage: "linear-gradient(135deg, #1abc9c, #3498db)",
+        color: "#fff",
+        border: "none",
+        minWidth: "150px",
+      }}
+    >
+      {selectedFile ? `File: ${selectedFile.name}` : "Pilih File"}
+    </Button>
+
+    <Button
+      color="success"
+      onClick={handleUploadExcel}
+      className="px-4 py-2 fw-bold"
+      style={{
+        borderRadius: "8px",
+        minWidth: "120px",
+      }}
+      disabled={!selectedFile}
+    >
+      Upload
+    </Button>
+  </div>
+)}
+
 
 {user && user.role === "admin" &&
 <div className="filter-item">

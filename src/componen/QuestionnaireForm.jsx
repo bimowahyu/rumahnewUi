@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { FaLocationArrow } from "react-icons/fa";
@@ -11,6 +11,10 @@ const QuestionnaireForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isBacklog, setIsBacklog] = useState(false);
+  const [fotoRumah, setFotoRumah] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [isPreviewing, setIsPreviewing] = useState(false);
+  const videoRef = useRef(null);
   // State untuk data formulir
   const [formData, setFormData] = useState({
     statusrumah: "",
@@ -105,7 +109,62 @@ const [koordinatError, setKoordinatError] = useState('');
   //       .catch((error) => console.error("Error mengambil data:", error));
   //   }
   // }, [id]);
+  // const handlePhotoChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     setFotoRumah(file);
   
+  //     // Preview gambar
+  //     const reader = new FileReader();
+  //     reader.onload = () => setImagePreview(reader.result);
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+  const startPreview = async () => {
+    setIsPreviewing(true);
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: "environment" }, // Kamera belakang
+    });
+    videoRef.current.srcObject = stream;
+    await videoRef.current.play();
+  };
+  const capturePhoto = async () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.videoHeight;
+    canvas.getContext("2d").drawImage(videoRef.current, 0, 0);
+  
+    const dataUrl = canvas.toDataURL("image/png");
+    const blob = await fetch(dataUrl).then((res) => res.blob());
+    setFotoRumah(new File([blob], "captured-photo.png", { type: "image/png" }));
+    setImagePreview(dataUrl);
+  
+    videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+    setIsPreviewing(false);
+  };
+  
+  // Hapus foto yang telah diunggah/dicapture
+  const cancelPreview = () => {
+    setImagePreview(null);
+    setFotoRumah(null);
+    if (isPreviewing) {
+      videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+    }
+    setIsPreviewing(false);
+  };
+  
+  // Menyimpan foto dari file input
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagePreview(reader.result);
+        setFotoRumah(file);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   
 
   useEffect(() => {
@@ -401,7 +460,6 @@ const validateCoordinateForSpecificKecamatan = (coordinate, kecamatan) => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-
   if (!validateForm()) return;
 
   const requiredCoordinateKecamatan = ["Maluk", "Jereweh"];
@@ -427,27 +485,34 @@ const handleSubmit = async (e) => {
   }
 
   try {
-    const method = id ? "PATCH" : "POST";
     const BASE_URL = process.env.REACT_APP_URL;
-    const url = id ? `${BASE_URL}/updatequestionnaires/${id}` : `${BASE_URL}/createquestionnaires`;
-
+    
+    // **1. Kirim data kuesioner ke backend**
     const { kategori, score, ...dataToSend } = formData;
-
-    const response = await axios({
-      method,
-      url,
-      data: dataToSend,
+    const response = await axios.post(`${BASE_URL}/createquestionnaires`, dataToSend, {
       headers: {
         "Content-Type": "application/json",
       },
       withCredentials: true,
     });
 
-    if (response.status === 200 || response.status === 201) {
-      console.log("Data berhasil dikirim:", response.data);
-      setSuccessMessage("Data Berhasil Tersimpan");
-      setModalOpen(true);
+    if (response.status === 201) {
+      const questionnaireId = response.data.questionnaire.id; // Ambil ID dari respons
 
+      // **2. Jika ada foto, langsung unggah ke endpoint `/uploadfoto`**
+      if (fotoRumah) {
+        const fotoFormData = new FormData();
+        fotoFormData.append("questionnaireId", questionnaireId);
+        fotoFormData.append("foto", fotoRumah);
+
+        await axios.post(`${BASE_URL}/uploadfoto`, fotoFormData, {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        });
+      }
+
+      setSuccessMessage("Data dan foto berhasil disimpan!");
+      setModalOpen(true);
       setFormData({
         statusrumah: "",
         nomorUrut: "",
@@ -508,24 +573,18 @@ const handleSubmit = async (e) => {
         titikKoordinatRumah: "",
         manualTitikKoordinatRumah: "",
         tanggalPendataan: "",
-        namaSurveyor: formData.namaSurveyor, 
-        kategori: "", 
+        namaSurveyor: formData.namaSurveyor,
+        kategori: "",
         score: 0,
       });
 
       setErrorMessage("");
     } else {
-      console.error("Gagal mengirim data:", response.statusText);
       setErrorMessage("Gagal mengirim data. Silakan coba lagi.");
       setModalOpen(true);
     }
   } catch (error) {
-    if (error.response && error.response.data && error.response.data.errors) {
-      const detailedErrors = error.response.data.errors.map((err) => `Field: ${err.field}, Message: ${err.message}`).join("\n");
-      setErrorMessage(`Error dari server:\n${detailedErrors}`);
-    } else {
-      setErrorMessage(`Gagal mengirim data. ${error.message}`);
-    }
+    setErrorMessage(error.response?.data?.message || "Gagal menyimpan data.");
     setSuccessMessage("");
     setModalOpen(true);
   }
@@ -1358,6 +1417,44 @@ const handleSubmit = async (e) => {
               <Label for="score">Skor</Label>
               <Input type="number" name="score" id="score" value={formData.score} readOnly className="input-center" />
             </FormGroup> */}
+           <FormGroup>
+                  <Label for="fotoRumah">Upload Foto Rumah</Label>
+                  
+                  {/* Input untuk unggah foto dari galeri */}
+                  <Input 
+                    type="file" 
+                    name="fotoRumah" 
+                    id="fotoRumah" 
+                    accept="image/*" 
+                    onChange={handlePhotoChange} 
+                  />
+
+                  {/* Tombol untuk membuka kamera */}
+                  {isPreviewing ? (
+                    <div>
+                      <video ref={videoRef} style={{ width: "100%", height: "auto" }} />
+                      <Button className="btn btn-primary mt-2" onClick={capturePhoto}>
+                        Ambil Foto
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button className="btn btn-secondary mt-2" onClick={startPreview}>
+                      Gunakan Kamera
+                    </Button>
+                  )}
+
+                  {/* Preview gambar yang diunggah atau ditangkap */}
+                  {imagePreview && (
+                    <div className="mt-3">
+                      <img src={imagePreview} alt="Preview" style={{ width: "100%", maxHeight: "300px", objectFit: "contain" }} />
+                      <Button className="btn btn-danger mt-2" onClick={cancelPreview}>
+                        Hapus Foto
+                      </Button>
+                    </div>
+                  )}
+                </FormGroup>
+
+
 
             <Button className="btn-primary" type="submit">
               Simpan
