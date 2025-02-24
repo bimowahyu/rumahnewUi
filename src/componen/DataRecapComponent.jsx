@@ -29,6 +29,8 @@ import L from "leaflet";
 import MyNavbar from "../map/Navbar";
 import "./Datarecap.css"
 import DashboardWidget from "./DashboardWidget";
+import Footer from "./Footer";
+import { Layout } from "lucide-react";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -647,7 +649,7 @@ const handleDelete = async () => {
 };
   return (
    <div>
-     <MyNavbar />
+     {/* <MyNavbar /> */}
      <div style={{margin : "10px"}}>
     <Container fluid className="data-recap-page p-6">
       
@@ -1074,78 +1076,89 @@ const handleDelete = async () => {
                 ))}
               </tbody>
               <tr>
-        <Modal isOpen={modalOpen} toggle={() => setModalOpen(false)}>
-            <ModalHeader toggle={() => setModalOpen(false)}>Detail Lokasi</ModalHeader>
-            <ModalBody>
-  {selectedItem && (selectedItem.titikKoordinatRumah || selectedItem.manualTitikKoordinatRumah) ? (
-    (() => {
-      // Pilih koordinat yang ingin digunakan
-      const koordinat = selectedItem.titikKoordinatRumah || selectedItem.manualTitikKoordinatRumah;
-      const [latitude, longitude] = koordinat
-        .split(',')
-        .map(coord => parseFloat(coord.trim()));
-      
-      if (isNaN(latitude) || isNaN(longitude)) {
-        return <p>Koordinat tidak valid.</p>;
-      }
+              <Modal isOpen={modalOpen} toggle={() => setModalOpen(false)} style={{ paddingTop: "40px" }}>
+  <ModalHeader toggle={() => setModalOpen(false)}>Detail Lokasi</ModalHeader>
+  
+  <ModalBody style={{ maxHeight: "60vh", overflowY: "auto", padding: "10px" }}>
+    {selectedItem && (selectedItem.titikKoordinatRumah || selectedItem.manualTitikKoordinatRumah) ? (
+      (() => {
+        const koordinat = selectedItem.titikKoordinatRumah || selectedItem.manualTitikKoordinatRumah;
+        const [latitude, longitude] = koordinat
+          .split(',')
+          .map(coord => parseFloat(coord.trim()));
 
-      return (
-        <>
-          <p><strong>Kecamatan:</strong> {selectedItem.kecamatan}</p>
-          <p><strong>Desa/Kelurahan:</strong> {selectedItem.desaKelurahan}</p>
-          <p><strong>Koordinat:</strong> {koordinat}</p>
+        if (isNaN(latitude) || isNaN(longitude)) {
+          return <p style={{ textAlign: "center" }}>Koordinat tidak valid.</p>;
+        }
 
-          {/* Tampilkan MapContainer dengan koordinat yang sudah dipisah */}
-          <MapContainer
-            center={[latitude, longitude]}
-            zoom={15}
-            style={{ height: '400px', width: '100%' }}
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            <Marker position={[latitude, longitude]}>
-              <Popup>
-                Koordinat: {latitude}, {longitude}
-              </Popup>
-            </Marker>
-          </MapContainer>
-        </>
-      );
-    })()
-  ) : (
-    <p>Koordinat tidak tersedia</p>
-  )}
-</ModalBody>
+        return (
+          <>
+            <p><strong>Kecamatan:</strong> {selectedItem.kecamatan}</p>
+            <p><strong>Desa/Kelurahan:</strong> {selectedItem.desaKelurahan}</p>
+            <p><strong>Koordinat:</strong> {koordinat}</p>
 
+            {/* Peta dengan tinggi lebih kecil */}
+            <MapContainer
+              center={[latitude, longitude]}
+              zoom={15}
+              style={{ height: "300px", width: "100%", marginTop: "10px" }}
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              <Marker position={[latitude, longitude]}>
+                <Popup>
+                  Koordinat: {latitude}, {longitude}
+                </Popup>
+              </Marker>
+            </MapContainer>
+          </>
+        );
+      })()
+    ) : (
+      <p style={{ textAlign: "center" }}>Koordinat tidak tersedia</p>
+    )}
+  </ModalBody>
 
-            <ModalFooter>
-              <Button color="secondary" onClick={() => setModalOpen(false)}>Tutup</Button>
-            </ModalFooter>
-        </Modal>
+  <ModalFooter>
+    <Button color="secondary" onClick={() => setModalOpen(false)}>Tutup</Button>
+  </ModalFooter>
+</Modal>
+
 
   </tr>
   
             </Table>
                   {/* Photo Modal */}
-      <Modal isOpen={showPhotoModal} toggle={handleClosePhotoModal}>
-        <ModalHeader toggle={handleClosePhotoModal}>Foto Rumah</ModalHeader>
-        <ModalBody>
-          {photoUrl ? (
-            <img src={photoUrl} alt="Foto Rumah" className="img-fluid" />
-          ) : (
-            <p>Foto tidak tersedia</p>
-          )}
-        </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={handleClosePhotoModal}>Close</Button>
-        </ModalFooter>
-      </Modal>
-<Modal isOpen={isDetailModalOpen} toggle={handleDetailModalClose}>
-  <ModalHeader toggle={handleDetailModalClose}>Detail Data</ModalHeader>
-  <ModalBody>
-  {detailData ? (
+                  <Modal isOpen={showPhotoModal} toggle={handleClosePhotoModal} style={{ paddingTop: "40px" }}>
+  <ModalHeader toggle={handleClosePhotoModal}>Foto Rumah</ModalHeader>
+  <ModalBody style={{ maxHeight: "60vh", overflowY: "auto", textAlign: "center" }}>
+    {photoUrl ? (
+      <img 
+        src={photoUrl} 
+        alt="Foto Rumah" 
+        className="img-fluid"
+        style={{ maxWidth: "100%", height: "auto", maxHeight: "300px" }} 
+      />
+    ) : (
+      <p>Foto tidak tersedia</p>
+    )}
+  </ModalBody>
+  <ModalFooter>
+    <Button color="secondary" onClick={handleClosePhotoModal}>Close</Button>
+  </ModalFooter>
+</Modal>
+
+      <Modal isOpen={isDetailModalOpen} toggle={handleDetailModalClose}  style={{ paddingTop: "40px" }} >
+  <ModalHeader 
+    toggle={handleDetailModalClose} 
+    style={{ paddingTop: "20px" }} // Tambahkan padding di atas
+  >
+    Detail Data
+  </ModalHeader>
+  <ModalBody style={{ maxHeight: "60vh", overflowY: "auto" }}>
+    {detailData ?(
     <div>
       <p><strong>Status Rumah:</strong> {detailData.statusrumah}</p>
       <p><strong>Nomor Blok:</strong> {detailData.nomorUrut}</p>
@@ -1226,9 +1239,15 @@ const handleDelete = async () => {
              
 
             {selectedItem && (
-        <Modal isOpen={isModalOpen} toggle={handleModalToggle}>
-          <ModalHeader toggle={handleModalToggle}>Edit Data</ModalHeader>
-          <ModalBody>
+        <Modal isOpen={isModalOpen} toggle={handleModalToggle} style={{ paddingTop: "40px" }}>
+           <ModalHeader 
+    toggle={handleModalToggle} 
+    className="custom-modal-header" // Tambahkan class
+  >
+   Edit Data
+  </ModalHeader>
+          {/* <ModalHeader toggle={handleModalToggle}></ModalHeader> */}
+          <ModalBody style={{ maxHeight: "60vh", overflowY: "auto" }}>
           <FormGroup>
                 <Label for="statusrumah">Status Rumah</Label>
                 <Input 

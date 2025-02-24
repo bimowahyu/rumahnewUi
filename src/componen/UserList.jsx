@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import MyNavbar from "../map/Navbar";
-import { Table, Button } from "reactstrap";
-import Footer from "./Footer";
+import { Table, Button, Container, Row, Col } from "reactstrap";
 import Swal from "sweetalert2";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import UpdateUserModal from "./UpdateUserModal";
-import { FaEdit, FaTrash } from "react-icons/fa"; 
 import "./UserList.css";
 
 export const UserList = () => {
@@ -25,11 +23,7 @@ export const UserList = () => {
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching user data:", error);
-      Swal.fire({
-        title: "Error!",
-        text: "Gagal mengambil data user",
-        icon: "error",
-      });
+      Swal.fire("Error!", "Gagal mengambil data user", "error");
     }
   };
 
@@ -69,62 +63,63 @@ export const UserList = () => {
   };
 
   return (
-    <div className="page-container">
-      <MyNavbar />
+    <Container fluid className="user-list-container">
+      <Row className="justify-content-center mt-4">
+        <Col lg={10} md={12}>
+          <div className="table-responsive">
+            <Table striped bordered hover responsive className="mt-3 text-center">
+              <thead className="table-dark">
+                <tr>
+                  <th>No</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.length > 0 ? (
+                  users.map((user, index) => (
+                    <tr key={user.id}>
+                      <td>{index + 1}</td>
+                      <td>{user.username}</td>
+                      <td>{user.email}</td>
+                      <td>
+                        <span className={`role-badge ${user.role === "admin" ? "admin" : "surveyor"}`}>
+                          {user.role}
+                        </span>
+                      </td>
+                      <td>
+                        <Button color="warning" size="sm" className="me-2" onClick={() => handleUpdateClick(user)}>
+                          <FaEdit /> Edit
+                        </Button>
+                        <Button color="danger" size="sm" onClick={() => deleteUser(user.id)}>
+                          <FaTrash /> Hapus
+                        </Button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="text-center">
+                      Tidak ada data pengguna.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </div>
+        </Col>
+      </Row>
 
-      <div className="content-wrap">
-        <div className="text">
-          <p>List User</p>
-          <p>Gunakan ID untuk input data manual melalui Excel</p>
-        </div>
-
-        <Table bordered hover responsive>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Username</th>
-      <th>Email</th>
-      <th>Role</th>
-      <th>Aksi</th>
-    </tr>
-  </thead>
-  <tbody>
-    {users.map((user) => (
-      <tr key={user.id}>
-        <td>{user.id}</td>
-        <td>{user.username}</td>
-        <td>{user.email}</td>
-        <td>{user.role}</td>
-        <td className="table-actions">
-  <Button
-    // color="primary"
-    onClick={() => handleUpdateClick(user)}
-  >
-    <FaEdit />
-  </Button>
-  <Button
-    // color="danger"
-    onClick={() => deleteUser(user.id)}
-  >
-    <FaTrash />
-  </Button>
-</td>
-
-      </tr>
-    ))}
-  </tbody>
-</Table>
-
-        <UpdateUserModal
-          isOpen={updateModalOpen}
-          toggle={handleUpdateModalClose}
-          user={selectedUser}
-          onUserUpdated={getUsers}
-        />
-      </div>
-
-      <Footer />
-    </div>
+      {/* Modal Update */}
+      <UpdateUserModal
+        isOpen={updateModalOpen}
+        toggle={handleUpdateModalClose}
+        user={selectedUser}
+        refreshUsers={getUsers}
+      />
+    </Container>
   );
 };
 

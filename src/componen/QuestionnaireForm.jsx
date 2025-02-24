@@ -631,7 +631,7 @@ const handleSubmit = async (e) => {
    
       <Row className="justify-content-center">
         <Col xs="12" md="10" className="mb-3">
-          <MyNavbar className ="navbar"/>
+          {/* <MyNavbar className ="navbar"/> */}
         </Col>
         <Col xs="12" md="10" ClassName="mb-3">
         {/* <MyNavbar /> */}
@@ -1477,8 +1477,8 @@ const handleSubmit = async (e) => {
         </ModalFooter>
       </Modal>
   
-    <Footer />
-    </>
+    {/* <Footer /> */}
+ </>   
   );
 };
 

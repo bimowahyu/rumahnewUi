@@ -1,76 +1,33 @@
-/* Tata letak umum */
-.page-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* Tinggi penuh layar */
+.user-list-container {
+  max-width: 800px;
+  margin: auto;
 }
 
-.content-wrap {
-  flex: 1;
-  padding: 20px;
-  background-color: #f8f9fa; /* Latar belakang terang */
-}
-
-/* Upload Form */
-.upload-form {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Jarak antar elemen */
-  margin-bottom: 20px;
-}
-
-.file-input {
-  border: 1px solid #ccc;
-  padding: 5px;
+.role-badge {
+  padding: 5px 10px;
   border-radius: 5px;
-}
-
-.upload-button {
-  background: linear-gradient(135deg, #1abc9c, #3498db);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.upload-button:hover {
-  background: linear-gradient(135deg, #3498db, #1abc9c);
-}
-
-/* Pesan */
-.message {
-  margin-top: 10px;
-  color: green;
   font-weight: bold;
+  text-transform: capitalize;
 }
 
-/* Tabel */
-table {
-  margin-top: 20px;
-}
-
-/* Ensure the buttons are aligned on the same row and adjust spacing */
-.table-actions {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.table-actions .btn {
-  margin-right: 8px; /* Adjust spacing between the buttons */
-}
-
-.table-actions .btn:last-child {
-  margin-right: 0; /* Remove margin for the last button */
-}
-
-/* Footer */
-footer {
-  background-color: #343a40;
+.role-badge.admin {
+  background-color: #28a745;
   color: white;
+}
+
+.role-badge.surveyor {
+  background-color: #007bff;
+  color: white;
+}
+
+.table th,
+.table td {
   text-align: center;
-  padding: 15px;
-  margin-top: auto; /* Posisi tetap di bawah */
+  vertical-align: middle;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }

@@ -3,6 +3,7 @@ import QuestionnaireForm from "../componen/QuestionnaireForm";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getMeAdmin } from "../fitur/AuthSlice";
+import { Layout } from "../layout/Layout";
 
 
 export const QuestionnaireFormPages = () => {
@@ -20,6 +21,13 @@ export const QuestionnaireFormPages = () => {
       }
     }, [isError, navigate]);
   return (
-    <QuestionnaireForm />
+    <Layout>
+        <div className="container">
+            <div className="form-wrapper">
+                <QuestionnaireForm />
+            </div>
+        </div>
+    </Layout>
+  
   )
 }

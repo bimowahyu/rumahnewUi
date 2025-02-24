@@ -15,8 +15,8 @@ import { UploadFotoPages } from "./pages/UploadFotoPages";
 import { UploadPdfPages } from "./pages/UploadPdfPages";
 import { MapsPages } from "./pages/MapsPages";
 import ResetPassword from "./componen/ResetPassword";
-import UserList from "./componen/UserList";
-
+// import UserList from "./componen/UserList";
+import { UserListPages } from "./pages/UserListPages";
 
 function App () {
 return (
@@ -38,7 +38,7 @@ return (
         <Route path="/upload" element={<UploadFotoPages />} />
         <Route path="/uploadpdf" element={<UploadPdfPages />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/userlist" element={<UserList />}/>
+        <Route path="/userlist" element={<UserListPages />}/>
         <Route path="/maps" element={<MapsPages />}/>
   </Routes>
   {/* <Footer /> */}

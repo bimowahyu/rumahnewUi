@@ -9,7 +9,7 @@ const Register = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    password: ""
+    password: "",
   });
 
   const [error, setError] = useState("");
@@ -28,7 +28,9 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${process.env.REACT_APP_URL}/register`, formData,{withCredentials:true});
+      await axios.post(`${process.env.REACT_APP_URL}/register`, formData, {
+        withCredentials: true,
+      });
       setSuccess("Surveyor registered successfully");
       setError("");
       setTimeout(() => navigate("/login"), 2000);
@@ -45,41 +47,73 @@ const Register = () => {
 
   return (
     <>
-    <div className="register-container">
-      <div className="logo-container" onClick={handleLogoClick}>
-        <img src="/images/logobaru.png" alt="Logo Aplikasi" className="login-logo" />
-        <h3 className="app-register-title">Sistem Informasi Pendataan Kualitas Rumah</h3>
+      <div className="register-container">
+        <div className="logo-container" onClick={handleLogoClick}>
+          <img
+            src="/images/logobaru.png"
+            alt="Logo Aplikasi"
+            className="register-logo"
+          />
+          <h3 className="app-register-title">
+            Sistem Informasi Pendataan Kualitas Rumah
+          </h3>
+        </div>
+
+        {error && <Alert color="danger">{error}</Alert>}
+        {success && <Alert color="success">{success}</Alert>}
+
+        <Form onSubmit={handleSubmit}>
+          <FormGroup>
+            <Label for="username">Username</Label>
+            <Input
+              type="text"
+              name="username"
+              id="username"
+              value={formData.username}
+              onChange={handleChange}
+              placeholder="Enter your username"
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label for="email">Email</Label>
+            <Input
+              type="email"
+              name="email"
+              id="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter your email"
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label for="password">Password</Label>
+            <div className="password-container">
+              <Input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                id="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Enter your password"
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                <i className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"}`} />
+              </button>
+            </div>
+          </FormGroup>
+
+          <Button type="submit" color="primary">
+            Register
+          </Button>
+        </Form>
       </div>
-      {error && <Alert color="danger">{error}</Alert>}
-      {success && <Alert color="success">{success}</Alert>}
-      <Form onSubmit={handleSubmit}>
-        <FormGroup>
-          <Label for="username">Username</Label>
-          <Input type="text" name="username" id="username" value={formData.username} onChange={handleChange} placeholder="Enter your username" />
-        </FormGroup>
-        <FormGroup>
-          <Label for="email">Email</Label>
-          <Input type="email" name="email" id="email" value={formData.email} onChange={handleChange} placeholder="Enter your email" />
-        </FormGroup>
-        <FormGroup>
-          <Label for="password">Password</Label>
-          <div className="password-container">
-            <Input type={showPassword ? "text" : "password"} name="password" id="password" value={formData.password} onChange={handleChange} placeholder="Enter your password" />
-            <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? (
-                <i className="fas fa-eye-slash"></i> // Font Awesome eye-slash icon
-              ) : (
-                <i className="fas fa-eye"></i> // Font Awesome eye icon
-              )}
-            </button>
-          </div>
-        </FormGroup>
-        <Button type="submit" color="primary">
-          Register
-        </Button>
-      </Form>
-    </div>
-    <Footer />
+      <Footer />
     </>
   );
 };

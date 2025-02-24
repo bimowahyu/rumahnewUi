@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import MyNavbar from '../map/Navbar';
+import "../pages/Upload.css"
 
 export const UploadFoto = () => {
   const [questionnaires, setQuestionnaires] = useState([]);
@@ -112,10 +113,10 @@ export const UploadFoto = () => {
     <div className="col mb-6">
       
     <div>
-      <MyNavbar />
+      {/* <MyNavbar /> */}
       <div style={{margin: "5px"}}>
       <div className="mb-4">
-      <h2>Upload Foto</h2>
+      {/* <h2>Upload Foto</h2> */}
       </div>
 
       {/* Input untuk mencari Nama Lengkap */}
@@ -124,26 +125,26 @@ export const UploadFoto = () => {
       <label htmlFor="searchName">Cari Nama:</label>
       <div className="mb-4">
       <input
-        type="text"
-        id="searchName"
-        placeholder="Cari nama lengkap..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="form-control my-2"
-      />
+  type="text"
+  id="searchName"
+  placeholder="Cari nama lengkap"
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
+  className="form-control my-2 responsive-input"
+/>
       </div>
       </div>
 
       {/* Input untuk mencari Nomor KTP */}
       <label htmlFor="searchKTP">Cari Nomor KTP:</label>
       <input
-        type="number"
-        id="searchKTP"
-        placeholder="Cari nomor KTP..."
-        value={nomorKTPTerm}
-        onChange={(e) => setNomorKTPTerm(e.target.value)}
-        className="form-control my-2"
-      />
+  type="number"
+  id="searchKTP"
+  placeholder="Cari nomor KTP"
+  value={nomorKTPTerm}
+  onChange={(e) => setNomorKTPTerm(e.target.value)}
+  className="form-control my-2 responsive-input"
+/>
 
       {/* Dropdown untuk memilih nama yang sudah difilter */}
       <label htmlFor="questionnaire">Pilih Nama:</label>
@@ -181,13 +182,13 @@ export const UploadFoto = () => {
 
       {/* Preview Gambar */}
       {imagePreview && (
-        <div className="mt-4">
-          <h5>Preview Foto:</h5>
-          <img src={imagePreview} alt="Preview" style={{ width: '100%', maxHeight: '400px', objectFit: 'contain' }} />
-          <button onClick={cancelPreview} className="btn btn-danger mt-2">
-            Cancel
-          </button>
-        </div>
+  <div className="mt-4">
+    <h5>Preview Foto:</h5>
+    <img src={imagePreview} alt="Preview" className="responsive-image" />
+    <button onClick={cancelPreview} className="btn btn-danger mt-2">
+      Cancel
+    </button>
+  </div>
       )}
 
       {/* Tombol untuk mengupload foto */}

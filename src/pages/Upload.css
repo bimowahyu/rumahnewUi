@@ -1,16 +1,45 @@
-.page-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Tinggi minimum layar penuh */
-  }
-  
-  .content-wrap {
-    flex: 1; /* Membuat konten utama memenuhi ruang yang tersedia */
-  }
-  
-  footer {
-    background-color: #f8f9fa; /* Contoh warna latar belakang */
-    text-align: center;
-    padding: 10px;
-  }
-  
+/* Pastikan container utama tidak terlalu melebar */
+.col.mb-6 {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Form input dan dropdown agar tidak melebar */
+.form-control,
+.form-select {
+  width: 100%;
+  max-width: 500px; /* Batasi ukuran */
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* Buat tombol lebih proporsional */
+button {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+/* Pastikan video kamera tidak melebihi layar */
+video {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+}
+
+/* Atur preview gambar agar tidak keluar dari batas */
+img.responsive-image {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Pastikan footer tidak melebar */
+.App-footer {
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+}

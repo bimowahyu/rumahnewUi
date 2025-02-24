@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { getMeAdmin } from "../fitur/AuthSlice";
 import Footer from "../componen/Footer";
 import "./Upload.css"
+import { Layout } from "../layout/Layout";
 
 export const UploadFotoPages = () => {
     const dispatch = useDispatch();
@@ -21,13 +22,16 @@ export const UploadFotoPages = () => {
       }
     }, [isError, navigate]);
   return (
-    <div className="page-container">
+  //   <div className="page-container">
     
-    <div>
-      <UploadFoto />
-    </div>
+  //   <div>
+  //     <UploadFoto />
+  //   </div>
 
-    <Footer />
-  </div>
+  //   <Footer />
+  // </div>
+  <Layout>
+     <UploadFoto />
+  </Layout>
   )
 }

@@ -24,7 +24,7 @@ export const AdminDashboardPages = () => {
     <>
    <AdminDashboard />
 
-   <Footer />
+   {/* <Footer /> */}
    </>
   )
 }
