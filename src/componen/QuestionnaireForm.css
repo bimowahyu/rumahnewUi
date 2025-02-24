@@ -5,12 +5,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Menambahkan minimal tinggi agar form selalu di tengah secara vertikal */
+    min-height: 100vh;
   }
   
   form {
     width: 100%;
-    max-width: none; /* Membatasi lebar form */
+    max-width: 1000px;
     padding: 20px; /* Menambahkan padding di dalam form */
     background-color: #fff; /* Memberikan background putih pada form */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Menambahkan bayangan pada form */
@@ -57,7 +57,7 @@
     margin-left: auto;
     margin-right: auto;
     width: 100%; /* Menambahkan properti width pada input */
-    max-width: 100%; /* Menambahkan properti max-width untuk input */
+    max-width: 800px; 
   }
   
   /* Style untuk tombol submit */
@@ -121,5 +121,10 @@
       margin-top: 15px; /* Jaga margin atas tetap konsisten */
     }
   }
-  
+  @media (min-width: 992px) { /* Untuk layar besar */
+    .container-custom {
+      max-width: 80%; /* Atur lebar maksimal */
+      margin: 0 auto; /* Tengah */
+    }
+  }
   

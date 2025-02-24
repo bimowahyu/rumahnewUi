@@ -152,13 +152,13 @@ function AdminDashboard() {
                       onClick={() => navigate("/questionnaire")}
                       sx={{
                         p: 2,
-                        background: 'linear-gradient(135deg, #9b59b6, #e74c3c)',
+                        background: 'linear-gradient(135deg, #1abc9c, #3498db)',
                         borderRadius: '8px',
                         fontFamily: 'Plus Jakarta Sans',
                         textTransform: 'none',
                         fontSize: '1rem',
                         '&:hover': {
-                          background: 'linear-gradient(135deg, #8e44ad, #c0392b)',
+                          background: 'linear-gradient(135deg, #1abc9c, #3498db)',
                           transform: 'scale(1.03)'
                         }
                       }}
@@ -177,13 +177,13 @@ function AdminDashboard() {
                           onClick={() => navigate("/register")}
                           sx={{
                             p: 2,
-                            background: 'linear-gradient(135deg, #e74c3c, #f39c12)',
+                            background: 'linear-gradient(135deg, #1abc9c, #3498db)',
                             borderRadius: '8px',
                             fontFamily: 'Plus Jakarta Sans',
                             textTransform: 'none',
                             fontSize: '1rem',
                             '&:hover': {
-                              background: 'linear-gradient(135deg, #c0392b, #d35400)',
+                              background: 'linear-gradient(135deg, #1abc9c, #3498db)',
                               transform: 'scale(1.03)'
                             }
                           }}
@@ -200,13 +200,13 @@ function AdminDashboard() {
                           onClick={() => navigate("/uploadpdf")}
                           sx={{
                             p: 2,
-                            background: 'linear-gradient(135deg, #f39c12, #2ecc71)',
+                            background: 'linear-gradient(135deg, #1abc9c, #3498db)',
                             borderRadius: '8px',
                             fontFamily: 'Plus Jakarta Sans',
                             textTransform: 'none',
                             fontSize: '1rem',
                             '&:hover': {
-                              background: 'linear-gradient(135deg, #d35400, #27ae60)',
+                              background: 'linear-gradient(135deg, #1abc9c, #3498db)',
                               transform: 'scale(1.03)'
                             }
                           }}
@@ -223,7 +223,7 @@ function AdminDashboard() {
                           onClick={() => navigate("/userlist")}
                           sx={{
                             p: 2,
-                            background: 'linear-gradient(135deg, #2ecc71, #1abc9c)',
+                            background: 'linear-gradient(135deg, #1abc9c, #3498db)',
                             borderRadius: '8px',
                             fontFamily: 'Plus Jakarta Sans',
                             textTransform: 'none',

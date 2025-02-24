@@ -630,12 +630,9 @@ const handleSubmit = async (e) => {
     <>
    
       <Row className="justify-content-center">
-        <Col xs="12" md="10" className="mb-3">
-          {/* <MyNavbar className ="navbar"/> */}
-        </Col>
-        <Col xs="12" md="10" ClassName="mb-3">
+       
         {/* <MyNavbar /> */}
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit}sx={{ p: 3, maxWidth: "2200px", marginLeft: { xs: 0, md: "280px" } }}>
             <h3>Formulir Pendataan:</h3>
             <div className="home-logo-container">
               <img src="/images/logobaru.png" alt="Logo Aplikasi" className="home-logo"/>
@@ -1460,11 +1457,11 @@ const handleSubmit = async (e) => {
               Simpan
             </Button>
 
-            <Button className="btn-secondary" type="button" onClick={() => navigate("/recap")} style={{ marginLeft: "10px" }}>
+            <Button className="btn-secondary" type="button" onClick={() => navigate("/recap")} >
               Lihat Rekap
             </Button>
           </Form>
-        </Col>
+       
       </Row>
 
       <Modal isOpen={modalOpen} toggle={toggleModal}>

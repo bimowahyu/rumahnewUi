@@ -650,7 +650,7 @@ const handleDelete = async () => {
   return (
    <div>
      {/* <MyNavbar /> */}
-     <div style={{margin : "10px"}}>
+     <div style={{margin : "40px"}}>
     <Container fluid className="data-recap-page p-6">
       
       <Row className="justify-content-center">

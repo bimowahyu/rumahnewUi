@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table, Button, Container, Row, Col } from "reactstrap";
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Typography } from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
 import Swal from "sweetalert2";
-import { FaEdit, FaTrash } from "react-icons/fa";
 import UpdateUserModal from "./UpdateUserModal";
+import Layout from "../layout/Layout";
 import "./UserList.css";
 
 export const UserList = () => {
@@ -63,64 +64,47 @@ export const UserList = () => {
   };
 
   return (
-    <Container fluid className="user-list-container">
-      <Row className="justify-content-center mt-4">
-        <Col lg={10} md={12}>
-          <div className="table-responsive">
-            <Table striped bordered hover responsive className="mt-3 text-center">
-              <thead className="table-dark">
-                <tr>
-                  <th>No</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.length > 0 ? (
-                  users.map((user, index) => (
-                    <tr key={user.id}>
-                      <td>{index + 1}</td>
-                      <td>{user.username}</td>
-                      <td>{user.email}</td>
-                      <td>
-                        <span className={`role-badge ${user.role === "admin" ? "admin" : "surveyor"}`}>
-                          {user.role}
-                        </span>
-                      </td>
-                      <td>
-                        <Button color="warning" size="sm" className="me-2" onClick={() => handleUpdateClick(user)}>
-                          <FaEdit /> Edit
-                        </Button>
-                        <Button color="danger" size="sm" onClick={() => deleteUser(user.id)}>
-                          <FaTrash /> Hapus
-                        </Button>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="5" className="text-center">
-                      Tidak ada data pengguna.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </Table>
-          </div>
-        </Col>
-      </Row>
-
-      {/* Modal Update */}
-      <UpdateUserModal
-        isOpen={updateModalOpen}
-        toggle={handleUpdateModalClose}
-        user={selectedUser}
-        refreshUsers={getUsers}
-      />
-    </Container>
+    <>
+      <Box sx={{ p: 3, maxWidth: "2200px", marginLeft: { xs: 0, md: "280px" } }}>
+        <Typography variant="h4" gutterBottom>Daftar Pengguna</Typography>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Username</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Role</TableCell>
+                <TableCell>Aksi</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {users.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell>{user.id}</TableCell>
+                  <TableCell>{user.username}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>
+                    <span className={`role-badge ${user.role}`}>{user.role}</span>
+                  </TableCell>
+                  <TableCell>
+                    <IconButton color="primary" onClick={() => handleUpdateClick(user)}>
+                      <Edit />
+                    </IconButton>
+                    <IconButton color="error" onClick={() => deleteUser(user.id)}>
+                      <Delete />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {updateModalOpen && (
+          <UpdateUserModal open={updateModalOpen} onClose={handleUpdateModalClose} user={selectedUser} />
+        )}
+      </Box>
+    </>
   );
 };
-
 export default UserList;
