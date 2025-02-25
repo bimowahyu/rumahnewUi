@@ -650,21 +650,26 @@ const handleDelete = async () => {
   return (
    <div>
      {/* <MyNavbar /> */}
-     <div style={{margin : "40px"}}>
-    <Container fluid className="data-recap-page p-6">
-      
+     <div
+  style={{
+    marginLeft: window.innerWidth >= 768 ? "200px" : "20px", 
+  }}
+>
+  <Container fluid className="data-recap-page p-6">
+    <Row className="justify-content-center"></Row>
+
+    {error && (
       <Row className="justify-content-center">
+        <Col md="auto">
+          <Alert color="danger">{error}</Alert>
+        </Col>
       </Row>
-      {error && (
-        <Row className="justify-content-center">
-          <Col md="auto">
-            <Alert color="danger">{error}</Alert>
-          </Col>
-        </Row>
-      )}
-      <Row className="justify-content-center">
-        <Col xs={12} md={8}>
+    )}
+
+    <Row className="justify-content-center">
+      <Col xs={12} md={8}> 
         <div className="filters mb-3">
+
   <div className="filter-item">
   <label htmlFor="searchName">Cari Nama:</label>
   <input

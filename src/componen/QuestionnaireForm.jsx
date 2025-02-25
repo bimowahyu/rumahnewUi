@@ -6,6 +6,7 @@ import axios from "axios";
 import MyNavbar from "../map/Navbar";
 import "./QuestionnaireForm.css";
 import Footer from "./Footer";
+import { Layout } from "../layout/Layout";
 
 const QuestionnaireForm = () => {
   const { id } = useParams();
@@ -627,12 +628,14 @@ const handleSubmit = async (e) => {
 };
 
   return (
-    <>
+    <Layout>
    
-      <Row className="justify-content-center">
+      <Row className="justify-content-center" style={{
+    marginLeft: window.innerWidth >= 768 ? "290px" : "0", 
+  }}>
        
-        {/* <MyNavbar /> */}
-          <Form onSubmit={handleSubmit}sx={{ p: 3, maxWidth: "2200px", marginLeft: { xs: 0, md: "280px" } }}>
+       
+          <Form onSubmit={handleSubmit}sx={{ p: 3, maxWidth: "800px", marginLeft: { xs: 0, md: "280px" } }}>
             <h3>Formulir Pendataan:</h3>
             <div className="home-logo-container">
               <img src="/images/logobaru.png" alt="Logo Aplikasi" className="home-logo"/>
@@ -646,7 +649,7 @@ const handleSubmit = async (e) => {
                 <option value="Berpenghuni">Berpenghuni</option>
                 
               </Input>
-              {errors.sumberAirMinum && <div className="error-message">{errors.sumberAirMinum}</div>}
+              {errors.statusrumah && <div className="error-message">{errors.statusrumah}</div>}
             </FormGroup>
 
             <FormGroup>
@@ -1475,7 +1478,7 @@ const handleSubmit = async (e) => {
       </Modal>
   
     {/* <Footer /> */}
- </>   
+ </Layout>  
   );
 };
 

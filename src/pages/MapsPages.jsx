@@ -25,7 +25,7 @@ export const MapsPages = () => {
       {/* Komponen utama */}
       <Maps />
       {/* Footer di bagian bawah */}
-      <Footer />
+    
     </>
   );
 };

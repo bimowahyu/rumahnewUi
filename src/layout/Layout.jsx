@@ -53,9 +53,11 @@ export const Layout = ({ children }) => {
         <Box
           component="main"
           sx={{
-            flex: 1,
-            overflowY: 'auto', // Hanya bagian ini yang dapat di-scroll
+            flexGrow: 1,
+            overflowY: 'auto',
             backgroundColor: 'var(--mui-palette-background-default)',
+            padding: { xs: 2, sm: 3 },
+            width: '100%'
           }}
         >
           {children}

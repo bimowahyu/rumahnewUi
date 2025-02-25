@@ -8,9 +8,11 @@ import Tooltip from '@mui/material/Tooltip';
 import { List as ListIcon } from '@phosphor-icons/react/dist/ssr/List';
 import { Users as UsersIcon } from '@phosphor-icons/react/dist/ssr/Users';
 import Sidebar from "../sidebar/SideBar";
+import { useSelector } from "react-redux";
 
 export const Navbar = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const { user } = useSelector((state) => state.authAdmin || {});
 
   const toggleDrawer = () => {
     setOpenDrawer((prev) => !prev);
@@ -51,7 +53,9 @@ export const Navbar = () => {
           </Stack>
 
           {/* Navbar Right Actions */}
+          {user && user.role === "admin" && (
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+            
             <Tooltip title="User  List">
               <Link to="/userlist" style={{ textDecoration: 'none' }}>
                 <IconButton size="small">
@@ -72,6 +76,7 @@ export const Navbar = () => {
               />
             </Link>
           </Stack>
+          )}
         </Stack>
       </Box>
 

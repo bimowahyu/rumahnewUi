@@ -1,43 +1,30 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Login.css";
 import axios from "axios";
+import {
+  Box,
+  Paper,
+  TextField,
+  Button,
+  Typography,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
 import { FaEye, FaEyeSlash, FaLock } from "react-icons/fa";
-import { LoginAdmin, reset } from "../fitur/AuthSlice";
-import useSWR from 'swr';
-import { Row, Col } from "reactstrap";
-import Footer from "./Footer";
+import BackgroundImage from "../images/map4.jpg";
 
 const getApiBaseUrl = () => {
-  const protocol = window.location.protocol === 'https:' ? 'https' : 'http';
-  const baseUrl = process.env.REACT_APP_URL.replace(/^https?:\/\//, '');
+  const protocol = window.location.protocol === "https:" ? "https" : "http";
+  const baseUrl = process.env.REACT_APP_URL.replace(/^https?:\/\//, "");
   return `${protocol}://${baseUrl}`;
 };
 
-const fetcher = url => axios.get(url).then(res => res.data);
-
-function ResetPassword() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+const ResetPassword = () => {
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { user, isError, isSuccess, isLoading, message } = useSelector(
-    (state) => state.authAdmin
-  );
-
-  const { data, error } = useSWR(`${getApiBaseUrl()}/`, fetcher);
-
-  useEffect(() => {
-    if (user || isSuccess) {
-      navigate("/admin/dashboard");
-    }
-    dispatch(reset());
-  }, [user, isSuccess, dispatch, navigate]);
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
@@ -48,61 +35,150 @@ function ResetPassword() {
         newPassword,
       });
       alert(response.data.msg);
-      navigate('/login')
+      navigate("/login");
     } catch (err) {
       alert(err.response?.data?.msg || "Terjadi kesalahan saat reset password.");
     }
   };
 
-  const handleLogoClick = () => {
-    navigate("/");
-  };
-
   return (
-    <>
-    <div className="login-container">
-      <div className="logo-container" onClick={handleLogoClick}>
-        <img src="/images/logobaru.png" alt="Logo Aplikasi" className="login-logo" />
-        <h3 className="app-login-title">Sistem Informasi Pendataan Kualitas Rumah</h3>
-      </div>
-      <Row className="justify-content-center">
-        <Col xs="12" md="10" className="mb-3">
-          <form onSubmit={handleResetPassword} className="reset-password-form">
-            <h2>Reset Password</h2>
-            <label>
-              Email:
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Masukkan email" required />
-            </label>
-            <label>
-              Username:
-              <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Masukkan username" required />
-            </label>
-            <label>
-              Password Baru:
-              <div className="password-container">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="Masukkan password baru"
-                  required
-                />
-                <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
-                </button>
-              </div>
-            </label>
-            <button type="submit">
-              <FaLock style={{ marginRight: "10px" }} />
-              Reset Password
-            </button>
-          </form>
-        </Col>
-      </Row>
-    </div>
-    <Footer />
-    </>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+        backgroundImage: `url(${BackgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backdropFilter: "blur(5px)",
+      }}
+    >
+      <Paper
+        elevation={6}
+        sx={{
+          p: 4,
+          width: "90%",
+          maxWidth: 380,
+          textAlign: "center",
+          borderRadius: 3,
+          bgcolor: "rgba(255, 255, 255, 0.95)",
+        }}
+      >
+        {/* Logo */}
+        <img
+          src="/images/logobaru.png"
+          alt="Logo Aplikasi"
+          style={{ width: "80px", marginBottom: "10px" }}
+        />
+        <Typography variant="h6" gutterBottom>
+          Sistem Informasi Pendataan Kualitas Rumah
+        </Typography>
+
+        {/* Form */}
+        <form onSubmit={handleResetPassword}>
+          <TextField
+            fullWidth
+            label="Email"
+            margin="normal"
+            variant="filled"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            sx={{
+              "& .MuiFilledInput-root": {
+                backgroundColor: "white",
+                borderRadius: "8px",
+              },
+              "& .MuiFilledInput-underline:before, & .MuiFilledInput-underline:after": {
+                display: "none",
+              },
+            }}
+          />
+
+          <TextField
+            fullWidth
+            label="Username"
+            margin="normal"
+            variant="filled"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            sx={{
+              "& .MuiFilledInput-root": {
+                backgroundColor: "white",
+                borderRadius: "8px",
+              },
+              "& .MuiFilledInput-underline:before, & .MuiFilledInput-underline:after": {
+                display: "none",
+              },
+            }}
+          />
+
+          <TextField
+            fullWidth
+            label="Password Baru"
+            type={showPassword ? "text" : "password"}
+            margin="normal"
+            variant="filled"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            required
+            sx={{
+              "& .MuiFilledInput-root": {
+                backgroundColor: "white",
+                borderRadius: "8px",
+              },
+              "& .MuiFilledInput-underline:before, & .MuiFilledInput-underline:after": {
+                display: "none",
+              },
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                    size="small"
+                  >
+                    {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          {/* Tombol Reset Password */}
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{
+              mt: 2,
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <FaLock size={14} /> Reset Password
+          </Button>
+        </form>
+
+        {/* Tombol Kembali ke Login */}
+        <Button
+          fullWidth
+          variant="text"
+          color="primary"
+          onClick={() => navigate("/login")}
+          sx={{ mt: 1, textTransform: "none" }}
+        >
+          Kembali ke Login
+        </Button>
+      </Paper>
+    </Box>
   );
-}
+};
 
 export default ResetPassword;

@@ -1,6 +1,8 @@
 import React from "react";
 import "./Footer.css";
-
+import { 
+ Typography,  Box
+} from "@mui/material";
 function Footer() {
   return (
     <footer className="App-footer">
@@ -9,8 +11,13 @@ function Footer() {
         alt="Logo Sumbawa Barat" 
         className="footer-logo" 
       />
-      <p className="footer-text">© 2024 Dinas Perumahan dan Permukiman Kabupaten Sumbawa Barat</p>
+      © {new Date().getFullYear()} Dinas Perumahan dan Permukiman Kabupaten Sumbawa Barat.
     </footer>
+    // <Box component="footer" sx={{ py: 3, bgcolor: '#e0f0ff', textAlign: 'center' }}>
+    //     <Typography variant="body2" color="text.secondary">
+    //       © {new Date().getFullYear()} Dinas Perumahan dan Permukiman Kabupaten Sumbawa Barat.
+    //     </Typography>
+    //   </Box>
   );
 }
 

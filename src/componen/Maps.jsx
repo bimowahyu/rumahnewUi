@@ -5,6 +5,7 @@ import L from "leaflet";
 import MyNavbar from "../map/Navbar";
 import "./Maps.css"
 import axios from "axios";
+import { Layout } from "../layout/Layout";
 
 // Set default Leaflet marker icons
 delete L.Icon.Default.prototype._getIconUrl;
@@ -113,8 +114,8 @@ const getCoordinates = (item) => {
   
 
   return (
-    <>
-    <MyNavbar />
+    <Layout>
+    {/* <MyNavbar /> */}
    
        
     <MapContainer
@@ -148,7 +149,7 @@ const getCoordinates = (item) => {
         );
       })}
     </MapContainer>
-    </>
+    </Layout>
   );
 }
 

@@ -17,7 +17,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import BackgroundImage from "../images/map4.jpg";
-
+import Footer from "./Footer";
 const getApiBaseUrl = () => {
   const protocol = window.location.protocol === "https:" ? "https" : "http";
   const baseUrl = process.env.REACT_APP_URL.replace(/^https?:\/\//, "");
@@ -68,110 +68,145 @@ function Login() {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh",
-        backgroundImage: `url(${BackgroundImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backdropFilter: "blur(5px)",
-      }}
-    >
-      <Paper
-        elevation={6}
+    <>
+      <Box
         sx={{
-          p: 4,
-          width: "90%",
-          maxWidth: 380,
-          textAlign: "center",
-          borderRadius: 3,
-          bgcolor: "rgba(255, 255, 255, 0.95)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+          backgroundImage: `url(${BackgroundImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backdropFilter: "blur(5px)",
         }}
       >
-        {/* Logo */}
-        <img
-          src="/images/logobaru.png"
-          alt="Logo Aplikasi"
-          style={{ width: "80px", marginBottom: "10px" }}
-        />
-        <Typography variant="h6" gutterBottom>
-          Sistem Informasi Pendataan Kualitas Rumah
-        </Typography>
-
-        {/* Status Server */}
-        {isError && <Typography color="error">{message}</Typography>}
-        {error ? (
-          <Typography color="error">Server Offline</Typography>
-        ) : data ? (
-          <Typography color="success">Server Online: {data}</Typography>
-        ) : (
-          <Typography>Checking server status...</Typography>
-        )}
-
-        {/* Form */}
-        <form onSubmit={handleLogin}>
-          <TextField
-            fullWidth
-            label="Username"
-            margin="normal"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
+        <Paper
+          elevation={6}
+          sx={{
+            p: 4,
+            width: "90%",
+            maxWidth: 380,
+            textAlign: "center",
+            borderRadius: 3,
+            bgcolor: "rgba(255, 255, 255, 0.95)",
+          }}
+        >
+          {/* Logo */}
+          <img
+            src="/images/logobaru.png"
+            alt="Logo Aplikasi"
+            style={{ width: "80px", marginBottom: "10px" }}
           />
-          <TextField
-            fullWidth
-            label="Password"
-            type={showPassword ? "text" : "password"}
-            margin="normal"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowPassword(!showPassword)}
-                    edge="end"
-                    size="small" // Ukuran lebih kecil agar tidak terlalu besar
-                  >
-                    {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-              />
-            }
-            label="Remember me"
-          />
+          <Typography variant="h6" gutterBottom>
+            Sistem Informasi Pendataan Kualitas Rumah
+          </Typography>
 
-          {/* Tombol Login */}
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            sx={{
-              mt: 2,
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-            }}
-          >
-            <FaLock size={14} /> {isLoading ? "Loading..." : "Login"}
-          </Button>
-        </form>
-      </Paper>
-    </Box>
+          {/* Status Server */}
+          {isError && <Typography color="error">{message}</Typography>}
+          {error ? (
+            <Typography color="error">Server Offline</Typography>
+          ) : data ? (
+            <Typography color="success">Server Online: {data}</Typography>
+          ) : (
+            <Typography>Checking server status...</Typography>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleLogin}>
+            <TextField
+              fullWidth
+              label="Username"
+              margin="normal"
+              variant="filled"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              sx={{
+                "& .MuiFilledInput-root": {
+                  backgroundColor: "white",
+                  borderRadius: "8px",
+                },
+                "& .MuiFilledInput-underline:before, & .MuiFilledInput-underline:after": {
+                  display: "none",
+                },
+              }}
+            />
+
+            <TextField
+              fullWidth
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              margin="normal"
+              variant="filled"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              sx={{
+                "& .MuiFilledInput-root": {
+                  backgroundColor: "white",
+                  borderRadius: "8px",
+                },
+                "& .MuiFilledInput-underline:before, & .MuiFilledInput-underline:after": {
+                  display: "none",
+                },
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                      size="small"
+                    >
+                      {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                />
+              }
+              label="Remember me"
+            />
+
+            {/* Tombol Login */}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              sx={{
+                mt: 2,
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <FaLock size={14} /> {isLoading ? "Loading..." : "Login"}
+            </Button>
+
+            {/* Tombol Reset Password */}
+            <Button
+              fullWidth
+              variant="text"
+              color="primary"
+              onClick={() => navigate("/reset-password")}
+              sx={{ mt: 1, textTransform: "none" }}
+            >
+              Lupa Password? Reset di sini
+            </Button>
+          </form>
+        </Paper>
+      </Box>
+      <Footer />
+    </>
   );
-}
-
+};
 export default Login;

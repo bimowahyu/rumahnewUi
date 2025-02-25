@@ -121,10 +121,24 @@
       margin-top: 15px; /* Jaga margin atas tetap konsisten */
     }
   }
-  @media (min-width: 992px) { /* Untuk layar besar */
-    .container-custom {
-      max-width: 80%; /* Atur lebar maksimal */
-      margin: 0 auto; /* Tengah */
+  @media (min-width: 992px) { /* Hanya untuk layar besar */
+    .form-group {
+      display: flex;
+      align-items: center; /* Biar sejajar vertikal */
+      gap: 15px; /* Jarak antara label dan input */
+    }
+  
+    .form-group label {
+      width: 30%; /* Lebar label agar konsisten */
+      text-align: right; /* Teks label rata kanan */
+      padding-right: 10px; /* Jarak antara label dan input */
+    }
+  
+    .form-group input,
+    .form-group select {
+      flex-grow: 1; /* Input dan select menyesuaikan lebar */
+      width: 70%; /* Pastikan lebar input dan select sama */
+      max-width: 500px; /* Batasi lebar agar tetap rapi */
     }
   }
   

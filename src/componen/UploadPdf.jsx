@@ -77,10 +77,12 @@ export const UploadPdf = () => {
 
     return (
         <>
-        <div className="footer">
+        <div className="footer"style={{
+    marginLeft: window.innerWidth >= 768 ? "290px" : "0", 
+  }}>
           <div>
-            <MyNavbar />
-            <div></div>
+            {/* <MyNavbar /> */}
+            
       
             <form onSubmit={handleUpload}>
               <p>Upload PDF Informasi Dan Dasar Hukum</p>

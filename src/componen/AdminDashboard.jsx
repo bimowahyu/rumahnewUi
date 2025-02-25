@@ -93,12 +93,11 @@ function AdminDashboard() {
                 sx={{ bgcolor: '#f5f5f5', fontFamily: 'Plus Jakarta Sans' }}
               />
               <CardContent>
-                <Box textAlign="center" mb={2}>
+                <Box textAlign="center" mb={3}>
                   <img src="/images/logobaru.png" alt="Logo Aplikasi" style={{ maxHeight: '120px' }} />
                 </Box>
-                
                 <Grid container spacing={2} justifyContent="center">
-                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                  <Grid item xs={12} sm={6} md={4} lg={3} sx={{ display: "flex", justifyContent: "center" }}>
                     <Button
                       fullWidth
                       variant="contained"
@@ -121,7 +120,7 @@ function AdminDashboard() {
                     </Button>
                   </Grid>
                   
-                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                  <Grid item xs={12} sm={6} md={4} lg={3} sx={{ display: "flex", justifyContent: "center" }}>
                     <Button
                       fullWidth
                       variant="contained"
@@ -144,7 +143,7 @@ function AdminDashboard() {
                     </Button>
                   </Grid>
                   
-                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                  <Grid item xs={12} sm={6} md={4} lg={3} sx={{ display: "flex", justifyContent: "center" }}>
                     <Button
                       fullWidth
                       variant="contained"
@@ -169,7 +168,7 @@ function AdminDashboard() {
                   
                   {user && user.role === "admin" && (
                     <>
-                      <Grid item xs={12} sm={6} md={4} lg={3}>
+                      <Grid item xs={12} sm={6} md={4} lg={3} sx={{ display: "flex", justifyContent: "center" }}>
                         <Button
                           fullWidth
                           variant="contained"
@@ -192,7 +191,7 @@ function AdminDashboard() {
                         </Button>
                       </Grid>
                       
-                      <Grid item xs={12} sm={6} md={4} lg={3}>
+                      <Grid item xs={12} sm={6} md={4} lg={3} sx={{ display: "flex", justifyContent: "center" }}>
                         <Button
                           fullWidth
                           variant="contained"
@@ -215,7 +214,7 @@ function AdminDashboard() {
                         </Button>
                       </Grid>
                       
-                      <Grid item xs={12} sm={6} md={4} lg={3}>
+                      <Grid item xs={12} sm={6} md={4} lg={3} sx={{ display: "flex", justifyContent: "center" }}>
                         <Button
                           fullWidth
                           variant="contained"
@@ -240,7 +239,7 @@ function AdminDashboard() {
                     </>
                   )}
                   
-                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                  <Grid item xs={12} sm={6} md={4} lg={3} sx={{ display: "flex", justifyContent: "center" }}>
                     <Button
                       fullWidth
                       variant="contained"

@@ -14,11 +14,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { LogoutOutlined } from "@mui/icons-material";
 import { LogOutAdmin, reset } from "../../fitur/AuthSlice";
 import axios from "axios";
+import { Tooltip, OverlayTrigger } from "react-bootstrap";
 // import smk9logo from "../../images/smklogo.png";
 
 export const Sidebar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  function renderTooltip(message) {
+    return <Tooltip>{message}</Tooltip>;
+  }
   // const { user } = useSelector((state) => state.auth);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
@@ -123,10 +127,11 @@ export const Sidebar = () => {
       {/* Navigation Links with Hover Effects */}
       <Stack spacing={2} sx={{ flex: 1 }}>
         {[
-          { to: "/recap", text: "Rekapitulasi" },
-          { to: "/admin/dashboard", text: "Dashboard" },
-          { to: "/questionnaire", text: "Tambah Data" },
-          { to: "/upload", text: "Upload Foto" },
+         
+         { to: "/admin/dashboard", text: "Dashboard", overlay: renderTooltip("Halaman Dashboard") },
+          { to: "/recap", text: "Rekapitulasi", overlay: renderTooltip("Lihat Rekapitulasi Data Rumah") },
+          { to: "/questionnaire", text: "Tambah Data", overlay: renderTooltip("Tambah Data Rumah Baru")  },
+          { to: "/upload", text: "Upload Foto Manual", overlay: renderTooltip("Upload Foto Rumah Berdasarkan Data Yang Telah Di Input")  },
           // { to: "/jurusan", text: "List Jurusan" },
         ].map((item) => (
           <Typography

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { getMeAdmin } from "../fitur/AuthSlice";
 import Footer from "../componen/Footer";
 import "./Upload.css"
+import { Layout } from "../layout/Layout";
 
 export const UploadPdfPages = () => {
   const dispatch = useDispatch();
@@ -22,13 +23,11 @@ export const UploadPdfPages = () => {
   }, [isError, navigate]);
 
   return (
-    <div className="page-container">
+    <Layout>
     
       <div>
         <UploadPdf />
       </div>
-  
-      <Footer />
-    </div>
+    </Layout>
   );
 };

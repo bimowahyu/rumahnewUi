@@ -1,8 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Form, FormGroup, Label, Input, Button, Alert } from "reactstrap";
-import "./Register.css";
+import {
+  Box,
+  Paper,
+  TextField,
+  Button,
+  Typography,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
+import { FaEye, FaEyeSlash, FaLock } from "react-icons/fa";
+import BackgroundImage from "../images/map4.jpg";
 import Footer from "./Footer";
 
 const Register = () => {
@@ -41,79 +50,141 @@ const Register = () => {
     }
   };
 
-  const handleLogoClick = () => {
-    navigate("/");
-  };
-
   return (
     <>
-      <div className="register-container">
-        <div className="logo-container" onClick={handleLogoClick}>
-          <img
-            src="/images/logobaru.png"
-            alt="Logo Aplikasi"
-            className="register-logo"
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+        backgroundImage: `url(${BackgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backdropFilter: "blur(5px)",
+      }}
+    >
+      <Paper
+        elevation={6}
+        sx={{
+          p: 4,
+          width: "90%",
+          maxWidth: 380,
+          textAlign: "center",
+          borderRadius: 3,
+          bgcolor: "rgba(255, 255, 255, 0.95)",
+        }}
+      >
+        {/* Logo */}
+        <img
+          src="/images/logobaru.png"
+          alt="Logo Aplikasi"
+          style={{ width: "80px", marginBottom: "10px" }}
+        />
+        <Typography variant="h6" gutterBottom>
+          Sistem Informasi Pendataan Kualitas Rumah
+        </Typography>
+
+        {/* Status Messages */}
+        {error && <Typography color="error">{error}</Typography>}
+        {success && <Typography color="success">{success}</Typography>}
+
+        {/* Form */}
+        <form onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            label="Username"
+            margin="normal"
+            variant="filled"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            required
+            sx={{
+              "& .MuiFilledInput-root": {
+                backgroundColor: "white",
+                borderRadius: "8px",
+              },
+              "& .MuiFilledInput-underline:before, & .MuiFilledInput-underline:after": {
+                display: "none",
+              },
+            }}
           />
-          <h3 className="app-register-title">
-            Sistem Informasi Pendataan Kualitas Rumah
-          </h3>
-        </div>
 
-        {error && <Alert color="danger">{error}</Alert>}
-        {success && <Alert color="success">{success}</Alert>}
+          <TextField
+            fullWidth
+            label="Email"
+            margin="normal"
+            variant="filled"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            sx={{
+              "& .MuiFilledInput-root": {
+                backgroundColor: "white",
+                borderRadius: "8px",
+              },
+              "& .MuiFilledInput-underline:before, & .MuiFilledInput-underline:after": {
+                display: "none",
+              },
+            }}
+          />
 
-        <Form onSubmit={handleSubmit}>
-          <FormGroup>
-            <Label for="username">Username</Label>
-            <Input
-              type="text"
-              name="username"
-              id="username"
-              value={formData.username}
-              onChange={handleChange}
-              placeholder="Enter your username"
-            />
-          </FormGroup>
+          <TextField
+            fullWidth
+            label="Password"
+            type={showPassword ? "text" : "password"}
+            margin="normal"
+            variant="filled"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+            sx={{
+              "& .MuiFilledInput-root": {
+                backgroundColor: "white",
+                borderRadius: "8px",
+              },
+              "& .MuiFilledInput-underline:before, & .MuiFilledInput-underline:after": {
+                display: "none",
+              },
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                    size="small"
+                  >
+                    {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
 
-          <FormGroup>
-            <Label for="email">Email</Label>
-            <Input
-              type="email"
-              name="email"
-              id="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-            />
-          </FormGroup>
-
-          <FormGroup>
-            <Label for="password">Password</Label>
-            <div className="password-container">
-              <Input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                id="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Enter your password"
-              />
-              <button
-                type="button"
-                className="password-toggle"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                <i className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"}`} />
-              </button>
-            </div>
-          </FormGroup>
-
-          <Button type="submit" color="primary">
-            Register
+          {/* Tombol Register */}
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{
+              mt: 2,
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <FaLock size={14} /> Register
           </Button>
-        </Form>
-      </div>
-      <Footer />
+        </form>
+      </Paper>
+    </Box>
+    <Footer />
     </>
   );
 };
