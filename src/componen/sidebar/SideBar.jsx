@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -14,16 +14,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { LogoutOutlined } from "@mui/icons-material";
 import { LogOutAdmin, reset } from "../../fitur/AuthSlice";
 import axios from "axios";
+import { getMeAdmin } from "../../fitur/AuthSlice";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
 // import smk9logo from "../../images/smklogo.png";
 
 export const Sidebar = () => {
+   const { isError } = useSelector((state) => state.authAdmin);
+    
+      
+    
   const dispatch = useDispatch();
   const navigate = useNavigate();
   function renderTooltip(message) {
     return <Tooltip>{message}</Tooltip>;
   }
-  // const { user } = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.authAdmin || {});
+const user = auth.user || null;
+console.log("Auth State:", auth);
+console.log("User Data:", user);
+useEffect(() => {
+  dispatch(getMeAdmin());
+}, [dispatch]);
+
+  
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
   const handleLogoutClick = (e) => {
@@ -126,57 +139,67 @@ export const Sidebar = () => {
 
       {/* Navigation Links with Hover Effects */}
       <Stack spacing={2} sx={{ flex: 1 }}>
-        {[
-         
-         { to: "/admin/dashboard", text: "Dashboard", overlay: renderTooltip("Halaman Dashboard") },
-          { to: "/recap", text: "Rekapitulasi", overlay: renderTooltip("Lihat Rekapitulasi Data Rumah") },
-          { to: "/questionnaire", text: "Tambah Data", overlay: renderTooltip("Tambah Data Rumah Baru")  },
-          { to: "/upload", text: "Upload Foto Manual", overlay: renderTooltip("Upload Foto Rumah Berdasarkan Data Yang Telah Di Input")  },
-          // { to: "/jurusan", text: "List Jurusan" },
-        ].map((item) => (
-          <Typography
-            key={item.to}
-            component={NavLink}
-            to={item.to}
-            sx={navLinkStyle}
-          >
-            {item.text}
-          </Typography>
-        ))}
+  {[
+    { to: "/admin/dashboard", text: "Dashboard", overlay: "Halaman Dashboard" },
+    { to: "/recap", text: "Rekapitulasi", overlay: "Lihat Rekapitulasi Data Rumah" },
+    { to: "/questionnaire", text: "Tambah Data", overlay: "Tambah Data Rumah Baru" },
+    { to: "/upload", text: "Upload Foto Manual", overlay: "Upload Foto Rumah Berdasarkan Data Yang Telah Di Input" }
+  ].map((item) => (
+    <OverlayTrigger key={item.to} placement="right" overlay={renderTooltip(item.overlay)}>
+      <Typography component={NavLink} to={item.to} sx={navLinkStyle}>
+        {item.text}
+      </Typography>
+    </OverlayTrigger>
+  ))}
 
-        {/* Logout Button with Enhanced Styling */}
-        <Button
-          className="btn btn-danger ms-lg-2 mt-2 mt-lg-0"
-          onClick={async () => {
-            try {
-              await axios.delete(`${process.env.REACT_APP_URL}/logout`, { withCredentials: true });
-              sessionStorage.clear();
-              navigate("/login");
-            } catch (error) {
-              console.error("Error during logout", error);
-            }
-          }}
-          sx={{
-            width: "100%",
-            justifyContent: "flex-start",
-            color: "#cbd5e1",
-            p: 2,
-            borderRadius: 1,
-            textTransform: "none",
-            transition: "all 0.3s ease",
-            "&:hover": {
-              bgcolor: "#FB4141",
-              color: "white",
-              transform: "translateX(8px)",
-            },
-            minHeight: "48px",
-            touchAction: "manipulation",
-          }}
-          startIcon={<LogoutOutlined />}
-        >
-          Log Out
-        </Button>
-      </Stack>
+  {/* Menu Khusus Admin */}
+  {user && user.role && user.role === "admin" && (
+  <>
+    <OverlayTrigger placement="right" overlay={renderTooltip("Manajemen Admin")}>
+      <Typography component={NavLink} to="/register" sx={navLinkStyle}>
+        Register
+      </Typography>
+    </OverlayTrigger>
+    <OverlayTrigger placement="right" overlay={renderTooltip("Upload PDF")}>
+      <Typography component={NavLink} to="/uploadpdf" sx={navLinkStyle}>
+        Upload PDF
+      </Typography>
+    </OverlayTrigger>
+    <OverlayTrigger placement="right" overlay={renderTooltip("User List")}>
+      <Typography component={NavLink} to="/userlist" sx={navLinkStyle}>
+        User List
+      </Typography>
+    </OverlayTrigger>
+  </>
+)}
+
+
+  {/* Logout Button */}
+  <Button
+    className="btn btn-danger ms-lg-2 mt-2 mt-lg-0"
+    onClick={handleLogoutClick}
+    sx={{
+      width: "100%",
+      justifyContent: "flex-start",
+      color: "#cbd5e1",
+      p: 2,
+      borderRadius: 1,
+      textTransform: "none",
+      transition: "all 0.3s ease",
+      "&:hover": {
+        bgcolor: "#FB4141",
+        color: "white",
+        transform: "translateX(8px)",
+      },
+      minHeight: "48px",
+      touchAction: "manipulation",
+    }}
+    startIcon={<LogoutOutlined />}
+  >
+    Log Out
+  </Button>
+</Stack>
+
 
       <Divider
         sx={{

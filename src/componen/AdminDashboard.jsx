@@ -3,6 +3,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import Footer from "./Footer";
 import { 
   AppBar, Toolbar, Typography, Container, Grid, Card, 
   CardContent, CardHeader, Box, Button, Avatar, Chip 
@@ -56,7 +57,7 @@ function AdminDashboard() {
             <Card elevation={3} sx={{ 
               borderRadius: '12px', 
               overflow: 'hidden',
-              height: '500px',
+              height: { xs: 'auto', md: '500px' },
               transition: 'transform 0.3s, box-shadow 0.3s',
               '&:hover': {
                 transform: 'translateY(-5px)',
@@ -71,12 +72,12 @@ function AdminDashboard() {
                   fontFamily: 'Plus Jakarta Sans'
                 }}
               />
-              <CardContent sx={{ p: 0, height: 'calc(100% - 72px)' }}>
-                <Grafik />
+              <CardContent sx={{ p: 0 }}>
+              <Grafik />
               </CardContent>
             </Card>
           </Grid>
-
+          
           {/* Welcome Card & Actions */}
           <Grid item xs={12}>
             <Card elevation={3} sx={{ 
@@ -268,11 +269,12 @@ function AdminDashboard() {
         </Grid>
       </Container>
 
-      <Box component="footer" sx={{ py: 3, bgcolor: '#e0f0ff', textAlign: 'center' }}>
+      {/* <Box component="footer" sx={{ py: 3, bgcolor: '#e0f0ff', textAlign: 'center' }}>
         <Typography variant="body2" color="text.secondary">
           © {new Date().getFullYear()} Dinas Perumahan dan Permukiman Kabupaten Sumbawa Barat.
         </Typography>
-      </Box>
+      </Box> */}
+      <Footer />
     </Box>
   );
 }

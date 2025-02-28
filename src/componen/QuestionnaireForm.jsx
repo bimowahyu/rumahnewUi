@@ -16,6 +16,7 @@ const QuestionnaireForm = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [isPreviewing, setIsPreviewing] = useState(false);
   const videoRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   // State untuk data formulir
   const [formData, setFormData] = useState({
     statusrumah: "",
@@ -317,6 +318,14 @@ const [koordinatError, setKoordinatError] = useState('');
   
     return true;
   };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
  
   const handleChange = (e) => {
@@ -465,9 +474,15 @@ const handleSubmit = async (e) => {
 
   const requiredCoordinateKecamatan = ["Maluk", "Jereweh"];
 
+  // if (requiredCoordinateKecamatan.includes(formData.kecamatan)) {
+  //   if (!formData.titikKoordinatRumah && !formData.manualTitikKoordinatRumah) {
+  //     setErrorMessage("Untuk Kecamatan Maluk dan Jereweh, salah satu koordinat harus diisi.");
+  //     setModalOpen(true);
+  //     return;
+  //   }
   if (requiredCoordinateKecamatan.includes(formData.kecamatan)) {
-    if (!formData.titikKoordinatRumah && !formData.manualTitikKoordinatRumah) {
-      setErrorMessage("Untuk Kecamatan Maluk dan Jereweh, salah satu koordinat harus diisi.");
+    if (!formData.titikKoordinatRumah) {
+      setErrorMessage("Untuk Kecamatan Maluk dan Jereweh, koordinat harus diambil otomatis.");
       setModalOpen(true);
       return;
     }
@@ -478,8 +493,14 @@ const handleSubmit = async (e) => {
       return;
     }
 
-    if (formData.manualTitikKoordinatRumah && !validateCoordinate(formData.manualTitikKoordinatRumah)) {
-      setErrorMessage("Format Koordinat Manual tidak valid. Gunakan format latitude,longitude.");
+    if (formData.manualTitikKoordinatRumah) {
+      setErrorMessage("Untuk Kecamatan Maluk dan Jereweh, koordinat manual tidak diperbolehkan.");
+      setModalOpen(true);
+      return;
+    }
+
+    if (!validateCoordinate(formData.titikKoordinatRumah)) {
+      setErrorMessage("Format Titik Koordinat Rumah tidak valid. Gunakan format latitude,longitude.");
       setModalOpen(true);
       return;
     }
@@ -629,10 +650,10 @@ const handleSubmit = async (e) => {
 
   return (
     <Layout>
-   
-      <Row className="justify-content-center" style={{
-    marginLeft: window.innerWidth >= 768 ? "290px" : "0", 
-  }}>
+    <Row
+      className={`justify-content-center ${isMobile ? "mx-0" : ""}`}
+      style={{ marginLeft: isMobile ? "0" : "280px" }}
+    >
        
        
           <Form onSubmit={handleSubmit}sx={{ p: 3, maxWidth: "800px", marginLeft: { xs: 0, md: "280px" } }}>
@@ -640,34 +661,46 @@ const handleSubmit = async (e) => {
             <div className="home-logo-container">
               <img src="/images/logobaru.png" alt="Logo Aplikasi" className="home-logo"/>
             </div>
-            <FormGroup>
-              <Label for="statusrumah">Status Rumah</Label>
-              <Input type="select" name="statusrumah" id="statusrumah" value={formData.statusrumah} onChange={handleChange}>
-                <option value="">Pilih</option>
-                {/* <option value="kosong">Kosong</option> */}
-                <option value="Tidak Berpenghuni">Tidak Berpenghuni</option>
-                <option value="Berpenghuni">Berpenghuni</option>
-                
-              </Input>
-              {errors.statusrumah && <div className="error-message">{errors.statusrumah}</div>}
-            </FormGroup>
+            <div className="form-container">
+  <div className="form-column">
+    {/* Bagian kiri form */}
+    <FormGroup className="form-item">
+  <Label for="statusrumah" className="form-label">Status Rumah</Label>
+  <Input
+    type="select"
+    name="statusrumah"
+    id="statusrumah"
+    value={formData.statusrumah}
+    onChange={handleChange}
+    className="form-input"
+  >
+    <option value="">Pilih</option>
+    <option value="Tidak Berpenghuni">Tidak Berpenghuni</option>
+    <option value="Berpenghuni">Berpenghuni</option>
+  </Input>
+  {errors.statusrumah && <div className="error-message">{errors.statusrumah}</div>}
+</FormGroup>
 
-            <FormGroup>
-              <Label for="nomorUrut">1. Nomor Blok</Label>
-              <Input type="number" name="nomorUrut" id="nomorUrut" value={formData.nomorUrut || ""} onChange={handleChange} 
-              className="input-center" />
-              {errors.nomorUrut && <div className="error-message">{errors.nomorUrut}</div>}
-            </FormGroup>
-
-            <FormGroup>
+<FormGroup className="form-item">
+  <Label for="nomorUrut" className="form-label">1. Nomor Blok</Label>
+  <Input
+    type="number"
+    name="nomorUrut"
+    id="nomorUrut"
+    value={formData.nomorUrut || ""}
+    onChange={handleChange}
+    className="form-input"
+  />
+  {errors.nomorUrut && <div className="error-message">{errors.nomorUrut}</div>}
+</FormGroup>
+    <FormGroup>
               <Label for="nomorRumahPadaPeta">2. Nomor Peta</Label>
-              <Input type="number" name="nomorRumahPadaPeta" id="nomorRumahPadaPeta" value={formData.nomorRumahPadaPeta || ""} onChange={handleChange} className="input-center" />
+              <Input type="number" name="nomorRumahPadaPeta" id="nomorRumahPadaPeta" value={formData.nomorRumahPadaPeta || ""} onChange={handleChange}  className="form-input" />
               {errors.nomorRumahPadaPeta && <div className="error-message">{errors.nomorRumahPadaPeta}</div>}
             </FormGroup>
-
             <FormGroup>
               <Label for="namaLengkapKK">3. Nama Lengkap KK</Label>
-              <Input type="text" name="namaLengkapKK" id="namaLengkapKK" value={formData.namaLengkapKK} onChange={handleChange} className="input-center" />
+              <Input type="text" name="namaLengkapKK" id="namaLengkapKK" value={formData.namaLengkapKK} onChange={handleChange}  className="form-input" />
               {errors.namaLengkapKK && <div className="error-message">{errors.namaLengkapKK}</div>}
             </FormGroup>
 
@@ -680,7 +713,7 @@ const handleSubmit = async (e) => {
                 value={formData.tanggallahir}
                 onChange={handleChange}
                 disabled={formData.statusrumah === "Tidak Berpenghuni"}
-                className="input-center"
+                 className="form-input"
                 placeholder="DD/MM/YYYY"
             />
             {errors.tanggallahir && (
@@ -731,7 +764,7 @@ const handleSubmit = async (e) => {
               <Label for="jumlahKK">9. Jumlah KK Dalam Rumah</Label>
               <Input type="number" name="jumlahKK" id="jumlahKK" value={formData.jumlahKK || ""} onChange={handleChange} 
                disabled={formData.statusrumah === "Tidak Berpenghuni"}
-              className="input-center" />
+               className="form-input" />
               {errors.jumlahKK && <div className="error-message">{errors.jumlahKK}</div>}
             </FormGroup> */}
              <FormGroup>
@@ -743,7 +776,7 @@ const handleSubmit = async (e) => {
                 value={formData.jumlahKK || ""}
                 onChange={handleChange}
                 disabled={formData.statusrumah === "Tidak Berpenghuni"}
-                className="input-center"
+                 className="form-input"
               />
               {errors.jumlahKK && <div className="error-message">{errors.jumlahKK}</div>}
 
@@ -759,13 +792,13 @@ const handleSubmit = async (e) => {
               <Label for="jumlahPenghuni">10. Jumlah Penghuni</Label>
               <Input type="number" name="jumlahPenghuni" id="jumlahPenghuni" value={formData.jumlahPenghuni || ""} onChange={handleChange} 
                disabled={formData.statusrumah === "Tidak Berpenghuni"}
-              className="input-center" />
+               className="form-input" />
               {errors.jumlahPenghuni && <div className="error-message">{errors.jumlahPenghuni}</div>}
             </FormGroup>
 
             <FormGroup>
               <Label for="alamatRumah">11. Alamat Rumah (RT/RW/Dusun/Lingkungan)</Label>
-              <Input type="text" name="alamatRumah" id="alamatRumah" value={formData.alamatRumah} onChange={handleChange} className="input-center" />
+              <Input type="text" name="alamatRumah" id="alamatRumah" value={formData.alamatRumah} onChange={handleChange}  className="form-input" />
               {errors.alamatRumah && <div className="error-message">{errors.alamatRumah}</div>}
             </FormGroup>
 
@@ -1074,8 +1107,12 @@ const handleSubmit = async (e) => {
               </Input>
               {errors.balok && <div className="error-message">{errors.balok}</div>}
             </FormGroup>
-
-            <FormGroup>
+    
+    {/* Tambahkan lebih banyak FormGroup di sini */}
+  </div>
+  <div className="form-column">
+    {/* Bagian kanan form */}
+    <FormGroup>
               <Label for="sloof">31. Sloof</Label>
               <Input type="select" name="sloof" id="sloof" value={formData.sloof} onChange={handleChange}
                disabled={formData.statusrumah === "Tidak Berpenghuni"}>
@@ -1209,13 +1246,13 @@ const handleSubmit = async (e) => {
 
             <FormGroup>
               <Label for="luasRumah">40. Luas Rumah (m²)</Label>
-              <Input type="number" name="luasRumah" id="luasRumah" value={formData.luasRumah} onChange={handleChange} className="input-center" disabled={formData.statusrumah === "Tidak Berpenghuni"} />
+              <Input type="number" name="luasRumah" id="luasRumah" value={formData.luasRumah} onChange={handleChange}  className="form-input" disabled={formData.statusrumah === "Tidak Berpenghuni"} />
               {errors.luasRumah && <div className="error-message">{errors.luasRumah}</div>}
             </FormGroup>
 
             <FormGroup>
               <Label for="luasTanah">41. Luas Tanah (m²)</Label>
-              <Input type="number" name="luasTanah" id="luasTanah" value={formData.luasTanah} onChange={handleChange} className="input-center" disabled={formData.statusrumah === "Tidak Berpenghuni"} />
+              <Input type="number" name="luasTanah" id="luasTanah" value={formData.luasTanah} onChange={handleChange}  className="form-input" disabled={formData.statusrumah === "Tidak Berpenghuni"} />
               {errors.luasTanah && <div className="error-message">{errors.luasTanah}</div>}
             </FormGroup>
 
@@ -1277,7 +1314,7 @@ const handleSubmit = async (e) => {
 
             <FormGroup>
               <Label for="jumlahJamban">47. Jumlah Jamban</Label>
-              <Input type="number" name="jumlahJamban" id="jumlahJamban" value={formData.jumlahJamban} onChange={handleChange} className="input-center"  disabled={formData.statusrumah === "Tidak Berpenghuni" || formData.kepemilikanKamarMandiDanJamban === "Tidak Ada"}
+              <Input type="number" name="jumlahJamban" id="jumlahJamban" value={formData.jumlahJamban} onChange={handleChange}  className="form-input"  disabled={formData.statusrumah === "Tidak Berpenghuni" || formData.kepemilikanKamarMandiDanJamban === "Tidak Ada"}
  />
               {errors.jumlahJamban && <div className="error-message">{errors.jumlahJamban}</div>}
             </FormGroup>
@@ -1372,28 +1409,29 @@ const handleSubmit = async (e) => {
 
             <FormGroup>
               <Label for="titikKoordinatRumah">56. Titik Koordinat Rumah</Label>
-              <Input type="text" name="titikKoordinatRumah" id="titikKoordinatRumah" value={formData.titikKoordinatRumah || ""} onChange={handleChange} invalid={!!errors.titikKoordinatRumah} className="input-center" readOnly />
+              <Input type="text" name="titikKoordinatRumah" id="titikKoordinatRumah" value={formData.titikKoordinatRumah || ""} onChange={handleChange} invalid={!!errors.titikKoordinatRumah}  className="form-input" readOnly />
               <Button color="primary" onClick={handleGetCoordinates} className="btn-get-coordinates">
                 <FaLocationArrow /> Ambil Koordinat
               </Button>
             </FormGroup>
 
             <FormGroup>
-              <Label for="manualTitikKoordinatRumah">Atau Masukkan Koordinat Manual</Label>
-              <Input
-                type="text"
-                name="manualTitikKoordinatRumah"
-                id="manualTitikKoordinatRumah"
-                value={formData.manualTitikKoordinatRumah || ""}
-                onChange={handleChange}
-                invalid={!!errors.manualTitikKoordinatRumah}
-                className="input-center"
-              />
-            </FormGroup>
+                <Label for="manualTitikKoordinatRumah">Atau Masukkan Koordinat Manual</Label>
+                <Input
+                  type="text"
+                  name="manualTitikKoordinatRumah"
+                  id="manualTitikKoordinatRumah"
+                  value={formData.manualTitikKoordinatRumah || ""}
+                  onChange={handleChange}
+                  invalid={!!errors.manualTitikKoordinatRumah}
+                  className="form-input"
+                  disabled={["Maluk", "Jereweh"].includes(formData.kecamatan)} // Disable jika kecamatan termasuk Maluk/Jereweh
+                />
+              </FormGroup>
 
             <FormGroup>
               <Label for="tanggalPendataan">57. Tanggal Pendataan</Label>
-              <Input type="date" name="tanggalPendataan" id="tanggalPendataan" value={formData.tanggalPendataan} onChange={handleChange} className="input-center" />
+              <Input type="date" name="tanggalPendataan" id="tanggalPendataan" value={formData.tanggalPendataan} onChange={handleChange}  className="form-input" />
               {errors.tanggalPendataan && <div className="error-message">{errors.tanggalPendataan}</div>}
             </FormGroup>
 
@@ -1404,18 +1442,18 @@ const handleSubmit = async (e) => {
             </FormGroup>
             <FormGroup>
               <Label for="catatan">59.Catatan</Label>
-              <Input type="text" name="catatan" id="catatan" value={formData.catatan} onChange={handleChange} className="input-center" />
+              <Input type="text" name="catatan" id="catatan" value={formData.catatan} onChange={handleChange}  className="form-input" />
               {errors.catatan && <div className="error-message">{errors.catatan}</div>}
             </FormGroup>
 
             {/* <FormGroup>
               <Label for="kategori">Kategori Rumah</Label>
-              <Input type="text" name="kategori" id="kategori" value={formData.kategori} readOnly className="input-center" />
+              <Input type="text" name="kategori" id="kategori" value={formData.kategori} readOnly  className="form-input" />
             </FormGroup> */}
 
             {/* <FormGroup>
               <Label for="score">Skor</Label>
-              <Input type="number" name="score" id="score" value={formData.score} readOnly className="input-center" />
+              <Input type="number" name="score" id="score" value={formData.score} readOnly  className="form-input" />
             </FormGroup> */}
            <FormGroup>
                   <Label for="fotoRumah">Upload Foto Rumah</Label>
@@ -1453,16 +1491,18 @@ const handleSubmit = async (e) => {
                     </div>
                   )}
                 </FormGroup>
-
-
-
-            <Button className="btn-primary" type="submit">
+    {/* Tambahkan lebih banyak FormGroup di sini */}
+  </div>
+</div>
+                  <FormGroup>
+            <Button className="btn-primary mt-2" type="submit">
               Simpan
             </Button>
 
-            <Button className="btn-secondary" type="button" onClick={() => navigate("/recap")} >
+            <Button className="btn-secondary mt-2" type="button" onClick={() => navigate("/recap")} >
               Lihat Rekap
             </Button>
+            </FormGroup>
           </Form>
        
       </Row>

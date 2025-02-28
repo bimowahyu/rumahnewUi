@@ -1,0 +1,619 @@
+/* Container styling with a more modern gradient and layout */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, #1abc9c, #3498db);
+  /* background-color:darkslategrey; */
+  min-height: 100vh;
+  color: #ffffff;/* Global Styles */
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Smooth scrolling for entire page */
+  .landing-page {
+    scroll-behavior: smooth;
+  }
+  
+  /* Hero Section with auto-scrolling background */
+  .hero-section {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    overflow: hidden;
+  }
+  
+  /* Before pseudo-element for overlay */
+  .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 2rem 3rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    max-width: 90%;
+    width: 500px;
+    backdrop-filter: blur(5px);
+  }
+  
+  .hero-content h1 {
+    font-size: 3.5rem;
+    color: #007bff;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  
+  .hero-content p {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  
+  .cta-button {
+    padding: 0.8rem 2rem;
+    margin-top: 1.5rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+  }
+  
+  .cta-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.6);
+  }
+  
+  .cta-button:active {
+    transform: translateY(0);
+  }
+  
+  /* About Section */
+  .about-section {
+    padding: 5rem 2rem;
+    background-color: #f8f9fa;
+    text-align: center;
+  }
+  
+  .about-section h2 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 2rem;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .about-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: #007bff;
+    border-radius: 3px;
+  }
+  
+  .about-section p {
+    max-width: 800px;
+    margin: 0 auto;
+    color: #555;
+    line-height: 1.8;
+    font-size: 1.1rem;
+  }
+  
+  /* Features Section */
+  
+  /* Image and Text Section */
+  .image-text-section {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    padding: 5rem 2rem;
+    background-color: #f8f9fa;
+  }
+  
+  .image-text-item {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .image-text-item.reverse {
+    flex-direction: row-reverse;
+  }
+  
+  .image-text-item img {
+    width: 400px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    object-fit: cover;
+    transition: all 0.5s ease;
+  }
+  
+  .image-text-item img:hover {
+    transform: scale(1.03);
+  }
+  
+  .image-text-item .text {
+    max-width: 600px;
+  }
+  
+  .image-text-item h3 {
+    color: #007bff;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .image-text-item h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: #007bff;
+    border-radius: 3px;
+  }
+  
+  .image-text-item p {
+    color: #555;
+    line-height: 1.8;
+    font-size: 1.1rem;
+  }
+  
+  /* Footer Section */
+  .footer-section {
+    padding: 4rem 2rem;
+    background-color: #222;
+    color: white;
+    text-align: center;
+  }
+  
+  .footer-section h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #fff;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .footer-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: #007bff;
+    border-radius: 3px;
+  }
+  
+  .footer-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .footer-content p {
+    margin: 0.8rem 0;
+    line-height: 1.6;
+    color: #ccc;
+  }
+  
+  .footer-content p strong {
+    color: #fff;
+  }
+  
+  .social-icons {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  
+  .social-icon {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 1.2rem;
+  }
+  
+  .social-icon:hover {
+    color: #007bff;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 992px) {
+    .image-text-item {
+      gap: 2rem;
+    }
+    
+    .image-text-item img {
+      width: 350px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .hero-content h1 {
+      font-size: 2.8rem;
+    }
+    
+    .about-section,
+    .features-section,
+    .image-text-section,
+    .footer-section {
+      padding: 3rem 1.5rem;
+    }
+    
+    .image-text-section {
+      gap: 3rem;
+    }
+    
+    .image-text-item {
+      flex-direction: column;
+      text-align: center;
+      gap: 1.5rem;
+    }
+    
+    .image-text-item.reverse {
+      flex-direction: column;
+    }
+    
+    .image-text-item img {
+      width: 100%;
+      max-width: 400px;
+    }
+    
+    .image-text-item h3::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    .feature-card {
+      width: 270px;
+      min-width: 270px;
+      padding: 2rem 1.5rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .hero-content {
+      padding: 1.5rem;
+      width: 90%;
+    }
+    
+    .hero-content h1 {
+      font-size: 2.2rem;
+    }
+    
+    .hero-content p {
+      font-size: 1rem;
+    }
+    
+    .cta-button {
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+    }
+    
+    .about-section h2,
+    .features-section h2,
+    .footer-section h2 {
+      font-size: 2rem;
+    }
+    
+    .image-text-item h3 {
+      font-size: 1.5rem;
+    }
+    
+    .feature-card {
+      width: 240px;
+      min-width: 240px;
+      padding: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .hero-content h1 {
+      font-size: 1.8rem;
+    }
+    
+    .hero-content p {
+      font-size: 0.9rem;
+    }
+    
+    .cta-button {
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+    }
+    
+    .about-section p,
+    .image-text-item p,
+    .feature-card p {
+      font-size: 0.9rem;
+    }
+    
+    .feature-card {
+      width: 220px;
+      min-width: 220px;
+    }
+  }
+  @media (max-width: 768px) {
+    .dashboard-container {
+      flex-direction: column; /* Stack widgets vertically on smaller screens */
+      align-items: center;
+      width: auto;
+    }
+    
+    .dashboard-widget-wrapper {
+      max-width: 90%; /* Allow widgets to take up more space */
+      margin-bottom: 20px;
+    }
+    
+    /* Ensure chart inside the widget scales appropriately */
+    .dashboard-widget-wrapper .chart-container {
+      width: 100%; /* Make chart take full width of the container */
+      height: auto; /* Adjust chart height for mobile view */
+    }
+    }
+    
+    @media (max-width: 480px) {
+    .dashboard-widget-wrapper {
+      max-width: 100%; /* Full width on very small screens */
+    }
+    
+    /* Adjust the chart height and responsiveness */
+    .dashboard-widget-wrapper .chart-container {
+      height: 250px; /* Make chart smaller if needed on very small screens */
+    }
+    }
+    
+    /* Optional: Additional chart style for better rendering */
+    .chart-container canvas {
+    width: 100% !important; /* Ensure the chart canvas scales to the container */
+    height: 100% !important; /* Ensure the height of the chart scales accordingly */
+    }
+    .grafik2{
+      width: 100%;
+    }
+  font-family: "Poppins", sans-serif;
+  /* padding: 20px; */
+}
+
+/* Carousel styling for a sleeker look */
+.home-carousel {
+  position: relative;
+  width: 100%;
+  max-height: 450px;
+  overflow: hidden;
+  /* border-radius: 10px; */
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.home-carousel .carousel .slide img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Overlay with enhanced styling */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  /* border-radius: 10px; */
+}
+
+.home-logo {
+  max-width: 120px;
+  height: auto;
+  margin-bottom: 15px;
+  animation: logoFadeIn 2s ease-in-out;
+}
+
+@keyframes logoFadeIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.app-title {
+  font-size: 2.5rem;
+  margin: 0;
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.5);
+  /* border-radius: 8px; */
+  animation: titleSlideIn 2s ease-in-out;
+}
+
+@keyframes titleSlideIn {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Button container with a more dynamic layout */
+.home-text-container {
+  margin: 20px auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.home-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 15px 25px;
+  border-radius: 8px;
+  border: 1px solid #ffffff;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.home-button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.05);
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.home-icon {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+/* Responsive styling for smaller screens */
+@media (max-width: 1168px) {
+  .home-logo {
+    max-width: 70px;
+  }
+
+  .app-title {
+    font-size: 2rem;
+  }
+
+  .home-text-container {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-carousel .carousel .slide img {
+    height: 250px;
+  }
+
+  .home-logo {
+    max-width: 60px;
+  }
+
+  .app-title {
+    font-size: 1.5rem;
+    padding: 5px;
+  }
+
+  .home-button {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+
+  .home-icon {
+    font-size: 1rem;
+  }
+}
+
+/* Ensure chart is responsive and visible */
+.dashboard-widget-wrapper {
+flex: 1 1 45%;
+padding: 20px;
+background-color: #f9f9f9;
+/* border-radius: 8px; */
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+margin-bottom: 20px;
+font-family: 'Arial', sans-serif;
+height: auto; /* Ensure there's no height restriction */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+.dashboard-container {
+  flex-direction: column; /* Stack widgets vertically on smaller screens */
+  align-items: center;
+  width: auto;
+}
+
+.dashboard-widget-wrapper {
+  max-width: 90%; /* Allow widgets to take up more space */
+  margin-bottom: 20px;
+}
+
+/* Ensure chart inside the widget scales appropriately */
+.dashboard-widget-wrapper .chart-container {
+  width: 100%; /* Make chart take full width of the container */
+  height: auto; /* Adjust chart height for mobile view */
+}
+}
+
+@media (max-width: 480px) {
+.dashboard-widget-wrapper {
+  max-width: 100%; /* Full width on very small screens */
+}
+
+/* Adjust the chart height and responsiveness */
+.dashboard-widget-wrapper .chart-container {
+  height: 250px; /* Make chart smaller if needed on very small screens */
+}
+}
+
+/* Optional: Additional chart style for better rendering */
+.chart-container canvas {
+width: 100% !important; /* Ensure the chart canvas scales to the container */
+height: 100% !important; /* Ensure the height of the chart scales accordingly */
+}
+.grafik2{
+  width: 100%;
+}

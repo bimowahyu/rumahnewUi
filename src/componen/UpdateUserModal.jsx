@@ -1,13 +1,22 @@
-import React, { useState } from "react";
+import React, { useState,useEffect  } from "react";
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input } from "reactstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
+import './UpdateUserModal.css'
 
 const UpdateUserModal = ({ isOpen, toggle, user, onUserUpdated }) => {
-  const [username, setUsername] = useState(user?.username || "");
-  const [email, setEmail] = useState(user?.email || "");
-  const [role, setRole] = useState(user?.role || "");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      setUsername(user.username || "");
+      setEmail(user.email || "");
+      setRole(user.role || "");
+    }
+  }, [user]);
 
   const handleUpdate = async () => {
     try {
@@ -24,7 +33,7 @@ const UpdateUserModal = ({ isOpen, toggle, user, onUserUpdated }) => {
 
       Swal.fire("Berhasil!", "Data user berhasil diperbarui.", "success");
       toggle();
-      onUserUpdated(); 
+      onUserUpdated();
     } catch (error) {
       console.error("Error updating user:", error);
       Swal.fire("Gagal!", "Terjadi kesalahan saat memperbarui user.", "error");
@@ -32,7 +41,7 @@ const UpdateUserModal = ({ isOpen, toggle, user, onUserUpdated }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle}>
+    <Modal isOpen={isOpen} toggle={toggle} modalClassName="custom-modal">
       <ModalHeader toggle={toggle}>Update User</ModalHeader>
       <ModalBody>
         <Form>
@@ -43,7 +52,7 @@ const UpdateUserModal = ({ isOpen, toggle, user, onUserUpdated }) => {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder={user?.username}
+              placeholder="Masukkan username"
             />
           </FormGroup>
           <FormGroup>
@@ -53,18 +62,20 @@ const UpdateUserModal = ({ isOpen, toggle, user, onUserUpdated }) => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder={user?.email}
+              placeholder="Masukkan email"
             />
           </FormGroup>
           <FormGroup>
             <Label for="role">Role</Label>
             <Input
               id="role"
-              type="text"
+              type="select"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              placeholder={user?.role}
-            />
+            >
+              <option value="admin">Admin</option>
+              <option value="surveyor">Surveyor</option>
+            </Input>
           </FormGroup>
           <FormGroup>
             <Label for="password">Password (Opsional)</Label>

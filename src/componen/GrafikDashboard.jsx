@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Grafik.css";
+import "./GrafikDashboard.css";
 
 import { Bar } from "react-chartjs-2";
 import {
@@ -18,7 +18,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 ChartJS.register(ChartDataLabels);
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export const Grafik = () => {
+export const GrafikDashboard = () => {
   const navigate = useNavigate();
   const [backlogCounts, setBacklogCounts] = useState([]);
   const [statistics, setStatistics] = useState({
@@ -130,41 +130,8 @@ export const Grafik = () => {
     return baseSize;
   };
 
-  // Optimize dataset visibility based on screen size
-  const getDatasetsForView = () => {
-    const isSmallScreen = windowSize.width < 768;
-    
-    // For mobile, simplify to just the most important metrics
-    if (isSmallScreen) {
-      return [
-        {
-          label: "Rumah Layak Huni",
-          data: Object.keys(statistics.byKecamatan || {}).map(kecamatan => statistics.byKecamatan[kecamatan].rumahLayakHuni),
-          backgroundColor: "rgba(75, 192, 192, 0.8)",
-          borderColor: "rgba(75, 192, 192, 1)",
-          borderWidth: 1,
-        },
-        {
-          label: "Rumah Tidak Layak Huni",
-          data: Object.keys(statistics.byKecamatan || {}).map(kecamatan => statistics.byKecamatan[kecamatan].rumahTidakLayakHuni),
-          backgroundColor: "rgba(255, 99, 132, 0.8)",
-          borderColor: "rgba(255, 99, 132, 1)",
-          borderWidth: 1,
-        },
-        {
-          label: "Total Backlog",
-          data: Object.keys(statistics.byKecamatan || {}).map(kecamatan => {
-            const backlog = backlogCounts.find(item => item.kecamatan === kecamatan);
-            return backlog ? backlog.count : 0;
-          }),
-          backgroundColor: "rgba(153, 102, 255, 0.8)",
-          borderColor: "rgba(153, 102, 255, 1)",
-          borderWidth: 1,
-        }
-      ];
-    }
-    
-    // Full data for larger screens
+  // Always use the complete dataset for both mobile and desktop
+  const getFullDatasets = () => {
     return [
       {
         label: "Rumah Layak Huni",
@@ -209,7 +176,7 @@ export const Grafik = () => {
 
   const dataCombined = {
     labels: Object.keys(statistics.byKecamatan || {}),
-    datasets: getDatasetsForView()
+    datasets: getFullDatasets()
   };
 
   // Configuration for optimized chart display
@@ -239,7 +206,7 @@ export const Grafik = () => {
           padding: { top: 10, bottom: 15 }
         },
         datalabels: {
-          display: isTotalChart || !isSmallScreen, // Always show labels on total chart
+          display: isTotalChart || !isSmallScreen, // Only show labels on total chart on mobile
           anchor: 'end',
           align: 'top',
           font: { size: labelFontSize },
@@ -302,96 +269,79 @@ export const Grafik = () => {
     };
   };
 
-  // Mobile-optimized data for total stats
-  const getMobileFriendlyTotalsDatasets = () => {
-    // Simplify and enhance contrast for mobile view
+  // Use the full dataset for totals as well
+  const getFullTotalsDatasets = () => {
     return [
       {
         label: "Rumah Layak Huni",
         data: [statistics.totalRumahLayakHuni],
-        backgroundColor: "rgba(75, 192, 192, 0.9)",
+        backgroundColor: "rgba(75, 192, 192, 0.8)",
         borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 2,
+        borderWidth: 1,
       },
       {
         label: "Rumah Tidak Layak Huni",
         data: [statistics.totalRumahTidakLayakHuni],
-        backgroundColor: "rgba(255, 99, 132, 0.9)",
+        backgroundColor: "rgba(255, 99, 132, 0.8)",
         borderColor: "rgba(255, 99, 132, 1)",
-        borderWidth: 2,
+        borderWidth: 1,
+      },
+      {
+        label: "Berpenghuni",
+        data: [statistics.totalRumahBerpenghuni],
+        backgroundColor: "rgba(54, 162, 235, 0.8)",
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth: 1,
+      },
+      {
+        label: "Tidak Berpenghuni",
+        data: [statistics.totalRumahTidakBerpenghuni],
+        backgroundColor: "rgba(255, 206, 86, 0.8)",
+        borderColor: "rgba(255, 206, 86, 1)",
+        borderWidth: 1,
       },
       {
         label: "Total Backlog",
         data: [statistics.totalBacklog],
-        backgroundColor: "rgba(153, 102, 255, 0.9)",
+        backgroundColor: "rgba(153, 102, 255, 0.8)",
         borderColor: "rgba(153, 102, 255, 1)",
-        borderWidth: 2,
+        borderWidth: 1,
       },
     ];
   };
 
-  // For total stats
+  // For total stats - using full dataset for all screen sizes
   const combinedTotals = {
     labels: ["Statistik Total"],
-    datasets: windowSize.width < 768 
-      ? getMobileFriendlyTotalsDatasets() 
-      : [
-          {
-            label: "Rumah Layak Huni",
-            data: [statistics.totalRumahLayakHuni],
-            backgroundColor: "rgba(75, 192, 192, 0.8)",
-            borderColor: "rgba(75, 192, 192, 1)",
-            borderWidth: 1,
-          },
-          {
-            label: "Rumah Tidak Layak Huni",
-            data: [statistics.totalRumahTidakLayakHuni],
-            backgroundColor: "rgba(255, 99, 132, 0.8)",
-            borderColor: "rgba(255, 99, 132, 1)",
-            borderWidth: 1,
-          },
-          {
-            label: "Berpenghuni",
-            data: [statistics.totalRumahBerpenghuni],
-            backgroundColor: "rgba(54, 162, 235, 0.8)",
-            borderColor: "rgba(54, 162, 235, 1)",
-            borderWidth: 1,
-          },
-          {
-            label: "Tidak Berpenghuni",
-            data: [statistics.totalRumahTidakBerpenghuni],
-            backgroundColor: "rgba(255, 206, 86, 0.8)",
-            borderColor: "rgba(255, 206, 86, 1)",
-            borderWidth: 1,
-          },
-          {
-            label: "Total Backlog",
-            data: [statistics.totalBacklog],
-            backgroundColor: "rgba(153, 102, 255, 0.8)",
-            borderColor: "rgba(153, 102, 255, 1)",
-            borderWidth: 1,
-          },
-        ],
+    datasets: getFullTotalsDatasets()
   };
 
   return (
     <div className="dashboard2">
       <main className="charts">
-        {/* First Chart - Per Kecamatan */}
-        <div className="chart-container" ref={chartContainerRef1}>
+        {/* Chart 1: Per Kecamatan Stats */}
+        <div 
+          className="chart-container" 
+          ref={chartContainerRef1}
+          style={{ display: 'block' }}
+        >
           <Bar 
             data={dataCombined} 
-            options={getChartOptions("Statistik Rumah dan Backlog per Kecamatan")} 
-            aria-label="Statistik per kecamatan"
+            options={getChartOptions('Statistik Perumahan Per Kecamatan')} 
+            height={windowSize.width < 768 ? 500 : 350} // Increased height for mobile to fit all labels
           />
         </div>
         
-        {/* Second Chart - Total Statistics - Always visible */}
-        <div className="chart-container" ref={chartContainerRef2}>
+        {/* Chart 2: Total Stats */}
+        <div 
+          className="chart-container" 
+          ref={chartContainerRef2}
+          style={{ display: 'block' }}
+        >
           <Bar 
             data={combinedTotals} 
-            options={getChartOptions("Total Statistik Rumah", true)} 
-            aria-label="Statistik total"
+            options={getChartOptions('Statistik Total Perumahan', true)} 
+            height={windowSize.width < 768 ? 450 : 350}
           />
         </div>
       </main>

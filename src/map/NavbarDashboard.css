@@ -1,54 +1,65 @@
 /* Navbar Logo */
 .navbar {
     background: linear-gradient(135deg, #1abc9c, #3498db);
+    display: flex;
+    align-items: center;
 }
+
+/* Logo */
 .homelogo {
-    width: 40px; /* Ukuran logo di desktop */
+    width: 40px; 
     height: 40px;
-    margin-right: 1px;
+    margin-right: 10px; /* Jarak antara logo dan teks */
+}
+
+/* Navbar Brand (Logo + Teks) */
+.brand-content {
+    display: flex;
+    align-items: center;
 }
 
 /* Navbar Text */
 .brand-text {
     color: white;
-    font-size: 0.9rem; /* Ukuran font teks di desktop */
-    white-space: nowrap; /* Mencegah teks menjadi dua baris */
+    font-size: 1rem;
+    white-space: nowrap;
 }
 
-/* Navbar padding adjustments for desktop */
-.navbar, .brand-content {
-    padding: 5px 10px; /* Padding untuk desktop */
+/* Tombol Navbar */
+.navbar-toggler {
+    margin-left: auto;
 }
 
-/* Navbar responsive adjustments */
+/* Responsive untuk Mobile */
 @media (max-width: 768px) {
     .homelogo {
-        width: 30px; /* Ukuran logo lebih kecil untuk tampilan mobile */
+        width: 30px;
         height: 30px;
     }
 
     .brand-text {
-        font-size: 0.6rem; 
-        margin-left: 0.5px; 
+        font-size: 0.8rem; 
+        margin-left: 5px;
     }
 
-    .navbar-nav {
-        text-align: center;
-        margin-top: 10px;
-    }
-
-    .navbar-toggler {
-        border-color: white; /* Menyesuaikan warna border toggle button */
-    }
-
-    .btn-danger {
-        width: 100%; /* Tombol Logout memenuhi lebar penuh di mobile */
-        margin-top: 10px;
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .brand-content {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start; /* Menyusun logo dan teks secara horizontal */
+        justify-content: flex-start;
+        width: 100%;
     }
+}
+/* Animasi transisi untuk Navbar */
+.navbar-collapse {
+    transition: max-height 0.5s ease-in-out;
+    overflow: hidden;
+}
+
+/* Saat Navbar dibuka */
+.collapsing {
+    transition: max-height 0.5s ease-in-out;
+    max-height: 0;
 }

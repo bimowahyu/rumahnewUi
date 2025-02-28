@@ -1,14 +1,16 @@
-.user-list-container {
-  max-width: 2200px;
-  margin-left: 100px;
-
-}
+/* This CSS file can be used alongside the component or its styles can be incorporated directly into the component */
 
 .role-badge {
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-weight: 500;
   text-transform: capitalize;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
 }
 
 .role-badge.admin {
@@ -21,17 +23,67 @@
   color: white;
 }
 
-.table th,
-.table td {
-  text-align: center;
-  vertical-align: middle;
-}
-.table {
-  width: 100%;
-}
-
-button {
+.user-avatar {
   display: flex;
   align-items: center;
-  gap: 5px;
+}
+
+.user-avatar .avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  font-weight: 500;
+  color: #1976d2;
+  text-transform: uppercase;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.search-bar {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.search-input {
+  padding-left: 40px !important;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0;
+  color: #6c757d;
+}
+
+.table-container {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.table-header {
+  background-color: #f8f9fa;
+}
+
+.user-row:hover {
+  background-color: rgba(0, 0, 0, 0.03);
 }

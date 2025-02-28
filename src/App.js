@@ -15,6 +15,7 @@ import { UploadFotoPages } from "./pages/UploadFotoPages";
 import { UploadPdfPages } from "./pages/UploadPdfPages";
 import { MapsPages } from "./pages/MapsPages";
 import ResetPassword from "./componen/ResetPassword";
+import { DashboardPages } from "./pages/DashboardPages";
 // import UserList from "./componen/UserList";
 import { UserListPages } from "./pages/UserListPages";
 import QuestionnaireForm from "./componen/QuestionnaireForm";
@@ -31,7 +32,8 @@ return (
         <Route path="/peta-perumahan" element={<PetaPerumahan />} />
         <Route path="/informasi-dasar-hukum" element={<InformasiDasarHukum />} />
 
-        <Route path="/admin/dashboard" element={<AdminDashboardPages />} />
+        {/* <Route path="/admin/dashboard" element={<AdminDashboardPages />} /> */}
+        <Route path="/admin/dashboard" element={<DashboardPages />} />
         <Route path="/surveyor/dashboard" element={<SurveyorDashboardPages />} />
         <Route path="/questionnaire" element={<QuestionnaireForm />} />
         <Route path="/recap" element={<DataRecapPages />} />

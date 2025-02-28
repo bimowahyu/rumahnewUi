@@ -64,7 +64,7 @@ export const Layout = ({ children }) => {
         </Box>
 
         {/* Footer */}
-        <Box
+        {/* <Box
           sx={{
             position: 'sticky',
             bottom: 0,
@@ -74,7 +74,7 @@ export const Layout = ({ children }) => {
           }}
         >
           <Footer />
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );
