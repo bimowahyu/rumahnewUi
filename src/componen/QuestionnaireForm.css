@@ -163,3 +163,12 @@
     width: 100%; /* Lebar penuh untuk layar kecil */
   }
 }
+@media (max-width: 576px) {
+  .d-grid {
+    display: grid !important;
+  }
+
+  .d-grid .btn {
+    width: 100%;
+  }
+}

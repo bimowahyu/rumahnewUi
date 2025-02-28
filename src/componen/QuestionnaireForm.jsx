@@ -504,6 +504,11 @@ const handleSubmit = async (e) => {
       setModalOpen(true);
       return;
     }
+    if (!imagePreview) {
+      setErrorMessage("Untuk Kecamatan Maluk dan Jereweh, Anda harus ambil foto rumah.");
+      setModalOpen(true);
+      return;
+    }
   }
 
   try {
@@ -1425,7 +1430,7 @@ const handleSubmit = async (e) => {
                   onChange={handleChange}
                   invalid={!!errors.manualTitikKoordinatRumah}
                   className="form-input"
-                  disabled={["Maluk", "Jereweh"].includes(formData.kecamatan)} // Disable jika kecamatan termasuk Maluk/Jereweh
+                  disabled={["Maluk", "Jereweh"].includes(formData.kecamatan)} 
                 />
               </FormGroup>
 
@@ -1457,15 +1462,17 @@ const handleSubmit = async (e) => {
             </FormGroup> */}
            <FormGroup>
                   <Label for="fotoRumah">Upload Foto Rumah</Label>
-                  
+                  {/* {requiredCoordinateKecamatan.includes(formData.kecamatan) && !imagePreview && (
+    <p className="text-danger">* Anda wajib mengunggah foto rumah untuk Kecamatan Maluk dan Jereweh</p>
+  )} */}
                   {/* Input untuk unggah foto dari galeri */}
-                  <Input 
+                  {/* <Input 
                     type="file" 
                     name="fotoRumah" 
                     id="fotoRumah" 
                     accept="image/*" 
                     onChange={handlePhotoChange} 
-                  />
+                  /> */}
 
                   {/* Tombol untuk membuka kamera */}
                   {isPreviewing ? (
@@ -1492,17 +1499,29 @@ const handleSubmit = async (e) => {
                   )}
                 </FormGroup>
     {/* Tambahkan lebih banyak FormGroup di sini */}
-  </div>
-</div>
-                  <FormGroup>
-            <Button className="btn-primary mt-2" type="submit">
-              Simpan
-            </Button>
+    <div className="mt-3 d-grid gap-2 d-md-flex justify-content-md-start">
+    <Button className="btn-primary" type="submit">
+      Simpan
+    </Button>
 
-            <Button className="btn-secondary mt-2" type="button" onClick={() => navigate("/recap")} >
-              Lihat Rekap
-            </Button>
-            </FormGroup>
+    <Button className="btn-secondary" type="button" onClick={() => navigate("/recap")}>
+      Lihat Rekap
+    </Button>
+  </div>
+  </div>
+</div>  
+<FormGroup>
+  {/* <div className="mt-3 d-grid gap-2 d-md-flex justify-content-md-start">
+    <Button className="btn-primary" type="submit">
+      Simpan
+    </Button>
+
+    <Button className="btn-secondary" type="button" onClick={() => navigate("/recap")}>
+      Lihat Rekap
+    </Button>
+  </div> */}
+</FormGroup>
+
           </Form>
        
       </Row>

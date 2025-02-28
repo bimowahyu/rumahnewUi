@@ -64,7 +64,7 @@ export const Navbar = () => {
               </Link>
             </Tooltip>
 
-            <Link to="/profile" style={{ textDecoration: 'none' }}>
+            <Link to="#" style={{ textDecoration: 'none' }}>
               <Avatar
                 sx={{
                   cursor: 'pointer',

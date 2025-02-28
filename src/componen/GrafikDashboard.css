@@ -23,12 +23,22 @@ main.charts {
   box-sizing: border-box;
   overflow: visible; /* Ensure content is visible */
   display: block; /* Force display block instead of flex to ensure visibility */
+  /* Fix blur issues on high-DPI screens */
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Make sure both charts are always displayed */
 .chart-container:nth-child(1),
 .chart-container:nth-child(2) {
   display: block !important;
+}
+
+canvas {
+  /* Fix for canvas rendering on mobile */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
 /* Medium screens and up */
@@ -49,6 +59,14 @@ main.charts {
   .chart-container {
     height: 450px; /* More height on mobile */
     margin-bottom: 30px; /* More space between charts */
+    /* Prevent pixelation on mobile */
+    transform: translateZ(0);
+  }
+  
+  /* Ensure proper text rendering */
+  .chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
   }
 }
 

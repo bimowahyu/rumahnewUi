@@ -185,7 +185,7 @@ export const Dashboard2 = () => {
                 Selamat Datang, {user?.username || "Admin"}!
               </Typography>
               <Typography variant="body2" sx={{ color: "white", opacity: 0.9, mb: 3, maxWidth: "600px" }}>
-                Sistem Informasi Pendataan Kualitas Rumah (SI-DALIMAH) menyediakan informasi mengenai keadaan rumah di berbagai wilayah.
+                Sistem Informasi Pendataan Kualitas Rumah (SI-DALIMAH) menyediakan informasi mengenai keadaan rumah di wilayah sumbawa barat.
               </Typography>
               {/* Removed the "Tambah Data Baru" button from here */}
             </WelcomeContent>
