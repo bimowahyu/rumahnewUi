@@ -2,18 +2,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px;
+  padding: 10px;
   background-color: #313131;
   text-align: center;
+  color: white;  /* Tambahkan warna teks agar terlihat */
 }
 
 .footer-logo {
-  width: 35px;  /* Adjust size of the logo */
+  width: 35px;
   height: auto;
-  margin-right: 10px;  /* Space between the logo and the text */
+  margin-right: 10px;
 }
 
 .footer-text {
   font-size: 14px;
-  color: #ffffff;
+  color: white;  /* Pastikan teks berwarna putih */
 }
