@@ -65,7 +65,7 @@ const [detailData, setDetailData] = useState(null);
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const rowsPerPage = 20;
+  const rowsPerPage = 10;
   const [errors, setErrors] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");

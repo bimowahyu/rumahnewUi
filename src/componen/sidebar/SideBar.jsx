@@ -150,6 +150,7 @@ export const Sidebar = () => {
         {[
           { to: "/admin/dashboard", text: "Dashboard" },
           { to: "/recap", text: "Rekapitulasi" },
+          { to: "/maps", text: "Sebaran Lokasi Rumah" },
           { to: "/questionnaire", text: "Tambah Data" },
           ...(adminMenuActive ? [{ to: "/upload", text: "Upload Foto Manual" }] : [])
         ].map((item) => (

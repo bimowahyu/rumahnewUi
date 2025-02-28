@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { getMeAdmin } from "../fitur/AuthSlice";
 import Footer from "../componen/Footer";
 import { Layout } from "../layout/Layout";
+import "leaflet/dist/leaflet.css";
+
 
 export const DataRecapPages = () => {
   const dispatch = useDispatch();
@@ -23,10 +25,9 @@ export const DataRecapPages = () => {
 
   return (
     <Layout>
-      {/* Komponen utama */}
+     
       <DataRecapComponent />
-      {/* Footer di bagian bawah */}
-      {/* <Footer /> */}
+      
     </Layout>
   );
 };

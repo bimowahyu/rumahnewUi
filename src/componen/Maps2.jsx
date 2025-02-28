@@ -73,7 +73,7 @@ const getCustomIcon = (color) => {
     });
   };
 
-function Maps({ selectedItem }) {
+function Maps2({ selectedItem }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -148,4 +148,4 @@ const getCoordinates = (item) => {
   );
 }
 
-export default Maps;
+export default Maps2;

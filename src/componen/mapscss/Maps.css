@@ -1,0 +1,35 @@
+
+.custom-leaflet-marker {
+  position: relative;
+  width: 25px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.leaflet-container {
+  width: 100% ;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.map-container {
+  width: 100%;
+  height: calc(100vh - 120px);
+  max-width: 1250px; /* Sesuaikan dengan lebar maksimal yang diinginkan */
+  margin: 0 auto; /* Pusatkan peta */
+}
+
+@media (min-width: 1024px) {
+  .map-container {
+    margin-left: 250px;
+    width: calc(100% - 250px); /* Pastikan tidak melebihi layar */
+  }
+}
+
+@media (max-width: 1023px) {
+  .map-container {
+    margin-left: 0;
+    width: 100%;
+  }
+}
